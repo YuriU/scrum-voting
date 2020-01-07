@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import '../styles/Option.css';
 
-class Option extends React.Component {
+class Option extends Component {
 
     constructor(props) {
         super(props);
