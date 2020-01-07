@@ -21,8 +21,8 @@ class Option extends React.Component {
         return (
             <div className="flipCard"> 
                 <div className= {this.state.flipped ? "card flipped" : "card" }  onClick={(evt) => this.processClick(evt)}> 
-                    <div className="side front">Keyword</div> 
-                    <div className="side back">Definition<br/>Explanation</div> 
+                    <div className="side front">{this.props.value}</div> 
+                    <div className="side back">Done</div> 
                 </div> 
             </div> 
         );

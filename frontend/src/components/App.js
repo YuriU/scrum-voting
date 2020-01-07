@@ -8,8 +8,8 @@ class App extends Component {
         return (
             <div>
                 <h1>My React App!</h1>
-                <Option />
-                <Option />
+                <Option value="3" />
+                <Option value="5" />
             </div>
         );
     }
