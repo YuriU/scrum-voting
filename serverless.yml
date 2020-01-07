@@ -1,0 +1,21 @@
+
+service: scrum-vote
+
+frameworkVersion: ">=1.9.0 <2.0.0"
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs8.10
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+resources:
+  Resources:
+    WebSite:
+        Type: "AWS::S3::Bucket"
+        Properties:
+          WebsiteConfiguration:
+            ErrorDocument: index.html
+            IndexDocument: index.html
