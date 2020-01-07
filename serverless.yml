@@ -6,10 +6,21 @@ frameworkVersion: ">=1.9.0 <2.0.0"
 provider:
   name: aws
   region: eu-central-1
-  runtime: nodejs8.10
+  runtime: nodejs12.x
+  websocketsApiName: custom-websockets-api-name
+  websocketsApiRouteSelectionExpression: $request.body.action
 
 custom:
   stage: ${opt:stage, self:provider.stage}
+
+functions:
+  connectHandler:
+    handler: backend/handler.connectionHandler
+    events:
+      - websocket:
+          route: $connect
+      - websocket:
+          route: $disconnect
 
 resources:
   Outputs:
@@ -24,3 +35,10 @@ resources:
           WebsiteConfiguration:
             ErrorDocument: index.html
             IndexDocument: index.html
+package:
+  exclude:
+    - frontend/**
+    - scripts/**
+    - resources/**
+    - package.json
+    - package-lock.json
