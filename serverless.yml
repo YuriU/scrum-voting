@@ -15,12 +15,20 @@ custom:
 
 functions:
   connectHandler:
-    handler: backend/handler.connectionHandler
+    handler: backend/handler.connectHandler
     events:
       - websocket:
           route: $connect
+  disconnectHandler:
+    handler: backend/handler.disconnectHandler
+    events:
       - websocket:
           route: $disconnect
+  defaultHandler:
+    handler: backend/handler.defaultHandler
+    events:
+      - websocket:
+          route: $default
 
 resources:
   Outputs:
