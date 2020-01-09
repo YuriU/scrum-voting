@@ -8,19 +8,33 @@
 
     <title>Scrum Vote</title>
     <script>
-        
+        var socket = new WebSocket("wss://2qlazn72zl.execute-api.eu-central-1.amazonaws.com/dev", ["hello", "World"]);
+
+        socket.onopen = function() {
+          console.log('Connected');
+        }
+
+        socket.onclose = function(event) {
+          if (event.wasClean) {
+            console.log('Clean close');
+          } else {
+            console.log('connection issue')
+          }
+          console.log('Code: ' + event.code + ' Reason: ' + event.reason);
+        };
+
+        socket.onmessage = function(event) {
+          console.log("Data received: " + event.data);
+        };
+
+        socket.onerror = function(error) {
+          console.log("Error: " + error.message);
+        };
+
     </script>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
-        <!--
-          This HTML file is a template.
-          If you open it directly in the browser, you will see an empty page.
-          You can add webfonts, meta tags, or analytics to this file.
-          The build step will place the bundled scripts into the <body> tag.
-          To begin the development, run `npm start` or `yarn start`.
-          To create a production bundle, use `npm run build` or `yarn build`.
-        -->
       </body>
   </head>
 
