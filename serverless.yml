@@ -9,9 +9,19 @@ provider:
   runtime: nodejs12.x
   websocketsApiName: custom-websockets-api-name
   websocketsApiRouteSelectionExpression: $request.body.action
+  environment:
+    DDB_TABLE_SESSION: { Ref: SessionTable }
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      Resource:
+        - !GetAtt SessionTable.Arn
 
 custom:
   stage: ${opt:stage, self:provider.stage}
+ 
 
 functions:
   connectHandler:
@@ -19,6 +29,7 @@ functions:
     events:
       - websocket:
           route: $connect
+    
   disconnectHandler:
     handler: backend/handler.disconnectHandler
     events:
@@ -43,6 +54,35 @@ resources:
           WebsiteConfiguration:
             ErrorDocument: index.html
             IndexDocument: index.html
+    SessionTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: sessionId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: connectionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: sessionId
+            KeyType: HASH
+          - AttributeName: userId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: gsiConnectionToKeys
+            KeySchema:
+              - AttributeName: connectionId
+                KeyType: HASH
+            Projection:
+              ProjectionType: KEYS_ONLY
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+
 package:
   exclude:
     - frontend/**
@@ -50,3 +90,4 @@ package:
     - resources/**
     - package.json
     - package-lock.json
+    - node_modules/**
