@@ -25,7 +25,7 @@ module.exports.connectHandler = async (event, context) => {
       sessionKey.userId = parts[1].trim();
     }
 
-    console.log('Endpoing: ' + JSON.stringify(sessionKey));
+    console.log('Key: ' + JSON.stringify(sessionKey));
 
     var result = await DDB.SessionDB.put({
         Item: {
