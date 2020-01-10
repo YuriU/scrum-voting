@@ -16,8 +16,11 @@ provider:
       Action:
       - dynamodb:GetItem
       - dynamodb:PutItem
+      - dynamodb:Query
       Resource:
         - !GetAtt SessionTable.Arn
+        - { "Fn::Join" : [ "/", [{ "Fn::GetAtt" : [SessionTable, Arn] }, "index/*"] ]}
+        #- !Join [ ':', ["Fn:GetAtt" [SessionTable, Arn],  "index/*"]]
 
 custom:
   stage: ${opt:stage, self:provider.stage}
