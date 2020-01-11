@@ -138,6 +138,9 @@ module.exports.defaultHandler = async (event, context) => {
 
   module.exports.startSessionHandler = async (event, context) => {
 
+    console.log('Start session action')
+    console.log(JSON.stringify(event));
+
     let sessionId = 'helloworld';
     let users = 5;
 

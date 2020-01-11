@@ -46,6 +46,11 @@ functions:
           route: $default
   startSession:
     handler: backend/handler.startSessionHandler
+    events:
+      - http:
+          path: /startSession
+          method: post
+
 
 resources:
   Outputs:
