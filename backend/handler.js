@@ -26,11 +26,21 @@ module.exports.connectHandler = async (event, context) => {
 
     console.log('Key: ' + JSON.stringify(sessionKey));
 
-    var result = await DDB.SessionDB.put({
+    /*var result = await DDB.SessionDB.put({
         Item: {
           sessionId: sessionKey.sessionId, userId: sessionKey.userId, connectionId: event.requestContext.connectionId
         },
         ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)'
+      }).promise();*/
+
+    var result = await DDB.SessionDB.update({
+        Key: { sessionId : sessionKey.sessionId, userId: sessionKey.userId },
+        UpdateExpression: 'set #cid = :cid',
+        ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)',
+        ExpressionAttributeNames: {'#cid' : 'connectionId'},
+        ExpressionAttributeValues: {
+          ':cid' : event.requestContext.connectionId
+        }
       }).promise();
 
 
@@ -64,6 +74,8 @@ module.exports.disconnectHandler = async (event, context) => {
           },
           ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)'
         }).promise();
+
+        
     }
 
     return {

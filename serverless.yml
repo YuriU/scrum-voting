@@ -18,6 +18,7 @@ provider:
       - dynamodb:PutItem
       - dynamodb:Query
       - dynamodb:BatchWriteItem
+      - dynamodb:UpdateItem
       Resource:
         - !GetAtt SessionTable.Arn
         - { "Fn::Join" : [ "/", [{ "Fn::GetAtt" : [SessionTable, Arn] }, "index/*"] ]}

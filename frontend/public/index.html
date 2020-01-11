@@ -78,7 +78,7 @@
 
         let sessionId = params.sessionid;
         let userId = params.userid;
-        let baseUrl = "<BaseUrl>";
+        let baseUrl = "<Endpoint>";
         var socket = new WebSocket(baseUrl + "?sessionid=" + sessionId +"&userid=" + userId);
 
         socket.onopen = function() {
