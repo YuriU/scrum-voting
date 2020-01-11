@@ -93,6 +93,41 @@ module.exports.defaultHandler = async (event, context) => {
     };
   };
 
+
+  module.exports.startSessionHandler = async (event, context) => {
+
+    let sessionId = 'helloworld';
+    let users = 5;
+
+    let requests = [];
+
+    let i = 0;
+    for(i = 0; i< users; i++){
+      requests.push({
+        PutRequest: {
+          Item: {
+            sessionId: sessionId,
+            userId: `${i}`,
+            Name: `User: ${i}`
+          }
+        }
+      })
+    }
+
+    let tableName = process.env.DDB_TABLE_SESSION;
+
+    var params = {
+      RequestItems : {
+      }
+    }
+
+    params.RequestItems[tableName] = requests;
+
+    console.log(JSON.stringify(params));
+
+    let result = await DDB.SessionDB.batchWrite(params).promise();
+  };
+
   const sendMessageToClient = (url, connectionId, payload) =>
   new Promise((resolve, reject) => {
     const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
