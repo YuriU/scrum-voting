@@ -18,11 +18,10 @@ module.exports.connectHandler = async (event, context) => {
       userId: '123'
     };
 
-    var headers = event.multiValueHeaders['Sec-WebSocket-Protocol'];
-    if(headers && headers.length > 0){
-      let parts = headers[0].split(',');
-      sessionKey.sessionId = parts[0].trim();
-      sessionKey.userId = parts[1].trim();
+    var parameters = event.queryStringParameters;
+    if(parameters){
+      sessionKey.sessionId = parameters.sessionid;
+      sessionKey.userId = parameters.userid;
     }
 
     console.log('Key: ' + JSON.stringify(sessionKey));
