@@ -5,6 +5,26 @@ const DDB = require('./lib/dynamo')
 
 const tableName = process.env.DDB_TABLE_SESSION;
 
+async function setConnectionId(sessionId,  userId, connectionId) {
+
+  var result = await DDB.SessionDB.update({
+    Key: { sessionId : sessionId, userId: userId },
+    UpdateExpression: 'set #cid = :cid',
+    ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)',
+    ExpressionAttributeNames: {'#cid' : 'connectionId'},
+    ExpressionAttributeValues: {
+      ':cid' : connectionId
+    },
+    ReturnValues: 'UPDATED_OLD'
+  }).promise();
+
+  if(result.Attributes && result.Attributes.connectionId){
+    return result.Attributes.connectionId;
+  } else {
+    return null;
+  }
+}
+
 module.exports.connectHandler = async (event, context) => {
  
     console.log('Websocket connect')
@@ -19,32 +39,31 @@ module.exports.connectHandler = async (event, context) => {
     };
 
     var parameters = event.queryStringParameters;
-    if(parameters){
+    if(parameters) {
       sessionKey.sessionId = parameters.sessionid;
       sessionKey.userId = parameters.userid;
     }
 
     console.log('Key: ' + JSON.stringify(sessionKey));
 
-    /*var result = await DDB.SessionDB.put({
-        Item: {
-          sessionId: sessionKey.sessionId, userId: sessionKey.userId, connectionId: event.requestContext.connectionId
-        },
-        ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)'
-      }).promise();*/
+    let oldConnectionId = await setConnectionId(sessionKey.sessionId, sessionKey.userId, event.requestContext.connectionId);
 
-    var result = await DDB.SessionDB.update({
-        Key: { sessionId : sessionKey.sessionId, userId: sessionKey.userId },
-        UpdateExpression: 'set #cid = :cid',
-        ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)',
-        ExpressionAttributeNames: {'#cid' : 'connectionId'},
-        ExpressionAttributeValues: {
-          ':cid' : event.requestContext.connectionId
-        }
-      }).promise();
+    if(oldConnectionId) {
 
-
-    console.log('PutResult: ' + JSON.stringify(result));
+      try{
+        const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
+          apiVersion: '2018-11-29',
+          endpoint: event.requestContext.domainName + "/" + event.requestContext.stage,
+        });
+  
+        await apigatewaymanagementapi.deleteConnection({
+          ConnectionId : oldConnectionId
+        }).promise();
+      }
+      catch(err){
+        console.error(`Error during old connection closing: Id ${oldConnectionId}`, err);
+      }
+    }
 
     return {
       body: 'hello!',
@@ -67,15 +86,7 @@ module.exports.disconnectHandler = async (event, context) => {
 
         var item = sessionAndUserIds.Items[0];
         console.log(JSON.stringify(item));
-
-        var result = await DDB.SessionDB.put({
-          Item: {
-            sessionId: item.sessionId, userId: item.userId //, connectionId: null
-          },
-          ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)'
-        }).promise();
-
-        
+        await setConnectionId(item.sessionId, item.userId, null);
     }
 
     return {
