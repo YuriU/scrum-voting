@@ -5,6 +5,15 @@ const DDB = require('./lib/dynamo')
 
 const tableName = process.env.DDB_TABLE_SESSION;
 
+async function querySessionUsers(sessionId) {
+  var sessionAndUserIds = await DDB.SessionDB.query({
+    KeyConditionExpression: 'sessionId = :sid',
+    ExpressionAttributeValues: { ':sid': sessionId }
+  }).promise();
+
+  return sessionAndUserIds;
+}
+
 async function setConnectionId(sessionId,  userId, connectionId) {
 
   var updateRequest = {
@@ -72,6 +81,9 @@ module.exports.connectHandler = async (event, context) => {
         console.error(`Error during old connection closing: Id ${oldConnectionId}`, err);
       }
     }
+
+    var sessionUsers = await querySessionUsers(sessionKey.sessionId);
+    console.log('Users: ' + JSON.stringify(sessionUsers));
 
     return {
       body: 'hello!',
