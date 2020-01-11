@@ -7,16 +7,24 @@ const tableName = process.env.DDB_TABLE_SESSION;
 
 async function setConnectionId(sessionId,  userId, connectionId) {
 
-  var result = await DDB.SessionDB.update({
+  var updateRequest = {
     Key: { sessionId : sessionId, userId: userId },
-    UpdateExpression: 'set #cid = :cid',
     ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)',
     ExpressionAttributeNames: {'#cid' : 'connectionId'},
-    ExpressionAttributeValues: {
-      ':cid' : connectionId
-    },
     ReturnValues: 'UPDATED_OLD'
-  }).promise();
+  };
+
+  if(connectionId){
+    updateRequest.UpdateExpression = 'set #cid = :cid';
+    updateRequest.ExpressionAttributeValues = {
+      ':cid' : connectionId
+    }
+  } 
+  else {
+    updateRequest.UpdateExpression = 'remove #cid';
+  }
+
+  var result = await DDB.SessionDB.update(updateRequest).promise();
 
   if(result.Attributes && result.Attributes.connectionId){
     return result.Attributes.connectionId;
