@@ -63,4 +63,4 @@ function getAllUrlParams(url) {
     return obj;
 }
 
-module.exports.getAllUrlParams = getAllUrlParams;
+module.exports.getAllUrlParams = getAllUrlParams; 
