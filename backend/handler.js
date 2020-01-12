@@ -154,6 +154,8 @@ module.exports.defaultHandler = async (event, context) => {
       user.sessionId = sessionId;
     });
 
+    usesToAdd.push({sessionId: sessionId, userId: 'chairman'})
+
     console.log(usesToAdd);
         
     let requests = usesToAdd.map(i => ({ PutRequest: { Item: i } }));
