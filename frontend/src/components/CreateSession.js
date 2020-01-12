@@ -7,6 +7,8 @@ class CreateSession extends Component {
     constructor(props) {
         super(props)
 
+        this.onCreateSession = props.onCreateSession;
+
         this.state = {
             lastAddedUser: 1 ,
             itemsToAdd: []
@@ -18,6 +20,7 @@ class CreateSession extends Component {
 
         this.addUser = this.addUser.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
+        this.startSession = this.startSession.bind(this);
     }
 
     addUser(){
@@ -36,12 +39,12 @@ class CreateSession extends Component {
     }
 
     startSession(){
-        
+        this.onCreateSession(this.state.itemsToAdd);
     }
 
     render() {
         return (<div>
-            <h1>Here is the list</h1>
+            <h1>Select participants:</h1>
             <ul>
                 {this.state.itemsToAdd.map((item, index) => {
                     return (<UserInput key={item.id} item={item} deleteUser={this.deleteUser}></UserInput>)

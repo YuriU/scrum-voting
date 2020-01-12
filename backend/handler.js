@@ -171,6 +171,12 @@ module.exports.defaultHandler = async (event, context) => {
     console.log(JSON.stringify(params));
 
     let result = await DDB.SessionDB.batchWrite(params).promise();
+
+    return {
+      statusCode: 200,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: 'Hello'
+    }
   };
 
   const sendMessageToClient = (url, connectionId, payload) =>

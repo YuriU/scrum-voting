@@ -10,11 +10,31 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.urlParams = getAllUrlParams();
-        console.log(this.urlParams);
+
+        console.log(JSON.stringify(this.props.config))
+
+        this.BackendHttpEndpoint = this.props.config.BackendHttpEndpoint;
+        this.BackendWebSocketEndpoint = this.props.config.BackendWebSocketEndpoint;
+
+        this.onCreateSession = this.onCreateSession.bind(this);
     }
 
     componentDidMount() {
-        this.webSocket = this.initializeWebSocket(this.props.config.BackendWebSocketEndpoint, this.urlParams);
+        this.webSocket = this.initializeWebSocket(this.BackendWebSocketEndpoint, this.urlParams);
+    }
+
+    async onCreateSession(items) {
+        var url = this.BackendHttpEndpoint + '/startSession';
+        console.log(url)
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+              },
+            body: JSON.stringify(items)
+        })
+
+        console.log(JSON.stringify(response));
     }
 
     render() {
@@ -22,9 +42,9 @@ class App extends Component {
             <div>
                 <FullScreenSwitch />
                 <h1>My React App!</h1>
-                <CreateSession />
-                <Option value="3" />
-                <Option value="5" />
+                <CreateSession onCreateSession={this.onCreateSession}/>
+                {/*<Option value="3" />
+                <Option value="5" />*/}
             </div>
         );
     }

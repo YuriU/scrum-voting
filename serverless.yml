@@ -48,9 +48,9 @@ functions:
     handler: backend/handler.startSessionHandler
     events:
       - http:
+          cors: true
           path: /startSession
           method: post
-
 
 resources:
   Outputs:
