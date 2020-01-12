@@ -10,13 +10,13 @@ class CreateSession extends Component {
         this.onCreateSession = props.onCreateSession;
 
         this.state = {
-            lastAddedUser: 1 ,
+            lastAddedUserId: 1 ,
             itemsToAdd: []
         }
 
-        this.state.itemsToAdd.push({ id : this.state.lastAddedUser++, alias: "u1", name: "User 1" });
-        this.state.itemsToAdd.push({ id : this.state.lastAddedUser++, alias: "u2", name: "User 2" });
-        this.state.itemsToAdd.push({ id : this.state.lastAddedUser++, alias: "u3", name: "User 3" });       
+        this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: "u1", name: "User 1" });
+        this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: "u2", name: "User 2" });
+        this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: "u3", name: "User 3" });       
 
         this.addUser = this.addUser.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
@@ -26,15 +26,15 @@ class CreateSession extends Component {
     addUser(){
         this.setState({
             itemsToAdd: this.state.itemsToAdd.concat({
-                id: this.state.lastAddedUser++,
+                userId: `${this.state.lastAddedUserId++}`,
             })
         });
     }
 
-    deleteUser(key) {
-        console.log(key);
+    deleteUser(userId) {
+        console.log(userId);
         this.setState({
-            itemsToAdd: _.remove(this.state.itemsToAdd, (item) => item.id != key)
+            itemsToAdd: _.remove(this.state.itemsToAdd, (item) => item.userId != userId)
         });        
     }
 
@@ -47,7 +47,7 @@ class CreateSession extends Component {
             <h1>Select participants:</h1>
             <ul>
                 {this.state.itemsToAdd.map((item, index) => {
-                    return (<UserInput key={item.id} item={item} deleteUser={this.deleteUser}></UserInput>)
+                    return (<UserInput key={item.userId} item={item} deleteUser={this.deleteUser}></UserInput>)
                 })}
             </ul>
             <button onClick={this.addUser}>Add</button>

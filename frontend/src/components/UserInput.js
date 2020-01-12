@@ -6,7 +6,6 @@ class UserInput extends Component {
 
         console.log(props)
         this.state = {
-            //key: props.key,
             item: props.item,
             deleteUser: props.deleteUser
         }
@@ -17,7 +16,7 @@ class UserInput extends Component {
         <div>
             <label>Alias: <input type="text" value={this.props.item.alias}></input></label>
             <label>Name: <input type="text" value={this.props.item.name}></input></label>
-            <button onClick={(evt) => this.state.deleteUser(this.state.item.id)}>Delete</button>
+            <button onClick={(evt) => this.state.deleteUser(this.state.item.userId)}>Delete</button>
         </div>)
     }
 }

@@ -26,6 +26,7 @@ class App extends Component {
     async onCreateSession(items) {
         var url = this.BackendHttpEndpoint + '/startSession';
         console.log(url)
+
         let response = await fetch(url, {
             method: 'POST',
             headers: {

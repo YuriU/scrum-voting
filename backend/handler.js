@@ -2,6 +2,7 @@
 
 const AWS = require('aws-sdk');
 const DDB = require('./lib/dynamo')
+const crypto = require('crypto')
 
 const tableName = process.env.DDB_TABLE_SESSION;
 
@@ -141,24 +142,21 @@ module.exports.defaultHandler = async (event, context) => {
     console.log('Start session action')
     console.log(JSON.stringify(event));
 
-    let sessionId = 'helloworld';
-    let users = 5;
+    let sessionId = crypto.randomBytes(8)
+                      .toString('base64')
+                      .toLowerCase()
+                      .replace(/[=+/?&]/g, '')
+                      .substring(0, 4);
 
-    let requests = [];
+    var usesToAdd = JSON.parse(event.body);
 
-    let i = 0;
-    for(i = 0; i< users; i++){
-      requests.push({
-        PutRequest: {
-          Item: {
-            sessionId: sessionId,
-            userId: `${i}`,
-            Name: `User: ${i}`
-          }
-        }
-      })
-    }
+    usesToAdd.forEach(user => {
+      user.sessionId = sessionId;
+    });
 
+    console.log(usesToAdd);
+        
+    let requests = usesToAdd.map(i => ({ PutRequest: { Item: i } }));
     let tableName = process.env.DDB_TABLE_SESSION;
 
     var params = {
@@ -170,12 +168,16 @@ module.exports.defaultHandler = async (event, context) => {
 
     console.log(JSON.stringify(params));
 
-    let result = await DDB.SessionDB.batchWrite(params).promise();
+    await DDB.SessionDB.batchWrite(params).promise();
+
+    let result = {
+      SessionId: sessionId
+    }
 
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: 'Hello'
+      body: JSON.stringify(result)
     }
   };
 
