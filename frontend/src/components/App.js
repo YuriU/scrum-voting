@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Option from './Option'
+import CreateSession from './CreateSession'
 import FullScreenSwitch from './FullscreenSwitch'
 import '../styles/App.css';
 import { getAllUrlParams } from '../utils/urlutils'
@@ -10,6 +11,22 @@ class App extends Component {
         super(props)
         this.urlParams = getAllUrlParams();
         console.log(this.urlParams);
+    }
+
+    componentDidMount() {
+        this.webSocket = this.initializeWebSocket(this.props.config.BackendWebSocketEndpoint, this.urlParams);
+    }
+
+    render() {
+        return (
+            <div>
+                <FullScreenSwitch />
+                <h1>My React App!</h1>
+                <CreateSession />
+                <Option value="3" />
+                <Option value="5" />
+            </div>
+        );
     }
 
     initializeWebSocket(webSocketUrl, urlParams) {
@@ -37,21 +54,6 @@ class App extends Component {
         };
 
         return webSocket;
-    }
-
-    componentDidMount() {
-        this.webSocket = this.initializeWebSocket(this.props.config.BackendWebSocketEndpoint, this.urlParams);
-    }
-
-    render() {
-        return (
-            <div>
-                <FullScreenSwitch />
-                <h1>My React App!</h1>
-                <Option value="3" />
-                <Option value="5" />
-            </div>
-        );
     }
 }
 
