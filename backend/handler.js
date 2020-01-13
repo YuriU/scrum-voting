@@ -183,6 +183,11 @@ module.exports.defaultHandler = async (event, context) => {
     }
   };
 
+  module.exports.handleStreamEvent = async (event, context) => {
+    console.log('Handle stream event')
+    console.log(JSON.stringify(event));
+  }
+
   const sendMessageToClient = (url, connectionId, payload) =>
   new Promise((resolve, reject) => {
     const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
