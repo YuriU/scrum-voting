@@ -1,11 +1,15 @@
 import React, { Component } from "react";
-import UserInput from './UserInput'
 import _ from 'lodash';
+import Config from '../config'
 
 class Session extends Component {
 
     constructor(props) {
         super(props);
+        console.log(JSON.stringify(props));
+        this.state = {
+            sessionId : props.sessionId
+        }
     }
 
     render() {
@@ -13,11 +17,14 @@ class Session extends Component {
     }
 
     componentDidMount() {
-        //this.webSocket = this.initializeWebSocket(this.BackendWebSocketEndpoint, this.urlParams);
+        console.log(Config.BackendWebSocketEndpoint)
+        console.log(this.state.sessionId)
+
+        this.webSocket = this.initializeWebSocket(Config.BackendWebSocketEndpoint, this.state.sessionId, "chairman");
     }
 
-    initializeWebSocket(webSocketUrl, urlParams) {
-        let webSocket = new WebSocket(webSocketUrl + "?sessionid=" + urlParams.sessionid +"&userid=" + urlParams.userid);
+    initializeWebSocket(webSocketUrl, sessionId, userId) {
+        let webSocket = new WebSocket(webSocketUrl + "?sessionid=" + sessionId +"&userid=" + userId);
 
         webSocket.onopen = function() {
             console.log('Connected');

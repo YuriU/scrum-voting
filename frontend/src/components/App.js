@@ -10,8 +10,7 @@ import {
     Router as Router,
     Switch,
     Route,
-    Link,
-    useHistory
+    Link
   } 
   from "react-router-dom";
 
@@ -43,12 +42,9 @@ class App extends Component {
             body: JSON.stringify(items)
         })
 
-        
         let result = await response.json();
-
         console.log(result.SessionId);
-        //this.history = useHistory();
-        this.history.push('/session?sessionId=' + result.SessionId)        
+        this.history.push('/session/' + result.SessionId)        
     }
 
     render() {
@@ -73,9 +69,11 @@ class App extends Component {
                 <Route path="/startSession">
                   <CreateSession onCreateSession={this.onCreateSession}/>
                 </Route>
-                <Route path="/session">
-                  <Session/>
-                </Route>
+                <Route path="/session/:sessionId" render={
+                    ({match}) => (
+                      <Session sessionId={match.params.sessionId}/>
+                    )
+                } />
                 <Route path="/">
                   <h1>Hello</h1>
                 </Route>
