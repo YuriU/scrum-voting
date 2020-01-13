@@ -58,12 +58,14 @@ functions:
   sessionStreamHandler:
     handler: backend/handler.handleStreamEvent
     events:
-      - stream: {"Fn::GetAtt": [WebSite, WebsiteURL]}
+      - stream:
+          type: dynamodb
+          arn: {"Fn::GetAtt": [SessionTable, StreamArn]}
 
 resources:
   Outputs:
     WebSiteUrl:
-      Value: {"Fn::GetAtt": [SessionTable, StreamArn]}
+      Value: {"Fn::GetAtt": [WebSite, WebsiteURL]}
     WebSiteBucket:
       Value: {Ref: WebSite}
   Resources:
