@@ -5,13 +5,16 @@ import Session from './Session'
 import FullScreenSwitch from './FullscreenSwitch'
 import '../styles/App.css';
 import { getAllUrlParams } from '../utils/urlutils'
+import { createBrowserHistory } from "history";
 import {
-    BrowserRouter as Router,
+    Router as Router,
     Switch,
     Route,
-    Link
+    Link,
+    useHistory
   } 
   from "react-router-dom";
+
 
 class App extends Component {
 
@@ -25,6 +28,7 @@ class App extends Component {
         this.BackendWebSocketEndpoint = this.props.config.BackendWebSocketEndpoint;
 
         this.onCreateSession = this.onCreateSession.bind(this);
+        this.history = createBrowserHistory();
     }
 
     async onCreateSession(items) {
@@ -39,12 +43,17 @@ class App extends Component {
             body: JSON.stringify(items)
         })
 
-        console.log(JSON.stringify(response));
+        
+        let result = await response.json();
+
+        console.log(result.SessionId);
+        //this.history = useHistory();
+        this.history.push('/session?sessionId=' + result.SessionId)        
     }
 
     render() {
         return (
-            <Router>
+            <Router history={this.history}>
               <div>
                 <nav>
                   <ul>
