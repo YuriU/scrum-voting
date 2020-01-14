@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import _ from 'lodash';
 import Config from '../config'
 import { getAllUrlParams } from '../utils/urlutils'
+import SessionUser from './SessionUser'
 
 class Session extends Component {
 
@@ -16,7 +17,12 @@ class Session extends Component {
     }
 
     render() {
-        return (<h1>Hello from session {this.state.sessionId}</h1>)
+        return (
+            <div>
+                <h1>Hello from session {this.state.sessionId}</h1>
+                <SessionUser />
+            </div>
+        )
     }
 
     componentDidMount() {
