@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 const DDB = require('./lib/dynamo')
 const crypto = require('crypto')
 
-const tableName = process.env.DDB_TABLE_SESSION;
+const apiGatewayUrl = process.env.WS_ENDPOINT_URL;
 
 async function querySessionUsers(sessionId) {
   var sessionAndUserIds = await DDB.SessionDB.query({
@@ -12,7 +12,7 @@ async function querySessionUsers(sessionId) {
     ExpressionAttributeValues: { ':sid': sessionId }
   }).promise();
 
-  return sessionAndUserIds;
+  return sessionAndUserIds.Items;
 }
 
 async function setConnectionId(sessionId,  userId, connectionId) {
@@ -196,6 +196,13 @@ module.exports.defaultHandler = async (event, context) => {
       console.log(`Update for session: ${sessionId}, user: ${userId}`);
 
       let users = await querySessionUsers(sessionId);
+      console.log('Users: ' + JSON.stringify(users));
+
+      for(const user of users){
+        if(user.connectionId){
+          await sendMessageToClient(apiGatewayUrl, user.connectionId, JSON.stringify(users))
+        }
+      }
     }
   }
 
