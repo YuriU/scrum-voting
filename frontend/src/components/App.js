@@ -44,7 +44,7 @@ class App extends Component {
 
         let result = await response.json();
         console.log(result.SessionId);
-        this.history.push('/session/' + result.SessionId)        
+        this.history.push('/session?id=' + result.SessionId)        
     }
 
     render() {
@@ -69,11 +69,9 @@ class App extends Component {
                 <Route path="/startSession">
                   <CreateSession onCreateSession={this.onCreateSession}/>
                 </Route>
-                <Route path="/session/:sessionId" render={
-                    ({match}) => (
-                      <Session sessionId={match.params.sessionId}/>
-                    )
-                } />
+                <Route path="/session" >
+                    <Session />
+                </Route>
                 <Route path="/">
                   <h1>Hello</h1>
                 </Route>

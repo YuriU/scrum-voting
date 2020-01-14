@@ -1,19 +1,22 @@
 import React, { Component } from "react";
 import _ from 'lodash';
 import Config from '../config'
+import { getAllUrlParams } from '../utils/urlutils'
 
 class Session extends Component {
 
     constructor(props) {
         super(props);
         console.log(JSON.stringify(props));
+
+        let params = getAllUrlParams();
         this.state = {
-            sessionId : props.sessionId
+            sessionId : params.id
         }
     }
 
     render() {
-        return (<h1>Hello from session {this.props.sessionId}</h1>)
+        return (<h1>Hello from session {this.state.sessionId}</h1>)
     }
 
     componentDidMount() {
