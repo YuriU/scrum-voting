@@ -186,6 +186,17 @@ module.exports.defaultHandler = async (event, context) => {
   module.exports.handleStreamEvent = async (event, context) => {
     console.log('Handle stream event')
     console.log(JSON.stringify(event));
+
+    for(const record of event.Records) {
+
+      let recordInfo = record.dynamodb;
+      let sessionId = recordInfo.Keys.sessionId.S;
+      let userId = recordInfo.Keys.userId.S;
+
+      console.log(`Update for session: ${sessionId}, user: ${userId}`);
+
+      let users = await querySessionUsers(sessionId);
+    }
   }
 
   const sendMessageToClient = (url, connectionId, payload) =>

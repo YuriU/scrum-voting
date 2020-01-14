@@ -11,6 +11,8 @@ provider:
   websocketsApiRouteSelectionExpression: $request.body.action
   environment:
     DDB_TABLE_SESSION: { Ref: SessionTable }
+    WS_API_ENDPOINT: { "Fn::Join" :["", ["wss://", { Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]} 
+
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -30,7 +32,6 @@ provider:
 custom:
   stage: ${opt:stage, self:provider.stage}
  
-
 functions:
   connectHandler:
     handler: backend/handler.connectHandler
