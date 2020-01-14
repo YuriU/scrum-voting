@@ -69,6 +69,10 @@ resources:
       Value: {"Fn::GetAtt": [WebSite, WebsiteURL]}
     WebSiteBucket:
       Value: {Ref: WebSite}
+    HttpEndpoint:
+      Value: { "Fn::Join" :["", ["https://", { Ref: ApiGatewayRestApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]} 
+    WebSocketEndpoint:
+      Value: { "Fn::Join" :["", ["wss://", { Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]} 
   Resources:
     WebSite:
         Type: "AWS::S3::Bucket"
