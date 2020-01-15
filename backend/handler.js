@@ -123,10 +123,10 @@ module.exports.handleStreamEvent = async (event, context) => {
 
       for(const user of users){
         if(user.connectionId){
-          await sendMessageToClient(apiGatewayUrl, user.connectionId, JSON.stringify({
+          await sendMessageToClient(apiGatewayUrl, user.connectionId, {
             action: 'OnlineStatusUpdate',
             users: userDtos
-          }))
+          })
         }
       }
     }

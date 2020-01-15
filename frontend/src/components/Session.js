@@ -15,6 +15,8 @@ class Session extends Component {
             sessionId : params.id,
             users: []
         }
+
+        this.initializeWebSocket = this.initializeWebSocket.bind(this);
     }
 
     render() {
@@ -44,8 +46,10 @@ class Session extends Component {
     }
 
     initializeWebSocket(webSocketUrl, sessionId, userId) {
+
         let webSocket = new WebSocket(webSocketUrl + "?sessionid=" + sessionId +"&userid=" + userId);
 
+        let self = this;
         webSocket.onopen = function() {
             console.log('Connected');
           }
@@ -60,7 +64,16 @@ class Session extends Component {
         };
 
         webSocket.onmessage = function(event) {
-            console.log("Data received: " + event.data);
+            const message = JSON.parse(event.data);
+            if(message.action == 'OnlineStatusUpdate'){
+                console.log('Online status updated')
+                let users = message.users;
+                self.setState({
+                    sessionId: self.state.sessionId,
+                    users: users
+                })
+            }
+            console.log(message);
         };
 
         webSocket.onerror = function(error) {
