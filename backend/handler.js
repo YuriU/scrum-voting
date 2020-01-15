@@ -101,6 +101,8 @@ module.exports.defaultHandler = async (event, context) => {
   };
 
 
+
+
   module.exports.startSessionHandler = async (event, context) => {
 
     console.log('Start session action')
@@ -119,31 +121,15 @@ module.exports.defaultHandler = async (event, context) => {
     });
 
     usesToAdd.push({sessionId: sessionId, userId: 'chairman'})
-
-    console.log(usesToAdd);
-        
-    let requests = usesToAdd.map(i => ({ PutRequest: { Item: i } }));
-    let tableName = process.env.DDB_TABLE_SESSION;
-
-    var params = {
-      RequestItems : {
-      }
-    }
-
-    params.RequestItems[tableName] = requests;
-
-    console.log(JSON.stringify(params));
-
-    await DDB.SessionDB.batchWrite(params).promise();
-
-    let result = {
-      SessionId: sessionId
-    }
-
+          
+    await sessionDao.batchWriteUsers(usesToAdd);
+    
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify(result)
+      body: JSON.stringify({
+        SessionId: sessionId
+      })
     }
   };
 

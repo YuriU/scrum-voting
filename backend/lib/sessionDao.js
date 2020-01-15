@@ -38,7 +38,23 @@ async function setConnectionId(sessionId,  userId, connectionId) {
   }
 }
 
+async function batchWriteUsers(users) {
+
+  let requests = users.map(i => ({ PutRequest: { Item: i } }));
+    let tableName = process.env.DDB_TABLE_SESSION;
+
+    var params = {
+      RequestItems : {
+      }
+    }
+
+    params.RequestItems[tableName] = requests;
+
+    await DDB.SessionDB.batchWrite(params).promise();
+}
+
 module.exports = {
   querySessionUsers: querySessionUsers,
-  setConnectionId: setConnectionId
+  setConnectionId: setConnectionId,
+  batchWriteUsers: batchWriteUsers
 }
