@@ -61,13 +61,9 @@ module.exports.disconnectHandler = async (event, context) => {
     console.log('Websocket disconnect')
     console.log(JSON.stringify(event));
 
-    var sessionAndUserIds = await DDB.SessionDB.query({
-      IndexName: 'gsiConnectionToKeys',
-      KeyConditionExpression: 'connectionId = :con_id',
-      ExpressionAttributeValues: { ':con_id': event.requestContext.connectionId }
-    }).promise();
-
-    if(sessionAndUserIds.Items.length > 0){
+    let sessionUser = await sessionDao.queryUserByConnectionId(event.requestContext.connectionId);
+    
+    if(sessionUser){
 
         var item = sessionAndUserIds.Items[0];
         console.log(JSON.stringify(item));
@@ -99,9 +95,6 @@ module.exports.defaultHandler = async (event, context) => {
       statusCode: 200,
     };
   };
-
-
-
 
   module.exports.startSessionHandler = async (event, context) => {
 

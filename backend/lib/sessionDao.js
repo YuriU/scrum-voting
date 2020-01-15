@@ -3,13 +3,28 @@ const AWS = require('aws-sdk');
 const DDB = require('./dynamo')
 
 async function querySessionUsers(sessionId) {
-    var sessionAndUserIds = await DDB.SessionDB.query({
-      KeyConditionExpression: 'sessionId = :sid',
-      ExpressionAttributeValues: { ':sid': sessionId }
-    }).promise();
-  
-    return sessionAndUserIds.Items;
+  var sessionAndUserIds = await DDB.SessionDB.query({
+    KeyConditionExpression: 'sessionId = :sid',
+    ExpressionAttributeValues: { ':sid': sessionId }
+  }).promise();
+
+  return sessionAndUserIds.Items;
+}
+
+async function queryUserByConnectionId(connectionId) {
+  var sessionAndUserIds = await DDB.SessionDB.query({
+    IndexName: 'gsiConnectionToKeys',
+    KeyConditionExpression: 'connectionId = :con_id',
+    ExpressionAttributeValues: { ':con_id': connectionId }
+  }).promise();
+
+  if(sessionAndUserIds.Items.length > 0){
+    return sessionAndUserIds.Items[0];
+  } 
+  else{
+    return null;
   }
+}
 
 async function setConnectionId(sessionId,  userId, connectionId) {
   var updateRequest = {
@@ -55,6 +70,7 @@ async function batchWriteUsers(users) {
 
 module.exports = {
   querySessionUsers: querySessionUsers,
+  queryUserByConnectionId: queryUserByConnectionId,
   setConnectionId: setConnectionId,
   batchWriteUsers: batchWriteUsers
 }
