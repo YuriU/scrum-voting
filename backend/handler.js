@@ -96,36 +96,7 @@ module.exports.defaultHandler = async (event, context) => {
     };
   };
 
-  module.exports.startSessionHandler = async (event, context) => {
-
-    console.log('Start session action')
-    console.log(JSON.stringify(event));
-
-    let sessionId = crypto.randomBytes(8)
-                      .toString('base64')
-                      .toLowerCase()
-                      .replace(/[=+/?&]/g, '')
-                      .substring(0, 4);
-
-    var usesToAdd = JSON.parse(event.body);
-
-    usesToAdd.forEach(user => {
-      user.sessionId = sessionId;
-    });
-
-    usesToAdd.push({sessionId: sessionId, userId: 'chairman'})
-          
-    await sessionDao.batchWriteUsers(usesToAdd);
-    
-    return {
-      statusCode: 200,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({
-        SessionId: sessionId
-      })
-    }
-  };
-
+  
   module.exports.handleStreamEvent = async (event, context) => {
     console.log('Handle stream event')
     console.log(JSON.stringify(event));

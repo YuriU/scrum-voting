@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import '../styles/SessionUser.css';
 
 class SessionUser extends Component {
     constructor(props) {
@@ -6,10 +7,9 @@ class SessionUser extends Component {
     }
 
     render() {
-            return (<div className="flipCard"> 
+            return (<div className="userCard"> 
                 <div className= "card"> 
-                    <div className="side front">User</div> 
-                    <div className="side back">Done</div> 
+                    <div className= {this.props.online ? "side online" : "side offline"} >{this.props.name}</div> 
                 </div> 
             </div> )
     }

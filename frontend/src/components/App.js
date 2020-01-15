@@ -27,11 +27,12 @@ class App extends Component {
         this.BackendWebSocketEndpoint = this.props.config.BackendWebSocketEndpoint;
 
         this.onCreateSession = this.onCreateSession.bind(this);
+        this.getSessionUsers = this.getSessionUsers.bind(this);
         this.history = createBrowserHistory();
     }
 
     async onCreateSession(items) {
-        var url = this.BackendHttpEndpoint + '/startSession';
+        const url = this.BackendHttpEndpoint + '/startSession';
         console.log(url)
 
         let response = await fetch(url, {
@@ -42,9 +43,24 @@ class App extends Component {
             body: JSON.stringify(items)
         })
 
-        let result = await response.json();
+        const result = await response.json();
         console.log(result.SessionId);
         this.history.push('/session?id=' + result.SessionId)        
+    }
+
+    async getSessionUsers(sessionId) {
+      const url = this.BackendHttpEndpoint + '/getSession';
+
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+        body: JSON.stringify({ sessionId: sessionId })
+      })
+
+      const result = await response.json();
+      return result;
     }
 
     render() {
@@ -70,7 +86,7 @@ class App extends Component {
                   <CreateSession onCreateSession={this.onCreateSession}/>
                 </Route>
                 <Route path="/session" >
-                    <Session />
+                    <Session getSessionUsers={this.getSessionUsers} />
                 </Route>
                 <Route path="/">
                   <h1>Hello</h1>

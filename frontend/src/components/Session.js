@@ -12,7 +12,8 @@ class Session extends Component {
 
         let params = getAllUrlParams();
         this.state = {
-            sessionId : params.id
+            sessionId : params.id,
+            users: []
         }
     }
 
@@ -20,16 +21,26 @@ class Session extends Component {
         return (
             <div>
                 <h1>Hello from session {this.state.sessionId}</h1>
-                <SessionUser />
+                { 
+                    this.state.users.map((user, index) => {
+                        return (<SessionUser name={user.name} online={index % 2 == 0}/>)
+                    })
+                }
+                
             </div>
         )
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         console.log(Config.BackendWebSocketEndpoint)
         console.log(this.state.sessionId)
-
+        
         this.webSocket = this.initializeWebSocket(Config.BackendWebSocketEndpoint, this.state.sessionId, "chairman");
+        const users = await this.props.getSessionUsers(this.state.sessionId);
+        this.setState({
+            sessionId: this.state.sessionId,
+            users: users
+        });
     }
 
     initializeWebSocket(webSocketUrl, sessionId, userId) {

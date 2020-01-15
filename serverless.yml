@@ -50,11 +50,18 @@ functions:
       - websocket:
           route: $default
   startSession:
-    handler: backend/handler.startSessionHandler
+    handler: backend/sessionHandler.startSession
     events:
       - http:
           cors: true
           path: /startSession
+          method: post
+  getSession:
+    handler: backend/sessionHandler.getSession
+    events:
+      - http:
+          cors: true
+          path: /getSession
           method: post
   sessionStreamHandler:
     handler: backend/handler.handleStreamEvent

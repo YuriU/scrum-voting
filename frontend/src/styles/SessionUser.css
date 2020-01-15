@@ -1,0 +1,44 @@
+.userCard {
+     width: 200px;
+     height: 200px;
+     position: relative;
+     margin: 50px auto;
+  }
+
+  .userCard .card {
+    width: 100%;
+    height: 100%;
+  }
+
+  .userCard .card .side {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 2;
+    backface-visibility: hidden;  /* W3C */
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    overflow: auto;
+  }
+
+  .userCard .card .offline {
+    font-family: Georgia;
+    font-size: 2em;
+    text-align: center;
+    line-height: 160px;
+    background-color: #900000;
+    border: 3px solid white;
+    color: white;
+  }
+
+  .userCard .card .online {
+    font-family: Georgia;
+    font-size: 2em;
+    text-align: center;
+    line-height: 160px;
+    background-color: #009000;
+    border: 3px solid white;
+    color: white;
+  }
