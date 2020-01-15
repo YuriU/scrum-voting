@@ -23,7 +23,7 @@ class Session extends Component {
                 <h1>Hello from session {this.state.sessionId}</h1>
                 { 
                     this.state.users.map((user, index) => {
-                        return (<SessionUser name={user.name} online={index % 2 == 0}/>)
+                        return (<SessionUser name={user.name} key={user.userId} online={user.online}/>)
                     })
                 }
                 

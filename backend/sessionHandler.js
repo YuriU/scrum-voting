@@ -44,15 +44,14 @@ module.exports.startSession = async (event, context) => {
     console.log(JSON.stringify(users));
     const userDtos = users
         .filter(u => u.userId != "chairman")
-        .map((u) => 
-        {
-            return {
+        .map((u) =>     
+             ({
                 userId : u.userId,
                 alias : u.alias,
                 name : u.name,
                 online : u.connectionId ? true : false
-            }
-        })
+            })
+        )
 
     return {
         statusCode: 200,
