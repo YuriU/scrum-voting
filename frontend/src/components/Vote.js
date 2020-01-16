@@ -1,50 +1,30 @@
 import React, { Component } from "react";
-import _ from 'lodash';
 import Config from '../config'
 import { getAllUrlParams } from '../utils/urlutils'
-import SessionUser from './SessionUser'
-import '../styles/Session.css';
 
-class Session extends Component {
-
+class Vote extends Component {
     constructor(props) {
         super(props);
         console.log(JSON.stringify(props));
 
         let params = getAllUrlParams();
         this.state = {
-            sessionId : params.id,
-            users: []
+            sessionId : params.sessionid,
+            userId:  params.userid
         }
 
-        this.initializeWebSocket = this.initializeWebSocket.bind(this);
+        console.log(JSON.stringify(this.state))
     }
 
     render() {
-        return (
-            <div>
-                <h1>Hello from session {this.state.sessionId}</h1>
-                <div className="sessionBoard">
-                    { 
-                      this.state.users.map((user, index) => {
-                          return (<SessionUser 
-                                        sessionId={this.state.sessionId}
-                                        userId={user.userId}
-                                        name={user.name}
-                                        key={user.userId}
-                                        online={user.online}/>)
-                      })
-                    }
-                </div>
-            </div>
-        )
+        return(<div>
+            <h1>Hello User {this.state.userId} from Session {this.state.sessionId}</h1>
+        </div>)
     }
 
     async componentDidMount() {
-        console.log(Config.BackendWebSocketEndpoint)
-        console.log(this.state.sessionId)
         
-        this.webSocket = this.initializeWebSocket(Config.BackendWebSocketEndpoint, this.state.sessionId, "chairman");
+        this.webSocket = this.initializeWebSocket(Config.BackendWebSocketEndpoint, this.state.sessionId, this.state.userId);
         const users = await this.props.getSessionUsers(this.state.sessionId);
         this.setState({
             sessionId: this.state.sessionId,
@@ -91,4 +71,4 @@ class Session extends Component {
     }
 }
 
-export default Session;
+export default Vote;

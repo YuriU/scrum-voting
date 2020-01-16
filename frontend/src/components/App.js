@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Option from './Option'
 import CreateSession from './CreateSession'
 import Session from './Session'
+import Vote from './Vote'
 import FullScreenSwitch from './FullscreenSwitch'
 import '../styles/App.css';
 import { getAllUrlParams } from '../utils/urlutils'
@@ -87,6 +88,9 @@ class App extends Component {
                 </Route>
                 <Route path="/session" >
                     <Session getSessionUsers={this.getSessionUsers} />
+                </Route>
+                <Route path="/vote" >
+                    <Vote />
                 </Route>
                 <Route path="/">
                   <h1>Hello</h1>

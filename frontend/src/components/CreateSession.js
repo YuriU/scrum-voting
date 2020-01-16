@@ -14,10 +14,10 @@ class CreateSession extends Component {
             itemsToAdd: []
         }
 
-        this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: "u1", name: "User 1" });
-        this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: "u2", name: "User 2" });
-        this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: "u3", name: "User 3" });       
-
+        for(let i = 1; i <= 10; i++){
+            this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: `u1${i}`, name: `User ${i}` });
+        }
+        
         this.addUser = this.addUser.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
         this.startSession = this.startSession.bind(this);
