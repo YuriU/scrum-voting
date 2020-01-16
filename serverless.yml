@@ -29,6 +29,12 @@ provider:
       Resource:
         - !GetAtt SessionTable.Arn
         - { "Fn::Join" : [ "/", [{ "Fn::GetAtt" : [SessionTable, Arn] }, "index/*"] ]}
+    - Effect: Allow
+      Action:
+      - sqs:SendMessage
+      - sqs:ReceiveMessage
+      Resource:
+        - !GetAtt FinalizeVoteResultQueue.Arn
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -39,7 +45,6 @@ functions:
     events:
       - websocket:
           route: $connect
-    
   disconnectHandler:
     handler: backend/handler.disconnectHandler
     events:
@@ -70,6 +75,12 @@ functions:
       - stream:
           type: dynamodb
           arn: {"Fn::GetAtt": [SessionTable, StreamArn]}
+  handleVoteFinalization:
+    handler: backend/handler.handleVoteFinalization
+    events:
+      - sqs:
+          arn: {"Fn::GetAtt": [FinalizeVoteResultQueue, Arn]}
+          batchSize: 1
 
 resources:
   Outputs:

@@ -133,6 +133,11 @@ module.exports.handleStreamEvent = async (event, context) => {
   }
 }
 
+module.exports.handleVoteFinalization = async (event, context) => {
+  console.log('Handle vote finalization event')
+  console.log(JSON.stringify(event));
+}
+
 const sendMessageToClient = (url, connectionId, payload) =>
 new Promise((resolve, reject) => {
   const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
