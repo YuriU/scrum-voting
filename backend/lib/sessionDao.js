@@ -1,5 +1,5 @@
 'use strict'
-const AWS = require('aws-sdk');
+
 const DDB = require('./dynamo')
 
 async function querySessionUsers(sessionId) {
@@ -46,11 +46,23 @@ async function setConnectionId(sessionId,  userId, connectionId) {
 
   var result = await DDB.SessionDB.update(updateRequest).promise();
 
-  if(result.Attributes && result.Attributes.connectionId){
+  if(result.Attributes && result.Attributes.connectionId) {
     return result.Attributes.connectionId;
   } else {
     return null;
   }
+}
+
+async function setVotingId(sessionId,  userId, votingId, open) {
+  var updateRequest = {
+    Key: { sessionId : sessionId, userId: userId },
+    ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)',
+    UpdateExpression: 'set #votingId = :votingId, #open = :open',
+    ExpressionAttributeNames: {'#votingId' : 'votingId', '#open' : 'open' },
+    ExpressionAttributeValues: { ':votingId' : votingId, ':open' : open }
+  };
+
+  var result = await DDB.SessionDB.update(updateRequest).promise();
 }
 
 async function batchWriteUsers(users) {
@@ -72,5 +84,6 @@ module.exports = {
   querySessionUsers: querySessionUsers,
   queryUserByConnectionId: queryUserByConnectionId,
   setConnectionId: setConnectionId,
-  batchWriteUsers: batchWriteUsers
+  batchWriteUsers: batchWriteUsers,
+  setVotingId: setVotingId
 }

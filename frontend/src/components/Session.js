@@ -19,6 +19,7 @@ class Session extends Component {
         }
 
         this.initializeWebSocket = this.initializeWebSocket.bind(this);
+        this.onStartVoteClicked = this.onStartVoteClicked.bind(this);
     }
 
     render() {
@@ -46,8 +47,19 @@ class Session extends Component {
         )
     }
 
-    async onStartVoteClicked(){
+    async onStartVoteClicked() {
+        const url = Config.BackendHttpEndpoint + '/startVoting';
 
+        let response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+          body: JSON.stringify({ sessionId: this.state.sessionId })
+        })
+  
+        const result = await response.json();
+        return result;
     }
 
     async onUserClick(sessionId, userId) {

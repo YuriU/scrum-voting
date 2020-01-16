@@ -12,7 +12,7 @@ provider:
   environment:
     DDB_TABLE_SESSION: { Ref: SessionTable }
     WS_ENDPOINT_URL: { "Fn::Join" :["", [{ Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]}
-    FINALIZER_QUEUE_ARN: !GetAtt FinalizeVoteResultQueue.Arn
+    FINALIZER_QUEUE_URL: !Ref FinalizeVoteResultQueue
 
   iamRoleStatements:
     - Effect: Allow
@@ -75,6 +75,13 @@ functions:
       - stream:
           type: dynamodb
           arn: {"Fn::GetAtt": [SessionTable, StreamArn]}
+  votingHandler:
+    handler: backend/votingHandler.startVotingRound
+    events:
+      - http:
+          cors: true
+          path: /startVoting
+          method: post
   handleVoteFinalization:
     handler: backend/handler.handleVoteFinalization
     events:
