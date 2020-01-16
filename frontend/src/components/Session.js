@@ -25,20 +25,29 @@ class Session extends Component {
         return (
             <div>
                 <h1>Hello from session {this.state.sessionId}</h1>
-                <div className="sessionBoard">
-                    { 
-                      this.state.users.map((user, index) => {
-                          return (<OnlineIndicator 
-                                        userId={user.userId}
-                                        text = {user.name}
-                                        key={user.userId}
-                                        online={user.online}
-                                        onClick={(evt) => this.onUserClick(this.state.sessionId, user.userId)}/>)
-                      })
-                    }
+                <div>
+                    <div className="sessionBoard">
+                        { 
+                        this.state.users.map((user, index) => {
+                            return (<OnlineIndicator 
+                                            userId={user.userId}
+                                            text = {user.name}
+                                            key={user.userId}
+                                            online={user.online}
+                                            onClick={(evt) => this.onUserClick(this.state.sessionId, user.userId)}/>)
+                        })
+                        }
+                    </div>
+                </div>
+                <div>
+                    <button onClick={this.onStartVoteClicked}>Start vote</button>
                 </div>
             </div>
         )
+    }
+
+    async onStartVoteClicked(){
+
     }
 
     async onUserClick(sessionId, userId) {

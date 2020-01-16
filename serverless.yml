@@ -11,7 +11,8 @@ provider:
   websocketsApiRouteSelectionExpression: $request.body.action
   environment:
     DDB_TABLE_SESSION: { Ref: SessionTable }
-    WS_ENDPOINT_URL: { "Fn::Join" :["", [{ Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]} 
+    WS_ENDPOINT_URL: { "Fn::Join" :["", [{ Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]}
+    FINALIZER_QUEUE_ARN: !GetAtt FinalizeVoteResultQueue.Arn
 
   iamRoleStatements:
     - Effect: Allow
@@ -117,6 +118,11 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
+    FinalizeVoteResultQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        DelaySeconds: 10
+
 
 package:
   exclude:
