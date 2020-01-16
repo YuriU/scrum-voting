@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import _ from 'lodash';
 import Config from '../config'
 import { getAllUrlParams } from '../utils/urlutils'
-import SessionUser from './SessionUser'
+import OnlineIndicator from './OnlineIndicator'
 import '../styles/Session.css';
 
 class Session extends Component {
@@ -27,12 +27,14 @@ class Session extends Component {
                 <div className="sessionBoard">
                     { 
                       this.state.users.map((user, index) => {
-                          return (<SessionUser 
-                                        sessionId={this.state.sessionId}
+                          return (<OnlineIndicator 
                                         userId={user.userId}
-                                        name={user.name}
+                                        text = {user.name}
                                         key={user.userId}
-                                        online={user.online}/>)
+                                        online={user.online}
+                                        onClick={(evt) => {
+                                            console.log('event ' + user.userId + '  ' + this.state.sessionId)
+                                        }}/>)
                       })
                     }
                 </div>

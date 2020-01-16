@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Config from '../config'
 import { getAllUrlParams } from '../utils/urlutils'
+import OnlineIndicator from "./OnlineIndicator";
 
 class Vote extends Component {
     constructor(props) {
@@ -10,26 +11,23 @@ class Vote extends Component {
         let params = getAllUrlParams();
         this.state = {
             sessionId : params.sessionid,
-            userId:  params.userid
+            userId:  params.userid,
+            online: false
         }
 
         console.log(JSON.stringify(this.state))
     }
 
     render() {
+        console.log('------' + JSON.stringify(this.state))
         return(<div>
+            <OnlineIndicator online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
             <h1>Hello User {this.state.userId} from Session {this.state.sessionId}</h1>
         </div>)
     }
 
     async componentDidMount() {
-        
         this.webSocket = this.initializeWebSocket(Config.BackendWebSocketEndpoint, this.state.sessionId, this.state.userId);
-        const users = await this.props.getSessionUsers(this.state.sessionId);
-        this.setState({
-            sessionId: this.state.sessionId,
-            users: users
-        });
     }
 
     initializeWebSocket(webSocketUrl, sessionId, userId) {
@@ -39,6 +37,9 @@ class Vote extends Component {
         let self = this;
         webSocket.onopen = function() {
             console.log('Connected');
+            self.setState({
+                online: true
+            })
           }
   
         webSocket.onclose = function(event) {
@@ -48,17 +49,15 @@ class Vote extends Component {
             console.log('connection issue')
             }
             console.log('Code: ' + event.code + ' Reason: ' + event.reason);
+            self.setState({
+                online: false
+            })
         };
 
         webSocket.onmessage = function(event) {
             const message = JSON.parse(event.data);
             if(message.action == 'OnlineStatusUpdate'){
-                console.log('Online status updated')
-                let users = message.users;
-                self.setState({
-                    sessionId: self.state.sessionId,
-                    users: users
-                })
+
             }
             console.log(message);
         };
