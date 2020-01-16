@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import _ from 'lodash';
 import Config from '../config'
 import { getAllUrlParams } from '../utils/urlutils'
+import { copyToClipboard } from '../utils/clipboard'
 import OnlineIndicator from './OnlineIndicator'
 import '../styles/Session.css';
 
@@ -32,14 +33,18 @@ class Session extends Component {
                                         text = {user.name}
                                         key={user.userId}
                                         online={user.online}
-                                        onClick={(evt) => {
-                                            console.log('event ' + user.userId + '  ' + this.state.sessionId)
-                                        }}/>)
+                                        onClick={(evt) => this.onUserClick(this.state.sessionId, user.userId)}/>)
                       })
                     }
                 </div>
             </div>
         )
+    }
+
+    async onUserClick(sessionId, userId) {
+        
+        let link = `${location.protocol}//${location.host}/vote?sessionid=${sessionId}&userid=${userId}`;
+        copyToClipboard(link);
     }
 
     async componentDidMount() {
