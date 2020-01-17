@@ -60,6 +60,18 @@ module.exports.defaultHandler = async (event, context) => {
     statusCode: 200,
   };
 };
+
+function isConnectionChanged(record) {
+
+  const oldImage = record.dynamodb.OldImage;
+  const newImage = record.dynamodb.NewImage;
+  
+
+  const oldConnectionId = oldImage.connectionId ? oldImage.connectionId.S : null;
+  const newConnectionId = newImage.connectionId ? newImage.connectionId.S : null;
+
+  return oldConnectionId != newConnectionId;
+}
   
 module.exports.handleStreamEvent = async (event, context) => {
   console.log('Handle stream event')
@@ -73,29 +85,31 @@ module.exports.handleStreamEvent = async (event, context) => {
       let sessionId = recordInfo.Keys.sessionId.S;
       let userId = recordInfo.Keys.userId.S;
 
-      console.log(`Update for session: ${sessionId}, user: ${userId}`);
+      if(isConnectionChanged(record)) {
+        console.log(`Update for session: ${sessionId}, user: ${userId}`);
 
-      let users = await sessionDao.querySessionUsers(sessionId);
-      console.log('Users: ' + JSON.stringify(users));
+        let users = await sessionDao.querySessionUsers(sessionId);
+        console.log('Users: ' + JSON.stringify(users));
 
-      const userDtos = users
-        .filter(u => u.userId != "chairman")
-        .map((u) =>     
-             ({
-                userId : u.userId,
-                alias : u.alias,
-                name : u.name,
-                online : u.connectionId ? true : false
-            })
-        )
+        const userDtos = users
+          .filter(u => u.userId != "chairman")
+          .map((u) =>     
+              ({
+                  userId : u.userId,
+                  alias : u.alias,
+                  name : u.name,
+                  online : u.connectionId ? true : false
+              })
+          )
 
-      for(const user of users) {
-        if(user.connectionId) {
-          await gateway.sendMessageToClient(user.connectionId, {
-            action: 'OnlineStatusUpdate',
-            users: userDtos
-          });
-        }
+          for(const user of users) {
+            if(user.connectionId) {
+              await gateway.sendMessageToClient(user.connectionId, {
+                action: 'OnlineStatusUpdate',
+                users: userDtos
+              });
+            }
+          }
       }
     }
   }
