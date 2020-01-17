@@ -19,7 +19,8 @@ class Session extends Component {
 
         this.onMessage = this.onMessage.bind(this);
         this.onStartVoteClicked = this.onStartVoteClicked.bind(this);
-        this.socket = new WSClient(this.state.sessionId, "chairman", this.onMessage)
+        this.socket = new WSClient(this.state.sessionId, "chairman")
+        this.socket.onMessage(this.onMessage);
     }
 
     render() {
