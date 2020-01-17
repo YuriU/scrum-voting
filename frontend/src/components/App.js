@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Option from './Option'
 import CreateSession from './CreateSession'
 import Session from './Session'
 import Vote from './Vote'
@@ -7,6 +6,7 @@ import FullScreenSwitch from './FullscreenSwitch'
 import '../styles/App.css';
 import { getAllUrlParams } from '../utils/urlutils'
 import { createBrowserHistory } from "history";
+import HttpClient from '../api/httpclient'
 import {
     Router as Router,
     Switch,
@@ -22,45 +22,20 @@ class App extends Component {
         super(props)
         this.urlParams = getAllUrlParams();
 
-        console.log(JSON.stringify(this.props.config))
-
-        this.BackendHttpEndpoint = this.props.config.BackendHttpEndpoint;
-        this.BackendWebSocketEndpoint = this.props.config.BackendWebSocketEndpoint;
-
+        this.httpClient = new HttpClient();
         this.onCreateSession = this.onCreateSession.bind(this);
         this.getSessionUsers = this.getSessionUsers.bind(this);
         this.history = createBrowserHistory();
     }
 
     async onCreateSession(items) {
-        const url = this.BackendHttpEndpoint + '/startSession';
-        console.log(url)
-
-        let response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-              },
-            body: JSON.stringify(items)
-        })
-
-        const result = await response.json();
+        const result = await this.httpClient.startSession(items);
         console.log(result.SessionId);
         this.history.push('/session?id=' + result.SessionId)        
     }
 
     async getSessionUsers(sessionId) {
-      const url = this.BackendHttpEndpoint + '/getSession';
-
-      let response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
-        body: JSON.stringify({ sessionId: sessionId })
-      })
-
-      const result = await response.json();
+      const result = await this.httpClient.getSession(sessionId);
       return result;
     }
 
@@ -87,7 +62,7 @@ class App extends Component {
                   <CreateSession onCreateSession={this.onCreateSession}/>
                 </Route>
                 <Route path="/session" >
-                    <Session getSessionUsers={this.getSessionUsers} />
+                    <Session getSessionUsers={this.getSessionUsers} httpClient={this.httpClient} />
                 </Route>
                 <Route path="/vote" >
                     <Vote />
@@ -97,17 +72,8 @@ class App extends Component {
                 </Route>
               </Switch>
             </Router>
-            /*{<div>
-                <FullScreenSwitch />
-                <h1>My React App!</h1>
-                
-                <Option value="3" />
-                <Option value="5" />
-            </div>}*/
         );
-    }
-
-    
+    }   
 }
 
 export default App;
