@@ -76,7 +76,7 @@ functions:
       - stream:
           type: dynamodb
           arn: {"Fn::GetAtt": [SessionTable, StreamArn]}
-  votingHandler:
+  startVoting:
     handler: backend/votingHandler.startVotingRound
     events:
       - http:
@@ -84,7 +84,7 @@ functions:
           path: /startVoting
           method: post
   handleVoteFinalization:
-    handler: backend/handler.handleVoteFinalization
+    handler: backend/votingHandler.handleVoteFinalization
     events:
       - sqs:
           arn: {"Fn::GetAtt": [FinalizeVoteResultQueue, Arn]}

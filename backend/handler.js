@@ -1,18 +1,11 @@
 'use strict'
 
-const AWS = require('aws-sdk');
-const crypto = require('crypto')
 const sessionDao = require('./lib/sessionDao')
+const gateway = require('./lib/gateway')
 
-const apiGatewayUrl = process.env.WS_ENDPOINT_URL;
-
-module.exports.connectHandler = async (event, context) => {
- 
+module.exports.connectHandler = async (event, context) => { 
     console.log('Websocket connect')
     console.log(JSON.stringify(event));
-
-    console.log('Endpoint :' + event.requestContext.domainName + "/" + event.requestContext.stage);
-    console.log('ConnectionId :' + event.requestContext.connectionId);
 
     let sessionKey = {
       sessionId: 'hello',
@@ -30,27 +23,13 @@ module.exports.connectHandler = async (event, context) => {
     let oldConnectionId = await sessionDao.setConnectionId(sessionKey.sessionId, sessionKey.userId, event.requestContext.connectionId);
 
     if(oldConnectionId) {
-
-      try{
-        const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
-          apiVersion: '2018-11-29',
-          endpoint: event.requestContext.domainName + "/" + event.requestContext.stage,
-        });
-  
-        await apigatewaymanagementapi.deleteConnection({
-          ConnectionId : oldConnectionId
-        }).promise();
-      }
-      catch(err){
-        console.error(`Error during old connection closing: Id ${oldConnectionId}`, err);
-      }
+      await gateway.deleteConnection(oldConnectionId);
     }
 
     var sessionUsers = await sessionDao.querySessionUsers(sessionKey.sessionId);
     console.log('Users: ' + JSON.stringify(sessionUsers));
 
     return {
-      body: 'hello!',
       statusCode: 200,
     };
   };
@@ -71,27 +50,16 @@ module.exports.disconnectHandler = async (event, context) => {
   };
 };
 
-
 module.exports.defaultHandler = async (event, context) => {
- 
   console.log('Websocket default action')
   console.log(JSON.stringify(event));
 
-  const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
-    apiVersion: '2018-11-29',
-    endpoint: event.requestContext.domainName + "/" + event.requestContext.stage,
-  });
-
-  await apigatewaymanagementapi.postToConnection({
-    ConnectionId: event.requestContext.connectionId, // connectionId of the receiving ws-client,
-    Data: 'Hello world'
-  }).promise();
-
+  await gateway.sendMessageToClient(event.requestContext.connectionId, 'Hello world');
+  
   return {
     statusCode: 200,
   };
 };
-
   
 module.exports.handleStreamEvent = async (event, context) => {
   console.log('Handle stream event')
@@ -121,40 +89,14 @@ module.exports.handleStreamEvent = async (event, context) => {
             })
         )
 
-      for(const user of users){
-        if(user.connectionId){
-          await sendMessageToClient(apiGatewayUrl, user.connectionId, {
+      for(const user of users) {
+        if(user.connectionId) {
+          await gateway.sendMessageToClient(event.requestContext.connectionId, {
             action: 'OnlineStatusUpdate',
             users: userDtos
-          })
+          });
         }
       }
     }
   }
 }
-
-module.exports.handleVoteFinalization = async (event, context) => {
-  console.log('Handle vote finalization event')
-  console.log(JSON.stringify(event));
-}
-
-const sendMessageToClient = (url, connectionId, payload) =>
-new Promise((resolve, reject) => {
-  const apigatewaymanagementapi = new AWS.ApiGatewayManagementApi({
-    apiVersion: '2018-11-29',
-    endpoint: url,
-  });
-  apigatewaymanagementapi.postToConnection(
-    {
-      ConnectionId: connectionId, // connectionId of the receiving ws-client
-      Data: JSON.stringify(payload),
-    },
-    (err, data) => {
-      if (err) {
-        console.log('err is', err);
-        reject(err);
-      }
-      resolve(data);
-    }
-  );
-});

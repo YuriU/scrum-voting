@@ -33,3 +33,8 @@ module.exports.startVotingRound = async (event, context) => {
     body: JSON.stringify({})
   }
 }
+
+module.exports.handleVoteFinalization = async (event, context) => {
+  console.log('Handle vote finalization event')
+  console.log(JSON.stringify(event));
+}
