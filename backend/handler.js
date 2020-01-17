@@ -91,7 +91,7 @@ module.exports.handleStreamEvent = async (event, context) => {
 
       for(const user of users) {
         if(user.connectionId) {
-          await gateway.sendMessageToClient(event.requestContext.connectionId, {
+          await gateway.sendMessageToClient(user.connectionId, {
             action: 'OnlineStatusUpdate',
             users: userDtos
           });

@@ -108,7 +108,9 @@ class Session extends Component {
                     users: users
                 })
             }
-            console.log(message);
+            var today = new Date();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            console.log(`${time} : ${JSON.stringify(message)}`);
         };
 
         webSocket.onerror = function(error) {

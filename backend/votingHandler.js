@@ -3,6 +3,8 @@
 const AWS = require('aws-sdk');
 const sessionDao = require('./lib/sessionDao')
 const crypto = require('crypto')
+const gateway = require('./lib/gateway')
+
 const queueUrl = process.env.FINALIZER_QUEUE_URL;
 
 module.exports.startVotingRound = async (event, context) => {
@@ -20,12 +22,28 @@ module.exports.startVotingRound = async (event, context) => {
 
   await sessionDao.setVotingId(sessionId, 'chairman', votingId, true);
   
-  const sQs = new AWS.SQS();
+  const sqs = new AWS.SQS( {
+    apiVersion: '2012-11-05'
+  });
 
-  await sQs.sendMessage({
+  await sqs.sendMessage({
     QueueUrl : queueUrl,
-    MessageBody: 'Hello world'
+    MessageBody: JSON.stringify({
+      sessionId: sessionId,
+      votingId: votingId
+    })
   }).promise();
+
+  let users = await sessionDao.querySessionUsers(sessionId);
+
+  for(const user of users) {
+    if(user.connectionId) {
+      await gateway.sendMessageToClient(user.connectionId, {
+        action: 'VoteStarted',
+        votingId: votingId
+      });
+    }
+  }
 
   return {
     statusCode: 200,
@@ -37,4 +55,20 @@ module.exports.startVotingRound = async (event, context) => {
 module.exports.handleVoteFinalization = async (event, context) => {
   console.log('Handle vote finalization event')
   console.log(JSON.stringify(event));
+
+  const message = JSON.parse(event.Records[0].body);
+
+  const sessionId = message.sessionId;
+  const votingId = message.votingId;
+
+  let users = await sessionDao.querySessionUsers(sessionId);
+
+  for(const user of users) {
+    if(user.connectionId) {
+      await gateway.sendMessageToClient(user.connectionId, {
+        action: 'VoteFinished',
+        votingId: votingId
+      });
+    }
+  }
 }
