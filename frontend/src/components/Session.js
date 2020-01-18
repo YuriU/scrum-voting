@@ -14,16 +14,18 @@ class Session extends Component {
         let params = getAllUrlParams();
         this.state = {
             sessionId : params.id,
-            users: []
+            users: [],
+            votedUsers : new Set()
         }
 
         this.onMessage = this.onMessage.bind(this);
         this.onStartVoteClicked = this.onStartVoteClicked.bind(this);
         this.socket = new WSClient(this.state.sessionId, "chairman")
-        this.socket.onMessage(this.onMessage);
+        this.socket.onMessage(this.onMessage)
     }
 
     render() {
+        const self = this;
         return (
             <div>
                 <h1>Hello from session {this.state.sessionId}</h1>
@@ -31,9 +33,10 @@ class Session extends Component {
                     <div className="sessionBoard">
                         { 
                         this.state.users.map((user, index) => {
+                            const voted = self.state.votedUsers.has(user.userId);
                             return (<OnlineIndicator 
                                             userId={user.userId}
-                                            text = {user.name}
+                                            text = {voted ? ' + ' + user.name : user.name }
                                             key={user.userId}
                                             online={user.online}
                                             onClick={(evt) => this.onUserClick(this.state.sessionId, user.userId)}/>)
@@ -49,6 +52,10 @@ class Session extends Component {
     }
 
     async onStartVoteClicked() {
+        this.state.votedUsers.clear();
+        this.setState({
+            votedUsers: this.state.votedUsers
+        })
         const result = await this.props.httpClient.startVoting(this.state.sessionId);
     }
 
@@ -68,12 +75,17 @@ class Session extends Component {
 
     onMessage(evt) {
         const message = JSON.parse(event.data);
-        if(message.action == 'OnlineStatusUpdate'){
+        if(message.action == 'OnlineStatusUpdate') {
             console.log('Online status updated')
             let users = message.users;
             this.setState({
                 sessionId: this.state.sessionId,
                 users: users
+            })
+        } else if(message.action == 'userVoted') {
+            this.state.votedUsers.add(message.details.userId);
+            this.setState({
+                votedUsers : this.state.votedUsers
             })
         }
         var today = new Date();
