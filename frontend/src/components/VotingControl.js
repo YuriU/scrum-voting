@@ -8,6 +8,7 @@ class VoteControl extends Component {
         this.state = {
             selected: null
         }
+        this.onOptionClick = this.onOptionClick.bind(this);
     }
 
     render(){
@@ -16,10 +17,18 @@ class VoteControl extends Component {
                 <h1>Put your option here ...</h1>
                 {
                     this.props.voting.options.map(o => {
-                        return (<OnlineIndicator key={o} text={o} online={o==this.state.selected} />)
+                        return (<OnlineIndicator key={o} text={o} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
                     })
                 }
             </div>)
+    }
+
+    onOptionClick(option){
+
+        console.log(option)
+        this.setState({
+            selectedgit: option
+        })
     }
 }
 
