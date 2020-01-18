@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { getAllUrlParams } from '../utils/urlutils'
 import WSClient from '../api/wsclient'
-import OnlineIndicator from "./OnlineIndicator";
+import OnlineIndicator from './OnlineIndicator';
+import VotingControl from './VotingControl'
 
 class Vote extends Component {
     constructor(props) {
@@ -26,14 +27,19 @@ class Vote extends Component {
             this.setState({ online: false })
         })
 
+        this.onMessage = this.onMessage.bind(this);
         this.socket.onMessage(this.onMessage)
+        
     }
 
     render() {
         return(<div>
-            <OnlineIndicator online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
-            <h1>Hello User {this.state.userId} from Session {this.state.sessionId}</h1>
-        </div>)
+                <OnlineIndicator online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
+                {
+                    this.state.activeVoting ? (<VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} />) : null
+                }
+                <h1>Hello User {this.state.userId} from Session {this.state.sessionId}</h1>
+            </div>)
     }
 
     componentDidMount() {
@@ -44,12 +50,32 @@ class Vote extends Component {
         this.socket.disconnect()
     }
 
+
+    optionSelected(option){
+        console.log(option)
+    }
+
     onMessage(event){
 
         const message = JSON.parse(event.data);
-        var today = new Date();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        const today = new Date();
+        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         console.log(`${time} : ${JSON.stringify(message)}`)
+
+        const action = message.action;
+        if(action == 'VoteStarted') {
+            this.setState({
+                    activeVoting : {
+                        votingId: message.votingId,
+                        options: message.possibleOptions
+                }
+            })
+        }
+        else if(action == 'VoteFinished') {
+            this.setState({
+                activeVoting : null
+            })
+        }
     }
 }
 

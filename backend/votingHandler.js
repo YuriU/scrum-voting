@@ -20,17 +20,21 @@ module.exports.startVotingRound = async (event, context) => {
                     .replace(/[=+/?&]/g, '')
                     .substring(0, 4);
 
+
+  const possibleOptions = ['1', '2', '3', '5', '8', '13', '?'];
   await sessionDao.setVotingId(sessionId, 'chairman', votingId, true);
   
   const sqs = new AWS.SQS( {
     apiVersion: '2012-11-05'
   });
 
+  
   await sqs.sendMessage({
     QueueUrl : queueUrl,
     MessageBody: JSON.stringify({
       sessionId: sessionId,
-      votingId: votingId
+      votingId: votingId,
+      possibleOptions: possibleOptions
     })
   }).promise();
 
@@ -40,7 +44,8 @@ module.exports.startVotingRound = async (event, context) => {
     if(user.connectionId) {
       await gateway.sendMessageToClient(user.connectionId, {
         action: 'VoteStarted',
-        votingId: votingId
+        votingId: votingId,
+        possibleOptions: possibleOptions
       });
     }
   }
