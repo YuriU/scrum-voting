@@ -65,6 +65,18 @@ async function setVotingId(sessionId,  userId, votingId, open) {
   var result = await DDB.SessionDB.update(updateRequest).promise();
 }
 
+async function setVotingResult(sessionId,  userId, votingId, result) {
+  var updateRequest = {
+    Key: { sessionId : sessionId, userId: userId },
+    ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)',
+    UpdateExpression: 'set #votingId = :votingId, #result = :result',
+    ExpressionAttributeNames: {'#votingId' : 'votingId', '#result' : 'result' },
+    ExpressionAttributeValues: { ':votingId' : votingId, ':result' : result }
+  };
+
+  var result = await DDB.SessionDB.update(updateRequest).promise();
+}
+
 async function batchWriteUsers(users) {
 
   let requests = users.map(i => ({ PutRequest: { Item: i } }));
@@ -85,5 +97,6 @@ module.exports = {
   queryUserByConnectionId: queryUserByConnectionId,
   setConnectionId: setConnectionId,
   batchWriteUsers: batchWriteUsers,
-  setVotingId: setVotingId
+  setVotingId: setVotingId,
+  setVotingResult: setVotingResult
 }

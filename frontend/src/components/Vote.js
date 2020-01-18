@@ -55,9 +55,10 @@ class Vote extends Component {
         console.log(option)
         this.socket.send({ 
             action: 'vote',
-            params : {
+            details : {
                 sessionId: this.state.sessionId,
                 userId: this.state.userId,
+                votingId: this.state.activeVoting.votingId,
                 votingResult: option
              }});
     }

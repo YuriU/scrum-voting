@@ -82,8 +82,33 @@ module.exports.voteHandler = async (event, context) => {
   console.log('Websocket voteHandler action')
   console.log(JSON.stringify(event));
 
-  await gateway.sendMessageToClient(event.requestContext.connectionId, 'Hello world');
+  const message = JSON.parse(event.body)
+
+  const details = message.details;
+
+  const sessionId = details.sessionId;
+  const userId = details.userId;
+  const votingId = details.votingId;
+  const votingResult = details.votingResult;
   
+
+  const users = await sessionDao.querySessionUsers(sessionId);
+
+  const chairman = users.filter(user => user.userId == 'chairman')[0];
+  if(chairman.votingId == votingId && chairman.open) {
+
+    await sessionDao.setVotingResult(sessionId, userId, votingId, votingResult)
+
+    // TODO: Result of active voting
+    await gateway.sendMessageToClient(chairman.connectionId, {
+      action: 'userVoted',
+      details: {
+        userId: userId,
+        votingId: votingId
+      }
+    });
+  }
+
   return {
     statusCode: 200,
   };
