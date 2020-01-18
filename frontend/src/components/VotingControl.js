@@ -24,11 +24,13 @@ class VoteControl extends Component {
     }
 
     onOptionClick(option){
-
-        console.log(option)
         this.setState({
-            selectedgit: option
+            selected: option
         })
+
+        if(this.props.onOptionSelected){
+            this.props.onOptionSelected(option);
+        }
     }
 }
 

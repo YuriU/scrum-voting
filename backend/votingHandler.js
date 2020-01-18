@@ -77,3 +77,14 @@ module.exports.handleVoteFinalization = async (event, context) => {
     }
   }
 }
+
+module.exports.voteHandler = async (event, context) => {
+  console.log('Websocket voteHandler action')
+  console.log(JSON.stringify(event));
+
+  await gateway.sendMessageToClient(event.requestContext.connectionId, 'Hello world');
+  
+  return {
+    statusCode: 200,
+  };
+};

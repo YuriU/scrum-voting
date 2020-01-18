@@ -12,20 +12,23 @@ class WSClient {
 
     }
 
-    onConnect(connectHandler){
+    onConnect(connectHandler) {
         this.connectHandler = connectHandler;
     }
 
-    onDisconnect(disconnectHandler){
+    onDisconnect(disconnectHandler) {
         this.disconnectHandler = disconnectHandler;
     }
 
-    onMessage(messageHandler){
+    onMessage(messageHandler) {
         this.messageHandler = messageHandler;
     }
 
-    connect() {
+    send(message) {
+        this.webSocket.send(JSON.stringify(message));
+    }
 
+    connect() {
         const self = this;
         this.webSocket = new WebSocket(this.endpoint + "?sessionid=" + this.sessionId +"&userid=" + this.userId);
         this.webSocket.onopen = function() {

@@ -56,6 +56,11 @@ functions:
     events:
       - websocket:
           route: $default
+  voteHandler:
+    handler: backend/votingHandler.voteHandler
+    events:
+      - websocket:
+          route: vote
   startSession:
     handler: backend/sessionHandler.startSession
     events:

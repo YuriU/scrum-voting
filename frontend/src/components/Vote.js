@@ -16,6 +16,7 @@ class Vote extends Component {
             online: false
         }
 
+        this.optionSelected = this.optionSelected.bind(this);
         console.log(JSON.stringify(this.state))
         this.socket = new WSClient(this.state.sessionId, this.state.userId)
 
@@ -50,9 +51,15 @@ class Vote extends Component {
         this.socket.disconnect()
     }
 
-
     optionSelected(option){
         console.log(option)
+        this.socket.send({ 
+            action: 'vote',
+            params : {
+                sessionId: this.state.sessionId,
+                userId: this.state.userId,
+                votingResult: option
+             }});
     }
 
     onMessage(event){
