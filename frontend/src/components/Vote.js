@@ -25,6 +25,8 @@ class Vote extends Component {
         this.socket.onDisconnect(() => {
             this.setState({ online: false })
         })
+
+        this.socket.onMessage(this.onMessage)
     }
 
     render() {
@@ -40,6 +42,14 @@ class Vote extends Component {
 
     componentWillUnmount() {
         this.socket.disconnect()
+    }
+
+    onMessage(event){
+
+        const message = JSON.parse(event.data);
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        console.log(`${time} : ${JSON.stringify(message)}`)
     }
 }
 

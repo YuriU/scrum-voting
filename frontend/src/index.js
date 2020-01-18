@@ -5,5 +5,5 @@ import Config from './config'
 
 console.log('Config: ' + JSON.stringify(Config) );
 
-ReactDOM.render(<App config={Config} />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
 
