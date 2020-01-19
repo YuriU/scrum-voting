@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CreateSession from './CreateSession'
-import Session from './Session'
-import Vote from './Vote'
+import SessionScreen from './SessionScreen'
+import VotingScreen from './VotingScreen'
 import FullScreenSwitch from './FullscreenSwitch'
 import '../styles/App.css';
 import { getAllUrlParams } from '../utils/urlutils'
@@ -40,6 +40,7 @@ class App extends Component {
     }
 
     render() {
+      let urlParams = getAllUrlParams();
         return (
             <Router history={this.history}>
               <Switch>
@@ -47,10 +48,10 @@ class App extends Component {
                   <CreateSession onCreateSession={this.onCreateSession}/>
                 </Route>
                 <Route path="/session" >
-                    <Session getSessionUsers={this.getSessionUsers} httpClient={this.httpClient} sessionId={getAllUrlParams().id} />
+                    <SessionScreen getSessionUsers={this.getSessionUsers} httpClient={this.httpClient} sessionId={urlParams.id} />
                 </Route>
                 <Route path="/vote" >
-                    <Vote sessionId={getAllUrlParams().sessionid} userId={getAllUrlParams().userid} />
+                    <VotingScreen sessionId={urlParams.sessionid} userId={urlParams.userid} />
                 </Route>
                 <Route path="/">
                   <div>

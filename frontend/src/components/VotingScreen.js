@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import WSClient from '../api/wsclient'
 import OnlineIndicator from './OnlineIndicator';
 import VotingControl from './VotingControl'
+import FullScreenSwitch from './FullscreenSwitch'
 
-class Vote extends Component {
+class VotingScreen extends Component {
     constructor(props) {
         super(props);
         console.log(JSON.stringify(props));
@@ -30,6 +31,7 @@ class Vote extends Component {
 
     render() {
         return(<div>
+                <FullScreenSwitch />
                 <OnlineIndicator online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
                 {
                     this.state.activeVoting ? (<VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} />) : null
@@ -82,4 +84,4 @@ class Vote extends Component {
     }
 }
 
-export default Vote;
+export default VotingScreen;

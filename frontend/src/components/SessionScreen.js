@@ -5,10 +5,15 @@ import OnlineIndicator from './OnlineIndicator'
 import WSClient from '../api/wsclient'
 import '../styles/Session.css';
 
-class Session extends Component {
+class SessionScreen extends Component {
 
     constructor(props) {
         super(props);
+
+        console.log('SessionScreen Ctor ..')
+        console.log('SessionScreen props ..')
+        console.log(props)
+
         this.state = {
             users: [],
             votedUsers : new Set(),
@@ -29,19 +34,19 @@ class Session extends Component {
                 <div>
                     <div className="sessionBoard">
                         { 
-                        this.state.users.map((user, index) => {
-                            const voted = self.state.votedUsers.has(user.userId);
-                            const voteResult = self.state.userVoteResults.has(user.userId) ? self.state.userVoteResults.get(user.userId) : null;
-                            let text = voteResult 
-                                ? voteResult == '<NA>' ? '-' : `U: ${user.userId}, R: ${voteResult}` 
-                                : voted ? ' + ' + user.name : user.name;
-                            return (<OnlineIndicator 
-                                            userId={user.userId}
-                                            text = { text }
-                                            key={user.userId}
-                                            online={user.online}
-                                            onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
-                        })
+                            this.state.users.map((user, index) => {
+                                const voted = self.state.votedUsers.has(user.userId);
+                                const voteResult = self.state.userVoteResults.has(user.userId) ? self.state.userVoteResults.get(user.userId) : null;
+                                let text = voteResult 
+                                    ? voteResult == '<NA>' ? '-' : `U: ${user.userId}, R: ${voteResult}` 
+                                    : voted ? ' + ' + user.name : user.name;
+                                return (<OnlineIndicator 
+                                                userId={user.userId}
+                                                text = { text }
+                                                key={user.userId}
+                                                online={user.online}
+                                                onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
+                            })
                         }
                     </div>
                 </div>
@@ -106,4 +111,4 @@ class Session extends Component {
     }
 }
 
-export default Session;
+export default SessionScreen;
