@@ -67,13 +67,27 @@ module.exports.handleVoteFinalization = async (event, context) => {
   const votingId = message.votingId;
 
   let users = await sessionDao.querySessionUsers(sessionId);
+  const chairman = users.filter(user => user.userId == 'chairman')[0];
+  if(chairman.votingId == votingId && chairman.open) {
 
-  for(const user of users) {
-    if(user.connectionId) {
-      await gateway.sendMessageToClient(user.connectionId, {
-        action: 'VoteFinished',
-        votingId: votingId
-      });
+    let userResults = users
+    .filter(u => u.userId != 'chairman')
+    .map(u => {
+      let result = u.votingId == votingId ? u.result : '<NA>';
+      return {
+        userId: u.userId,
+        result: result
+      }
+    })
+
+    for(const user of users) {
+      if(user.connectionId) {
+        await gateway.sendMessageToClient(user.connectionId, {
+          action: 'VoteFinished',
+          votingId: votingId,
+          userResults: user.userId == 'chairman' ? userResults : null
+        });
+      }
     }
   }
 }
