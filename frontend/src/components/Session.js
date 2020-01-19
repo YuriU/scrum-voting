@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import _ from 'lodash';
-import { getAllUrlParams } from '../utils/urlutils'
 import { copyToClipboard } from '../utils/clipboard'
 import OnlineIndicator from './OnlineIndicator'
 import WSClient from '../api/wsclient'
@@ -10,10 +9,7 @@ class Session extends Component {
 
     constructor(props) {
         super(props);
-        
-        let params = getAllUrlParams();
         this.state = {
-            sessionId : params.id,
             users: [],
             votedUsers : new Set(),
             userVoteResults: new Map()
@@ -21,7 +17,7 @@ class Session extends Component {
 
         this.onMessage = this.onMessage.bind(this);
         this.onStartVoteClicked = this.onStartVoteClicked.bind(this);
-        this.socket = new WSClient(this.state.sessionId, "chairman")
+        this.socket = new WSClient(this.props.sessionId, "chairman")
         this.socket.onMessage(this.onMessage)
     }
 
@@ -29,7 +25,7 @@ class Session extends Component {
         const self = this;
         return (
             <div>
-                <h1>Hello from session {this.state.sessionId}</h1>
+                <h1>Hello from session {this.props.sessionId}</h1>
                 <div>
                     <div className="sessionBoard">
                         { 
@@ -44,7 +40,7 @@ class Session extends Component {
                                             text = { text }
                                             key={user.userId}
                                             online={user.online}
-                                            onClick={(evt) => this.onUserClick(this.state.sessionId, user.userId)}/>)
+                                            onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
                         })
                         }
                     </div>
@@ -62,7 +58,7 @@ class Session extends Component {
             votedUsers: this.state.votedUsers,
             userVoteResults: new Map()
         })
-        const result = await this.props.httpClient.startVoting(this.state.sessionId);
+        const result = await this.props.httpClient.startVoting(this.props.sessionId);
     }
 
     async onUserClick(sessionId, userId) {
@@ -72,9 +68,9 @@ class Session extends Component {
 
     async componentDidMount() {
         this.socket.connect();
-        const users = await this.props.getSessionUsers(this.state.sessionId);
+        const users = await this.props.getSessionUsers(this.props.sessionId);
         this.setState({
-            sessionId: this.state.sessionId,
+            sessionId: this.props.sessionId,
             users: users
         });
     }
@@ -85,7 +81,7 @@ class Session extends Component {
             console.log('Online status updated')
             let users = message.users;
             this.setState({
-                sessionId: this.state.sessionId,
+                sessionId: this.props.sessionId,
                 users: users
             })
         } else if(message.action == 'userVoted') {

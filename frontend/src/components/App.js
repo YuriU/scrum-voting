@@ -42,33 +42,32 @@ class App extends Component {
     render() {
         return (
             <Router history={this.history}>
-              <div>
-                <nav>
-                  <ul>
-                    <li>
-                      <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                      <Link to="/startSession">Start Session</Link>
-                    </li>
-                    <li>
-                      <Link to="/session">Session</Link>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
               <Switch>
                 <Route path="/startSession">
                   <CreateSession onCreateSession={this.onCreateSession}/>
                 </Route>
                 <Route path="/session" >
-                    <Session getSessionUsers={this.getSessionUsers} httpClient={this.httpClient} />
+                    <Session getSessionUsers={this.getSessionUsers} httpClient={this.httpClient} sessionId={getAllUrlParams().id} />
                 </Route>
                 <Route path="/vote" >
-                    <Vote />
+                    <Vote sessionId={getAllUrlParams().sessionid} userId={getAllUrlParams().userid} />
                 </Route>
                 <Route path="/">
-                  <h1>Hello</h1>
+                  <div>
+                  <nav>
+                    <ul>
+                      <li>
+                        <Link to="/">Home</Link>
+                      </li>
+                      <li>
+                        <Link to="/startSession">Start Session</Link>
+                      </li>
+                      <li>
+                        <Link to="/session">Session</Link>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
                 </Route>
               </Switch>
             </Router>

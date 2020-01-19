@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { getAllUrlParams } from '../utils/urlutils'
 import WSClient from '../api/wsclient'
 import OnlineIndicator from './OnlineIndicator';
 import VotingControl from './VotingControl'
@@ -8,17 +7,13 @@ class Vote extends Component {
     constructor(props) {
         super(props);
         console.log(JSON.stringify(props));
-
-        let params = getAllUrlParams();
         this.state = {
-            sessionId : params.sessionid,
-            userId:  params.userid,
             online: false
         }
 
         this.optionSelected = this.optionSelected.bind(this);
         console.log(JSON.stringify(this.state))
-        this.socket = new WSClient(this.state.sessionId, this.state.userId)
+        this.socket = new WSClient(this.props.sessionId, this.props.userId)
 
         this.socket.onConnect(() => {
             this.setState({ online: true })
@@ -39,7 +34,7 @@ class Vote extends Component {
                 {
                     this.state.activeVoting ? (<VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} />) : null
                 }
-                <h1>Hello User {this.state.userId} from Session {this.state.sessionId}</h1>
+                <h1>Hello User {this.props.userId} from Session {this.props.sessionId}</h1>
             </div>)
     }
 
@@ -56,8 +51,8 @@ class Vote extends Component {
         this.socket.send({ 
             action: 'vote',
             details : {
-                sessionId: this.state.sessionId,
-                userId: this.state.userId,
+                sessionId: this.props.sessionId,
+                userId: this.props.userId,
                 votingId: this.state.activeVoting.votingId,
                 votingResult: option
              }});
