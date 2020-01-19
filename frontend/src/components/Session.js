@@ -15,7 +15,8 @@ class Session extends Component {
         this.state = {
             sessionId : params.id,
             users: [],
-            votedUsers : new Set()
+            votedUsers : new Set(),
+            userVoteResults: new Map()
         }
 
         this.onMessage = this.onMessage.bind(this);
@@ -34,9 +35,11 @@ class Session extends Component {
                         { 
                         this.state.users.map((user, index) => {
                             const voted = self.state.votedUsers.has(user.userId);
+                            const voteResult = self.state.userVoteResults.has(user.userId) ? self.state.userVoteResults.get(user.userId) : null;
+                            let text = voteResult ? `U: ${user.userId}, R: ${voteResult}` : voted ? ' + ' + user.name : user.name;
                             return (<OnlineIndicator 
                                             userId={user.userId}
-                                            text = {voted ? ' + ' + user.name : user.name }
+                                            text = { text }
                                             key={user.userId}
                                             online={user.online}
                                             onClick={(evt) => this.onUserClick(this.state.sessionId, user.userId)}/>)
@@ -54,7 +57,8 @@ class Session extends Component {
     async onStartVoteClicked() {
         this.state.votedUsers.clear();
         this.setState({
-            votedUsers: this.state.votedUsers
+            votedUsers: this.state.votedUsers,
+            userVoteResults: new Map()
         })
         const result = await this.props.httpClient.startVoting(this.state.sessionId);
     }
@@ -87,7 +91,17 @@ class Session extends Component {
             this.setState({
                 votedUsers : this.state.votedUsers
             })
+        } else if(message.action == 'VoteFinished') {
+            const userResults = message.userResults;
+            let map = new Map();
+            userResults.forEach(result => {
+                map.set(result.userId, result.result)
+            });
+            this.setState({
+                userVoteResults : map
+            })
         }
+        
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         console.log(`${time} : ${JSON.stringify(message)}`);
