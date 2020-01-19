@@ -36,7 +36,9 @@ class Session extends Component {
                         this.state.users.map((user, index) => {
                             const voted = self.state.votedUsers.has(user.userId);
                             const voteResult = self.state.userVoteResults.has(user.userId) ? self.state.userVoteResults.get(user.userId) : null;
-                            let text = voteResult ? `U: ${user.userId}, R: ${voteResult}` : voted ? ' + ' + user.name : user.name;
+                            let text = voteResult 
+                                ? voteResult == '<NA>' ? '-' : `U: ${user.userId}, R: ${voteResult}` 
+                                : voted ? ' + ' + user.name : user.name;
                             return (<OnlineIndicator 
                                             userId={user.userId}
                                             text = { text }
