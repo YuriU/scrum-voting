@@ -81,7 +81,7 @@ class SessionScreen extends Component {
     }
 
     onMessage(evt) {
-        const message = JSON.parse(event.data);
+        const message = JSON.parse(evt.data);
         if(message.action == 'OnlineStatusUpdate') {
             console.log('Online status updated')
             let users = message.users;
