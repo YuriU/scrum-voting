@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import '../styles/OnlineIndicatorMobile.css';
 
 class FullScreenSwitch extends Component {
 
@@ -67,8 +68,10 @@ class FullScreenSwitch extends Component {
     
     render() {
         return (
-            <div> 
-                <button onClick={this.switchFullscreen}>{this.state.fullScreen ? "Exit Fullscreen" : "Open Fullscreen"}</button>
+            <div className="mobileBar"> 
+                <div className= "card"> 
+                    <div className="indicator online" onClick={this.onclick} >Open Fullscreen</div> 
+                </div> 
             </div> 
         );
     }

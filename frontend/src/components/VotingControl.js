@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import OnlineIndicator from './OnlineIndicator'
+import Option from './Option'
 
 class VoteControl extends Component {
     constructor(props) {
@@ -12,15 +12,14 @@ class VoteControl extends Component {
     }
 
     render(){
-        console.log('----' + JSON.stringify(this.props))
-        return (<div>
-                <h1>Put your option here ...</h1>
-                {
-                    this.props.voting.options.map(o => {
-                        return (<OnlineIndicator key={o} text={o} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
-                    })
-                }
-            </div>)
+    return (<div>{
+            this.props.voting 
+            ?
+                this.props.voting.options.map(o => {
+                    return (<Option key={o} text={o} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
+                })
+            : <div>Nothing ...</div>
+        }</div>)
     }
 
     onOptionClick(option){

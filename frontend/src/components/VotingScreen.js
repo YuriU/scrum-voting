@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import WSClient from '../api/wsclient'
-import OnlineIndicator from './OnlineIndicator';
 import VotingControl from './VotingControl'
 import FullScreenSwitch from './FullscreenSwitch'
+import OnlineIndicatorMobile from './OnlineIndicatorMobile'
+import '../styles/FlipCard.css';
 
 class VotingScreen extends Component {
     constructor(props) {
         super(props);
         console.log(JSON.stringify(props));
         this.state = {
-            online: false
+            online: false,
+            activeVoting : { activeVotingId : 'test', options : [1,2,3,4]} 
         }
 
         this.optionSelected = this.optionSelected.bind(this);
@@ -26,17 +28,18 @@ class VotingScreen extends Component {
 
         this.onMessage = this.onMessage.bind(this);
         this.socket.onMessage(this.onMessage)
-        
     }
 
     render() {
         return(<div>
+                <OnlineIndicatorMobile online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
                 <FullScreenSwitch />
-                <OnlineIndicator online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
-                {
-                    this.state.activeVoting ? (<VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} />) : null
-                }
-                <h1>Hello User {this.props.userId} from Session {this.props.sessionId}</h1>
+                <div className="flipCard"> 
+                    <div className= {this.state.activeVoting ? "card" : "card flipped" }> 
+                        <div className="side front"><VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} /></div> 
+                        <div className="side back">Wait for the vote</div> 
+                    </div> 
+                </div>
             </div>)
     }
 
@@ -69,17 +72,17 @@ class VotingScreen extends Component {
 
         const action = message.action;
         if(action == 'VoteStarted') {
-            this.setState({
-                    activeVoting : {
-                        votingId: message.votingId,
-                        options: message.possibleOptions
-                }
-            })
+            this.setState({ activeVoting :  this.makeActiveVoting(message.votingId, message.possibleOptions)})
         }
         else if(action == 'VoteFinished') {
-            this.setState({
-                activeVoting : null
-            })
+            this.setState({ activeVoting : null })
+        }
+    }
+
+    makeActiveVoting(votingId, possibleOptions){
+        return {
+            votingId: votingId,
+            options: possibleOptions
         }
     }
 }
