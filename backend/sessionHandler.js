@@ -1,7 +1,5 @@
 'use strict'
 
-const AWS = require('aws-sdk');
-const DDB = require('./lib/dynamo')
 const sessionDao = require('./lib/sessionDao')
 const randomUtil = require('./lib/randomUtil')
 

@@ -2,8 +2,8 @@
 
 const AWS = require('aws-sdk');
 const sessionDao = require('./lib/sessionDao')
-const crypto = require('crypto')
 const gateway = require('./lib/gateway')
+const randomUtil = require('./lib/randomUtil')
 
 const queueUrl = process.env.FINALIZER_QUEUE_URL;
 
@@ -14,12 +14,7 @@ module.exports.startVotingRound = async (event, context) => {
   const dto = JSON.parse(event.body);
   const sessionId = dto.sessionId;
 
-  const votingId = crypto.randomBytes(8)
-                    .toString('base64')
-                    .toLowerCase()
-                    .replace(/[=+/?&]/g, '')
-                    .substring(0, 4);
-
+  const votingId = randomUtil.generateId();
 
   const possibleOptions = ['1', '2', '3', '5', '8', '13', '?'];
   await sessionDao.setVotingId(sessionId, 'chairman', votingId, true);
@@ -28,7 +23,6 @@ module.exports.startVotingRound = async (event, context) => {
     apiVersion: '2012-11-05'
   });
 
-  
   await sqs.sendMessage({
     QueueUrl : queueUrl,
     MessageBody: JSON.stringify({
