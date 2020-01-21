@@ -1,23 +1,21 @@
 'use strict'
 
-const crypto = require('crypto')
 const AWS = require('aws-sdk');
 const DDB = require('./lib/dynamo')
 const sessionDao = require('./lib/sessionDao')
+const randomUtil = require('./lib/randomUtil')
 
 module.exports.startSession = async (event, context) => {
 
   console.log('Start session action')
   console.log(JSON.stringify(event));
 
-  const sessionId = crypto.randomBytes(8)
-                    .toString('base64')
-                    .toLowerCase()
-                    .replace(/[=+/?&]/g, '')
-                    .substring(0, 4);
-
+  const sessionId = randomUtil.generateId();
   const usesToAdd = JSON.parse(event.body);
-  usesToAdd.forEach(user => { user.sessionId = sessionId; });
+  usesToAdd.forEach(user => { 
+      user.sessionId = sessionId; 
+      user.userId = randomUtil.generateId(); 
+    });
   usesToAdd.push({sessionId: sessionId, userId: 'chairman'})
         
   await sessionDao.batchWriteUsers(usesToAdd);

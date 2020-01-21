@@ -11,13 +11,7 @@ class UserInput extends Component {
             deleteUser: props.deleteUser
         }
 
-        this.handleChangeAlias = this.handleChangeAlias.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
-    }
-
-    handleChangeAlias(event){
-        this.state.item.alias = event.target.value;
-        this.setState(this.state);
     }
 
     handleChangeName(event){
@@ -28,7 +22,6 @@ class UserInput extends Component {
     render(){
         return (
         <div>
-            <label>Alias: <input type="text" value={this.props.item.alias} onChange={this.handleChangeAlias}></input></label>
             <label>Name: <input type="text" value={this.props.item.name} onChange={this.handleChangeName}></input></label>
             <button onClick={(evt) => this.state.deleteUser(this.state.item.userId)}>Delete</button>
         </div>)

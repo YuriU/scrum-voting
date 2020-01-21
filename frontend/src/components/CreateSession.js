@@ -15,7 +15,7 @@ class CreateSession extends Component {
         }
 
         for(let i = 1; i <= 10; i++){
-            this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, alias: `u1${i}`, name: `User ${i}` });
+            this.state.itemsToAdd.push({ userId : `${this.state.lastAddedUserId++}`, name: `User ${i}` });
         }
         
         this.addUser = this.addUser.bind(this);
