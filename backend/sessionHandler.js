@@ -42,7 +42,6 @@ module.exports.getSession = async (event, context) => {
       .map((u) =>     
             ({
               userId : u.userId,
-              alias : u.alias,
               name : u.name,
               online : u.connectionId ? true : false
           })
