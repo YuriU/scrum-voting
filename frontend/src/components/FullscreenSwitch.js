@@ -70,7 +70,7 @@ class FullScreenSwitch extends Component {
         return (
             <div className="mobileBar"> 
                 <div className= "card"> 
-                    <div className="indicator online" onClick={this.onclick} >Open Fullscreen</div> 
+                    <div className="indicator online" onClick={this.switchFullscreen} >Open Fullscreen</div> 
                 </div> 
             </div> 
         );
