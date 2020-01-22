@@ -31,14 +31,18 @@ class VotingScreen extends Component {
     }
 
     render() {
-        return(<div>
-                <OnlineIndicatorMobile online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
-                <FullScreenSwitch />
-                <div className="flipCard"> 
-                    <div className= {this.state.activeVoting ? "card" : "card flipped" }> 
-                        <div className="side front"><VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} /></div> 
-                        <div className="side back">Wait for the vote</div> 
-                    </div> 
+        return(<div className="box">
+                <div class="row header">
+                    <OnlineIndicatorMobile online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
+                    <FullScreenSwitch />
+                </div>
+                <div class="row content">
+                    <div className="flipCard"> 
+                        <div className= {this.state.activeVoting ? "card" : "card flipped" }> 
+                            <div className="side front"><VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} /></div> 
+                            <div className="side back">Wait for the vote</div> 
+                        </div> 
+                    </div>
                 </div>
             </div>)
     }
