@@ -3,7 +3,6 @@ import WSClient from '../api/wsclient'
 import VotingControl from './VotingControl'
 import FullScreenSwitch from './FullscreenSwitch'
 import OnlineIndicatorMobile from './OnlineIndicatorMobile'
-import NoSleep from 'nosleep.js'
 import '../styles/FlipCard.css';
 
 class VotingScreen extends Component {
@@ -13,7 +12,6 @@ class VotingScreen extends Component {
         this.state = {
             online: false,
             activeVoting :  null,
-            noSleep: new NoSleep()
         }
 
         this.optionSelected = this.optionSelected.bind(this);
@@ -51,8 +49,6 @@ class VotingScreen extends Component {
 
     componentDidMount() {
         this.socket.connect()
-        this.state.noSleep.enable();
-        
     }
 
     componentWillUnmount() {

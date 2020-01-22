@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import '../styles/OnlineIndicatorMobile.css';
+import NoSleep from "nosleep.js";
 
 class FullScreenSwitch extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            fullScreen: false
+            fullScreen: false,
+            noSleep: new NoSleep()
         }
 
        this.exitHandler = this.exitHandler.bind(this);
@@ -39,6 +41,7 @@ class FullScreenSwitch extends Component {
    
     switchFullscreen(evt) 
     {
+        this.state.noSleep.enable();
         console.log('Fullscreen switch clicked')
         
         if(this.state.fullScreen){
