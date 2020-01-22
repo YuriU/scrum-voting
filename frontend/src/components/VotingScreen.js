@@ -3,6 +3,7 @@ import WSClient from '../api/wsclient'
 import VotingControl from './VotingControl'
 import FullScreenSwitch from './FullscreenSwitch'
 import OnlineIndicatorMobile from './OnlineIndicatorMobile'
+import NoSleep from 'nosleep.js'
 import '../styles/FlipCard.css';
 
 class VotingScreen extends Component {
@@ -11,7 +12,8 @@ class VotingScreen extends Component {
         console.log(JSON.stringify(props));
         this.state = {
             online: false,
-            activeVoting :  null
+            activeVoting :  null,
+            noSleep: new NoSleep()
         }
 
         this.optionSelected = this.optionSelected.bind(this);
@@ -32,11 +34,11 @@ class VotingScreen extends Component {
 
     render() {
         return(<div className="box">
-                <div class="row header">
+                <div className="row header">
                     <OnlineIndicatorMobile online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
                     <FullScreenSwitch />
                 </div>
-                <div class="row content">
+                <div className="row content">
                     <div className="flipCard"> 
                         <div className= {this.state.activeVoting ? "card" : "card flipped" }> 
                             <div className="side front"><VotingControl voting={this.state.activeVoting} onOptionSelected={this.optionSelected} /></div> 
@@ -49,6 +51,8 @@ class VotingScreen extends Component {
 
     componentDidMount() {
         this.socket.connect()
+        this.state.noSleep.enable();
+        
     }
 
     componentWillUnmount() {
