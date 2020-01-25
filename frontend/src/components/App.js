@@ -31,7 +31,7 @@ class App extends Component {
     async onCreateSession(items) {
         const result = await this.httpClient.startSession(items);
         console.log(result.SessionId);
-        this.history.push('/session?id=' + result.SessionId)        
+        this.history.push('/session/' + result.SessionId)        
     }
 
     async getSessionUsers(sessionId) {
@@ -47,11 +47,17 @@ class App extends Component {
                 <Route path="/startSession">
                   <CreateSession onCreateSession={this.onCreateSession}/>
                 </Route>
-                <Route path="/session" >
-                    <SessionScreen getSessionUsers={this.getSessionUsers} httpClient={this.httpClient} sessionId={urlParams.id} />
+                <Route path="/session/:sessionId" render={
+                  ({match}) => (
+                    <SessionScreen getSessionUsers={this.getSessionUsers} httpClient={this.httpClient} sessionId={match.params.sessionId} />
+                  )
+                }>
                 </Route>
-                <Route path="/vote" >
-                    <VotingScreen sessionId={urlParams.sessionid} userId={urlParams.userid} />
+                <Route path="/vote/:sessionId/:userId" render={
+                  ({match}) => (
+                      <VotingScreen sessionId={match.params.sessionId} userId={match.params.userId} />
+                  )
+                }>  
                 </Route>
                 <Route path="/">
                   <div>

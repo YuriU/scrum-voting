@@ -67,7 +67,7 @@ class SessionScreen extends Component {
     }
 
     async onUserClick(sessionId, userId) {
-        let link = `${location.protocol}//${location.host}/vote?sessionid=${sessionId}&userid=${userId}`;
+        let link = `${location.protocol}//${location.host}/vote/${sessionId}/${userId}`;
         copyToClipboard(link);
     }
 
