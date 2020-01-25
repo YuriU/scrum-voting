@@ -31,7 +31,7 @@ class VotingScreen extends Component {
     }
 
     render() {
-        return(<div className="box">
+        return(<div className="box votescreen">
                 <div className="row header">
                     <OnlineIndicatorMobile online={this.state.online} text={this.state.online ? "Online" : "Offline" } />
                     <FullScreenSwitch />

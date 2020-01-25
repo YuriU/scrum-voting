@@ -40,3 +40,7 @@ body {
 .box .row.footer {
     flex: 0 1 40px;
 }
+
+.votescreen {
+    background-color: darkslategray;
+}
