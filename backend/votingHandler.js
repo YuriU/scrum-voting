@@ -14,6 +14,17 @@ module.exports.startVotingRound = async (event, context) => {
   const dto = JSON.parse(event.body);
   const sessionId = dto.sessionId;
 
+  let users = await sessionDao.querySessionUsers(sessionId);
+  const chairman = users.filter(user => user.userId == 'chairman')[0];
+
+  if(chairman.votingId && chairman.open) {
+    return {
+      statusCode: 422,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ Reason:'Another voting is still active' })
+    }
+  }
+  
   const votingId = randomUtil.generateId();
 
   const possibleOptions = ['1', '2', '3', '5', '8', '13', '?'];
@@ -31,8 +42,6 @@ module.exports.startVotingRound = async (event, context) => {
       possibleOptions: possibleOptions
     })
   }).promise();
-
-  let users = await sessionDao.querySessionUsers(sessionId);
 
   for(const user of users) {
     if(user.connectionId) {
@@ -84,6 +93,8 @@ module.exports.handleVoteFinalization = async (event, context) => {
       }
     }
   }
+
+  await sessionDao.setVotingId(sessionId, 'chairman', votingId, false);
 }
 
 module.exports.voteHandler = async (event, context) => {
