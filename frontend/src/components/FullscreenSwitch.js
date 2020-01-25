@@ -11,26 +11,33 @@ class FullScreenSwitch extends Component {
             noSleep: new NoSleep()
         }
 
-       this.exitHandler = this.exitHandler.bind(this);
+       this.exitFullscreenHandler = this.exitFullscreenHandler.bind(this);
        this.switchFullscreen = this.switchFullscreen.bind(this);
     }
 
     componentDidMount() {
         if (document.addEventListener){
-            document.addEventListener('fullscreenchange', this.exitHandler, false);
+            document.addEventListener('fullscreenchange', this.exitFullscreenHandler, false);
         }
     }
 
-    exitHandler()
+    exitFullscreenHandler()
     {
         console.log('Event handler')
-        if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== null)
+        if (document.webkitIsFullScreen != undefined)
         {
-            if(document.webkitIsFullScreen)
-            {
-                this.setState({fullScreen: document.webkitIsFullScreen})
-            }
+            this.setState({fullScreen: document.webkitIsFullScreen})
+            return;
+        }
 
+        if(document.mozFullScreen != undefined)
+        {
+            this.setState({fullScreen: document.mozFullScreen})
+            return;
+        }
+
+        if (document.msFullscreenElement !== null)
+        {
             var fullscreen = document.fullScreenElement;
             console.log('Fullscreen mode changed webkitIsFullScreen: ', document.webkitIsFullScreen);
             console.log('Fullscreen mode changed mozFullScreen: ', document.mozFullScreen);
@@ -80,7 +87,7 @@ class FullScreenSwitch extends Component {
         return (
             <div className="mobileBar"> 
                 <div className= "card"> 
-                    <div className="indicator online" onClick={this.switchFullscreen}>{ !this.state.fullScreen ? "Open Fullscreen" : "Close fullscreen" }</div> 
+                    <div className="indicator online" onClick={this.switchFullscreen}>{ !this.state.fullScreen ? "Open Fullscreen" : "Close Fullscreen" }</div> 
                 </div> 
             </div> 
         );
