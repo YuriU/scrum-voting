@@ -43,16 +43,18 @@ class FullScreenSwitch extends Component {
     {
         this.state.noSleep.enable();
         console.log('Fullscreen switch clicked')
+        console.log(document.documentElement);
         
-        if(this.state.fullScreen){
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-              } else if (document.mozCancelFullScreen) { /* Firefox */
-                document.mozCancelFullScreen();
+        if(this.state.fullScreen == true) {
+            var elem = document;
+            if (elem.exitFullscreen) {
+                elem.exitFullscreen();
+              } else if (elem.mozCancelFullScreen) { /* Firefox */
+                elem.mozCancelFullScreen();
               } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-                document.webkitExitFullscreen();
+                elem.webkitExitFullscreen();
               } else if (document.msExitFullscreen) { /* IE/Edge */
-                document.msExitFullscreen();
+                elem.msExitFullscreen();
               }
         }
         else{
@@ -67,13 +69,18 @@ class FullScreenSwitch extends Component {
             elem.msRequestFullscreen();
             }
         }
+
+        this.setState({
+            fullScreen : !this.state.fullScreen
+        })
     }
+
     
     render() {
         return (
             <div className="mobileBar"> 
                 <div className= "card"> 
-                    <div className="indicator online" onClick={this.switchFullscreen} >Open Fullscreen</div> 
+                    <div className="indicator online" onClick={this.switchFullscreen}>{ !this.state.fullScreen ? "Open Fullscreen" : "Close fullscreen" }</div> 
                 </div> 
             </div> 
         );
