@@ -63,7 +63,7 @@ class SessionScreen extends Component {
             votedUsers: this.state.votedUsers,
             userVoteResults: new Map()
         })
-        const result = await this.props.httpClient.startVoting(this.props.sessionId);
+        const result = await this.props.httpClient.startVoting(this.props.sessionId, true);
     }
 
     async onUserClick(sessionId, userId) {

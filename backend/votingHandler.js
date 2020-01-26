@@ -65,15 +65,7 @@ module.exports.startVotingRound = async (event, context) => {
   }
 }
 
-module.exports.handleVoteFinalization = async (event, context) => {
-  console.log('Handle vote finalization event')
-  console.log(JSON.stringify(event));
-
-  const message = JSON.parse(event.Records[0].body);
-
-  const sessionId = message.sessionId;
-  const votingId = message.votingId;
-
+async function finalizeVote(sessionId, votingId) {
   let users = await sessionDao.querySessionUsers(sessionId);
   const chairman = users.filter(user => user.userId == 'chairman')[0];
   if(chairman.votingId == votingId && chairman.open) {
@@ -100,6 +92,18 @@ module.exports.handleVoteFinalization = async (event, context) => {
   }
 
   await sessionDao.setVoting(sessionId, 'chairman', votingId, false, false, []);
+}
+
+module.exports.handleVoteFinalization = async (event, context) => {
+  console.log('Handle vote finalization event')
+  console.log(JSON.stringify(event));
+
+  const message = JSON.parse(event.Records[0].body);
+
+  const sessionId = message.sessionId;
+  const votingId = message.votingId;
+
+  await finalizeVote(sessionId, votingId)
 }
 
 module.exports.voteHandler = async (event, context) => {
@@ -131,6 +135,23 @@ module.exports.voteHandler = async (event, context) => {
         votingId: votingId
       }
     });
+  }
+
+  if(chairman.completeWhenAllVoted) {
+    console.log('Trying to finalize the vote')
+    console.log('votingUsersIds' + JSON.stringify(chairman.votingUsersIds))
+    console.log('userId: ' + userId)
+
+    const usersWatingFor = chairman.votingUsersIds
+                          .filter(uid => uid != userId)
+                          .map(u => ({ userId : uid, result: users.filter(user => user.userId = uid) }));
+
+    console.log(JSON.stringify(usersWatingFor))
+    if(usersWatingFor.lenght == 0)
+    {
+        console.log('Finalizing the vote')
+        await finalizeVote(sessionId, votingId);
+    }
   }
 
   return {
