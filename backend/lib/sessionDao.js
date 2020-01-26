@@ -53,13 +53,13 @@ async function setConnectionId(sessionId,  userId, connectionId) {
   }
 }
 
-async function setVotingId(sessionId,  userId, votingId, open) {
+async function setVoting(sessionId,  userId, votingId, open, completeWhenAllVoted, onlineUsersIds) {
   var updateRequest = {
     Key: { sessionId : sessionId, userId: userId },
     ConditionExpression: 'attribute_exists(sessionId) AND attribute_exists(userId)',
-    UpdateExpression: 'set #votingId = :votingId, #open = :open',
-    ExpressionAttributeNames: {'#votingId' : 'votingId', '#open' : 'open' },
-    ExpressionAttributeValues: { ':votingId' : votingId, ':open' : open }
+    UpdateExpression: 'set #votingId = :votingId, #open = :open, #cwa = :cwa, #oIds = :oIds',
+    ExpressionAttributeNames: {'#votingId' : 'votingId', '#open' : 'open', "#cwa" : 'completeWhenAllVoted', '#oIds' : 'onlineUsersIds' },
+    ExpressionAttributeValues: { ':votingId' : votingId, ':open' : open, ':cwa' : completeWhenAllVoted, ':oIds' : onlineUsersIds }
   };
 
   var result = await DDB.SessionDB.update(updateRequest).promise();
@@ -97,6 +97,6 @@ module.exports = {
   queryUserByConnectionId: queryUserByConnectionId,
   setConnectionId: setConnectionId,
   batchWriteUsers: batchWriteUsers,
-  setVotingId: setVotingId,
+  setVoting: setVoting,
   setVotingResult: setVotingResult
 }

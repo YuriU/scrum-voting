@@ -14,8 +14,8 @@ class HttpClient {
         return await this.post('/getSession', { sessionId: sessionId })
     }
 
-    async startVoting(sessionId) {
-        return await this.post('/startVoting', { sessionId: sessionId })
+    async startVoting(sessionId, completeWhenAllVoted) {
+        return await this.post('/startVoting', { sessionId: sessionId, completeWhenAllVoted : completeWhenAllVoted })
     }
 
     async post(method, data) {

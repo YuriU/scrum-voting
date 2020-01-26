@@ -13,6 +13,10 @@ module.exports.startVotingRound = async (event, context) => {
 
   const dto = JSON.parse(event.body);
   const sessionId = dto.sessionId;
+  
+  // Do not wait for the timeout if all online users voted
+  const completeWhenAllVoted = dto.completeWhenAllVoted && dto.completeWhenAllVoted == true ? true : false;
+  const possibleOptions = dto.possibleOptions ? dto.possibleOptions : ['1', '2', '3', '5', '8', '13', '?'];
 
   let users = await sessionDao.querySessionUsers(sessionId);
   const chairman = users.filter(user => user.userId == 'chairman')[0];
@@ -26,9 +30,10 @@ module.exports.startVotingRound = async (event, context) => {
   }
   
   const votingId = randomUtil.generateId();
+  const onlineUsersIds = users.filter(user => user.connectionId && user.userId != 'chairman').map(u => u.userId);
+  console.log('Online user ids: ' + JSON.stringify(onlineUsersIds))
 
-  const possibleOptions = ['1', '2', '3', '5', '8', '13', '?'];
-  await sessionDao.setVotingId(sessionId, 'chairman', votingId, true);
+  await sessionDao.setVoting(sessionId, 'chairman', votingId, true, completeWhenAllVoted, onlineUsersIds);
   
   const sqs = new AWS.SQS( {
     apiVersion: '2012-11-05'
@@ -94,7 +99,7 @@ module.exports.handleVoteFinalization = async (event, context) => {
     }
   }
 
-  await sessionDao.setVotingId(sessionId, 'chairman', votingId, false);
+  await sessionDao.setVoting(sessionId, 'chairman', votingId, false, false, []);
 }
 
 module.exports.voteHandler = async (event, context) => {
