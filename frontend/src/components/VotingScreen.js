@@ -11,7 +11,7 @@ class VotingScreen extends Component {
         console.log(JSON.stringify(props));
         this.state = {
             online: false,
-            activeVoting :  null,
+            activeVoting : null //  this.makeActiveVoting("dsd", ["1", "2", "3", "4"]),
         }
 
         this.optionSelected = this.optionSelected.bind(this);

@@ -24,6 +24,10 @@ class FullScreenSwitch extends Component {
     exitFullscreenHandler()
     {
         console.log('Event handler')
+        console.log('Fullscreen mode changed webkitIsFullScreen: ', document.webkitIsFullScreen);
+        console.log('Fullscreen mode changed mozFullScreen: ', document.mozFullScreen);
+        console.log('Fullscreen mode changed msFullscreenElement: ', document.msFullscreenElement);
+
         if (document.webkitIsFullScreen != undefined)
         {
             this.setState({fullScreen: document.webkitIsFullScreen})
@@ -39,20 +43,21 @@ class FullScreenSwitch extends Component {
         if (document.msFullscreenElement !== null)
         {
             var fullscreen = document.fullScreenElement;
-            console.log('Fullscreen mode changed webkitIsFullScreen: ', document.webkitIsFullScreen);
-            console.log('Fullscreen mode changed mozFullScreen: ', document.mozFullScreen);
-            console.log('Fullscreen mode changed msFullscreenElement: ', document.msFullscreenElement);
+            this.setState({fullScreen: document.fullscreen})
+            return;
         }
     }
 
    
     switchFullscreen(evt) 
     {
-        this.state.noSleep.enable();
         console.log('Fullscreen switch clicked')
         console.log(document.documentElement);
         
         if(this.state.fullScreen == true) {
+            // Nosleep enable
+            this.state.noSleep.disable();
+
             var elem = document;
             if (elem.exitFullscreen) {
                 elem.exitFullscreen();
@@ -65,6 +70,9 @@ class FullScreenSwitch extends Component {
               }
         }
         else{
+            // Nosleep enable
+            this.state.noSleep.enable();
+
             var elem = document.documentElement;
             if (elem.requestFullscreen) {
             elem.requestFullscreen();

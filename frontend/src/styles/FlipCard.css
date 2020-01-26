@@ -38,7 +38,7 @@
     cursor: pointer;
     position: absolute;
     box-sizing: border-box;
-    z-index: 2;
+    /*z-index: 2;*/
     backface-visibility: hidden;  /* W3C */
     -webkit-backface-visibility: hidden; /* Safari & Chrome */
     -moz-backface-visibility: hidden; /* Firefox */

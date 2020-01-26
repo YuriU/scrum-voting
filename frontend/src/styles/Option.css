@@ -7,6 +7,11 @@
     border-color: black;
     position: relative;
     line-height: 180%;
-    border-radius: 10%;
+    border-radius: 20%;
     background-color: cornflowerblue;
 }
+
+.option:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
