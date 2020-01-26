@@ -138,16 +138,16 @@ module.exports.voteHandler = async (event, context) => {
   }
 
   if(chairman.completeWhenAllVoted) {
-    console.log('Trying to finalize the vote')
-    console.log('votingUsersIds' + JSON.stringify(chairman.votingUsersIds))
-    console.log('userId: ' + userId)
 
     const usersWatingFor = chairman.votingUsersIds
                           .filter(uid => uid != userId)
-                          .map(u => ({ userId : uid, result: users.filter(user => user.userId = uid) }));
+                          .map(uid => ({ userId : uid, user: users.filter(user => user.userId === uid)[0] }))
+                          .map(u => ({ userId: u.userId, voted : u.user.votingId === votingId && u.user.result }))
+                          .filter(u => u.voted === false)
 
     console.log(JSON.stringify(usersWatingFor))
-    if(usersWatingFor.lenght == 0)
+
+    if(usersWatingFor.length == 0)
     {
         console.log('Finalizing the vote')
         await finalizeVote(sessionId, votingId);
