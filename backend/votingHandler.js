@@ -89,9 +89,9 @@ async function finalizeVote(sessionId, votingId) {
         });
       }
     }
-  }
 
-  await sessionDao.setVoting(sessionId, 'chairman', votingId, false, false, []);
+    await sessionDao.setVoting(sessionId, 'chairman', votingId, false, false, []);
+  }
 }
 
 module.exports.handleVoteFinalization = async (event, context) => {
