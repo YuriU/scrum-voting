@@ -4,6 +4,10 @@ import { copyToClipboard } from '../../utils/clipboard'
 
 class OnlineUsersControl extends Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (<div className="sessionBoard">
                 { 

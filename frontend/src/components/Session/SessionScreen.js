@@ -16,7 +16,8 @@ class SessionScreen extends Component {
         this.state = {
             users: [],
             votedUsers : new Set(),
-            userVoteResults: new Map()
+            userVoteResults: new Map(),
+            activeVoting: null
         }
 
         this.onMessage = this.onMessage.bind(this);
@@ -30,6 +31,10 @@ class SessionScreen extends Component {
         return (
             <div>
                 <h1>Hello from session {this.props.sessionId}</h1>
+                {
+                    
+
+                }
                 <OnlineUsersControl users={this.state.users} sessionId={this.props.sessionId}/>
                 <div>
                     <button onClick={this.onStartVoteClicked}>Start vote</button>
@@ -71,13 +76,20 @@ class SessionScreen extends Component {
                 votedUsers : this.state.votedUsers
             })
         } else if(message.action == 'VoteFinished') {
+           
             const userResults = message.userResults;
             let map = new Map();
             userResults.forEach(result => {
                 map.set(result.userId, result.result)
             });
             this.setState({
-                userVoteResults : map
+                userVoteResults : map,
+                activeVoting : null
+            })
+        }
+        else if(message.action == 'VoteStarted') {
+            this.setState({
+                activeVoting : {}
             })
         }
         
