@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import '../styles/OnlineIndicatorMobile.css';
+import '../../styles/OnlineIndicatorMobile.css';
 import NoSleep from "nosleep.js";
 
 class FullScreenSwitch extends Component {

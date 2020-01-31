@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import CreateSession from './CreateSession'
-import SessionScreen from './SessionScreen'
-import VotingScreen from './VotingScreen'
-import FullScreenSwitch from './FullscreenSwitch'
+import CreateSession from './EditSession/CreateSession'
+import SessionScreen from './Session/SessionScreen'
+import VotingScreen from './Voting/VotingScreen'
 import '../styles/App.css';
 import { getAllUrlParams } from '../utils/urlutils'
 import { createBrowserHistory } from "history";

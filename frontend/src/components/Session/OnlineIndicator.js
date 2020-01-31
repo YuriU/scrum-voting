@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import '../styles/OnlineIndicatorMobile.css';
+import '../../styles/OnlineIndicator.css';
 
-class OnlineIndicatorMobile extends Component 
+class OnlineIndicator extends Component 
 {
     constructor(props) {
         super(props)
@@ -17,7 +17,7 @@ class OnlineIndicatorMobile extends Component
     }
 
     render() {
-            return (<div className="mobileBar"> 
+            return (<div className="onlineStatus"> 
                 <div className= "card"> 
                     <div className= {this.props.online ? "indicator online" : "indicator offline"} onClick={this.onclick} >{this.props.text}</div> 
                 </div> 
@@ -25,4 +25,4 @@ class OnlineIndicatorMobile extends Component
     }
 }
 
-export default OnlineIndicatorMobile;
+export default OnlineIndicator;

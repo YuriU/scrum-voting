@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import WSClient from '../api/wsclient'
+import WSClient from '../../api/wsclient'
 import VotingControl from './VotingControl'
 import FullScreenSwitch from './FullscreenSwitch'
 import OnlineIndicatorMobile from './OnlineIndicatorMobile'
-import '../styles/FlipCard.css';
+import '../../styles/FlipCard.css';
 
 class VotingScreen extends Component {
     constructor(props) {

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import _ from 'lodash';
-import { copyToClipboard } from '../utils/clipboard'
+import { copyToClipboard } from '../../utils/clipboard'
 import OnlineIndicator from './OnlineIndicator'
-import WSClient from '../api/wsclient'
-import '../styles/Session.css';
+import WSClient from '../../api/wsclient'
+import '../../styles/Session.css';
 
 class SessionScreen extends Component {
 
