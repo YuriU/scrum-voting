@@ -1,0 +1,22 @@
+.animationScreen {
+    height: 100%;
+    width: 100%;
+    background-color: #111111;
+}
+
+.animationProgress {
+    height: 100%;
+    width: 10%;
+    background-color: green;
+    float: left;
+}
+
+.animationScreenContent {
+    height: 100%;
+    float: left;
+}
+
+.right {
+    right: 0;
+    position: absolute;
+}

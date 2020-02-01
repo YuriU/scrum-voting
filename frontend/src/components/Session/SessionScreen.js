@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import _ from 'lodash';
 import WSClient from '../../api/wsclient'
 import OnlineUsersControl from './OnlineUsersControl'
-import ActiveVoting from './ActiveVoting'
+import ActiveVotingAnimation from './ActiveVotingAnimation'
 import '../../styles/Session.css';
 
 
@@ -36,18 +36,21 @@ class SessionScreen extends Component {
     }
 
     render() {
+        if(this.state.mode == SessionScreenMode.ACTIVE_VOTING){
+            return (<ActiveVotingAnimation />)
+        }
+
         return (
             <div>
                 <h1>Hello from session {this.props.sessionId}</h1>
-                {this.state.mode == SessionScreenMode.ACTIVE_VOTING &&
-                    <ActiveVoting />
-                }
                 {this.state.mode == SessionScreenMode.ONLINE &&
-                    <OnlineUsersControl users={this.state.users} sessionId={this.props.sessionId}/>
+                    <div>
+                        <OnlineUsersControl users={this.state.users} sessionId={this.props.sessionId}/>
+                        <div>
+                            <button onClick={this.onStartVoteClicked}>Start vote</button>
+                        </div>
+                    </div>
                 }
-                <div>
-                    <button onClick={this.onStartVoteClicked}>Start vote</button>
-                </div>
             </div>
         )
     }
