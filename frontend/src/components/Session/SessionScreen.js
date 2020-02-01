@@ -2,7 +2,15 @@ import React, { Component } from "react";
 import _ from 'lodash';
 import WSClient from '../../api/wsclient'
 import OnlineUsersControl from './OnlineUsersControl'
+import ActiveVoting from './ActiveVoting'
 import '../../styles/Session.css';
+
+
+const SessionScreenMode = Object.freeze({
+    ONLINE: {},
+    ACTIVE_VOTING: {},
+    RESULTS: {}
+});
 
 class SessionScreen extends Component {
 
@@ -17,7 +25,8 @@ class SessionScreen extends Component {
             users: [],
             votedUsers : new Set(),
             userVoteResults: new Map(),
-            activeVoting: null
+            activeVoting: null,
+            mode: SessionScreenMode.ONLINE
         }
 
         this.onMessage = this.onMessage.bind(this);
@@ -27,15 +36,15 @@ class SessionScreen extends Component {
     }
 
     render() {
-        const self = this;
         return (
             <div>
                 <h1>Hello from session {this.props.sessionId}</h1>
-                {
-                    
-
+                {this.state.mode == SessionScreenMode.ACTIVE_VOTING &&
+                    <ActiveVoting />
                 }
-                <OnlineUsersControl users={this.state.users} sessionId={this.props.sessionId}/>
+                {this.state.mode == SessionScreenMode.ONLINE &&
+                    <OnlineUsersControl users={this.state.users} sessionId={this.props.sessionId}/>
+                }
                 <div>
                     <button onClick={this.onStartVoteClicked}>Start vote</button>
                 </div>
@@ -84,12 +93,14 @@ class SessionScreen extends Component {
             });
             this.setState({
                 userVoteResults : map,
-                activeVoting : null
+                activeVoting : null,
+                mode: SessionScreenMode.ONLINE
             })
         }
         else if(message.action == 'VoteStarted') {
             this.setState({
-                activeVoting : {}
+                activeVoting : {},
+                mode: SessionScreenMode.ACTIVE_VOTING
             })
         }
         

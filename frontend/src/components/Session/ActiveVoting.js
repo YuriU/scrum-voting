@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 class ActiveVoting extends Component {
     
     constructor(props) {
