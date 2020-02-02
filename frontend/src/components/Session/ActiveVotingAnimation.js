@@ -15,10 +15,15 @@ class ActiveVotingAnimation extends Component {
 
         console.log('Props ' + JSON.stringify(this.props.activeVoting))
         this.timer = setInterval(() => {
+
+            const now = new Date();
+            const totalInterval = this.props.activeVoting.endTime.getTime() - this.props.activeVoting.startTime.getTime();
+            const completedInterval =  now.getTime() - this.props.activeVoting.startTime.getTime();
+
             this.setState(prevState => ({
-                    progress: prevState.progress + 1 
+                    progress: completedInterval*100 / totalInterval 
                 }))
-        }, 100)
+        }, 10)
     }
 
     componentWillUnmount() {
@@ -26,9 +31,13 @@ class ActiveVotingAnimation extends Component {
     }
 
     render() {
+
+        const height = this.state.progress + "%";
         return (
             <div className="animationScreen row">
-                <div className="animationProgress column"></div>
+                <div className="animationProgress column">
+                    <div className="progressBar" style={{height: height}}>30</div>
+                </div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
                     <h1>Progress is {this.state.progress}</h1>
@@ -45,6 +54,7 @@ class ActiveVotingAnimation extends Component {
                     </div>
                 </div>
                 <div className="animationProgress column" id="rightProgress">
+                    <div className="progressBar" style={{height: height}}>30</div>
                 </div>
             </div>
         )
