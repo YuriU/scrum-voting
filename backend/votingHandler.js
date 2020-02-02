@@ -6,6 +6,7 @@ const gateway = require('./lib/gateway')
 const randomUtil = require('./lib/randomUtil')
 
 const queueUrl = process.env.FINALIZER_QUEUE_URL;
+const votingTimeoutSeconds = process.env.VOTING_TIMEOUT_SECONDS;
 
 module.exports.startVotingRound = async (event, context) => {
   console.log('Start voting round')
@@ -53,7 +54,8 @@ module.exports.startVotingRound = async (event, context) => {
       await gateway.sendMessageToClient(user.connectionId, {
         action: 'VoteStarted',
         votingId: votingId,
-        possibleOptions: possibleOptions
+        possibleOptions: possibleOptions,
+        timeoutSeconds: votingTimeoutSeconds
       });
     }
   }

@@ -18,7 +18,7 @@ class SessionScreen extends Component {
 
         this.state = {
             users: [],
-            activeVoting: {},
+            activeVoting: null,
             lastVotingResult: null
         }
 
@@ -43,7 +43,7 @@ class SessionScreen extends Component {
             )
         }
         else if(this.state.activeVoting) {
-            return (<ActiveVotingAnimation users={this.state.users} />)
+            return (<ActiveVotingAnimation users={this.state.users} activeVoting={this.state.activeVoting} />)
         }
         else {
             return (
@@ -106,8 +106,16 @@ class SessionScreen extends Component {
             })
         }
         else if(message.action == 'VoteStarted') {
+            var now = new Date();
+            var deadline = new Date();
+            console.log(message.timeoutSeconds)
+            deadline.setSeconds(deadline.getSeconds() + parseInt(message.timeoutSeconds));
+            
             this.setState({
-                activeVoting : {}
+                activeVoting : {
+                    startTime: now,
+                    endTime: deadline
+                }
             })
         }
         

@@ -6,6 +6,23 @@ class ActiveVotingAnimation extends Component {
     
     constructor(props) {
         super(props);
+        this.state = {
+            progress: 0
+        }
+    }
+
+    componentDidMount() {
+
+        console.log('Props ' + JSON.stringify(this.props.activeVoting))
+        this.timer = setInterval(() => {
+            this.setState(prevState => ({
+                    progress: prevState.progress + 1 
+                }))
+        }, 100)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer)
     }
 
     render() {
@@ -14,6 +31,7 @@ class ActiveVotingAnimation extends Component {
                 <div className="animationProgress column"></div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
+                    <h1>Progress is {this.state.progress}</h1>
                     <div className="votingUsersStatusesBox">
                         { 
                             this.props.users.map((user, index) => {
@@ -26,7 +44,8 @@ class ActiveVotingAnimation extends Component {
                         }
                     </div>
                 </div>
-                <div className="animationProgress column" id="rightProgress"></div>
+                <div className="animationProgress column" id="rightProgress">
+                </div>
             </div>
         )
     }
