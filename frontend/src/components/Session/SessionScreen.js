@@ -3,14 +3,9 @@ import _ from 'lodash';
 import WSClient from '../../api/wsclient'
 import OnlineUsersControl from './OnlineUsersControl'
 import ActiveVotingAnimation from './ActiveVotingAnimation'
+import VotingResult from './VotingResult'
 import '../../styles/Session.css';
 
-
-const SessionScreenMode = Object.freeze({
-    ONLINE: {},
-    ACTIVE_VOTING: {},
-    RESULTS: {}
-});
 
 class SessionScreen extends Component {
 
@@ -23,45 +18,46 @@ class SessionScreen extends Component {
 
         this.state = {
             users: [],
-            votedUsers : new Set(),
-            userVoteResults: new Map(),
             activeVoting: null,
-            mode: SessionScreenMode.ONLINE
+            lastVotingResult: null
         }
 
         this.onMessage = this.onMessage.bind(this);
         this.onStartVoteClicked = this.onStartVoteClicked.bind(this);
+        this.onNextVoteClicked = this.onNextVoteClicked.bind(this);
+
         this.socket = new WSClient(this.props.sessionId, "chairman")
         this.socket.onMessage(this.onMessage)
     }
 
     render() {
-        if(this.state.mode == SessionScreenMode.ACTIVE_VOTING){
+
+        if(this.state.lastVotingResult) {
+            return (
+                <div>
+                    <VotingResult />
+                    <div>
+                        <button onClick={this.onNextVoteClicked}>Next vote</button>
+                    </div>
+                </div>
+            )
+        }
+        else if(this.state.activeVoting) {
             return (<ActiveVotingAnimation />)
         }
-
-        return (
-            <div>
-                <h1>Hello from session {this.props.sessionId}</h1>
-                {this.state.mode == SessionScreenMode.ONLINE &&
+        else {
+            return (
+                <div>
+                    <h1>Hello from session {this.props.sessionId}</h1>
                     <div>
                         <OnlineUsersControl users={this.state.users} sessionId={this.props.sessionId}/>
                         <div>
                             <button onClick={this.onStartVoteClicked}>Start vote</button>
                         </div>
                     </div>
-                }
-            </div>
-        )
-    }
-
-    async onStartVoteClicked() {
-        this.state.votedUsers.clear();
-        this.setState({
-            votedUsers: this.state.votedUsers,
-            userVoteResults: new Map()
-        })
-        const result = await this.props.httpClient.startVoting(this.props.sessionId, true);
+                </div>
+            )    
+        }
     }
 
     async componentDidMount() {
@@ -71,6 +67,16 @@ class SessionScreen extends Component {
             sessionId: this.props.sessionId,
             users: users
         });
+    }
+
+    async onStartVoteClicked() {
+        const result = await this.props.httpClient.startVoting(this.props.sessionId, true);
+    }
+
+    async onNextVoteClicked() {
+        this.setState({
+            lastVotingResult: null
+        })
     }
 
     onMessage(evt) {
@@ -83,7 +89,7 @@ class SessionScreen extends Component {
                 users: users
             })
         } else if(message.action == 'userVoted') {
-            this.state.votedUsers.add(message.details.userId);
+            //this.state.votedUsers.add(message.details.userId);
             this.setState({
                 votedUsers : this.state.votedUsers
             })
@@ -95,15 +101,13 @@ class SessionScreen extends Component {
                 map.set(result.userId, result.result)
             });
             this.setState({
-                userVoteResults : map,
-                activeVoting : null,
-                mode: SessionScreenMode.ONLINE
+                lastVotingResult : map,
+                activeVoting : null
             })
         }
         else if(message.action == 'VoteStarted') {
             this.setState({
-                activeVoting : {},
-                mode: SessionScreenMode.ACTIVE_VOTING
+                activeVoting : {}
             })
         }
         
