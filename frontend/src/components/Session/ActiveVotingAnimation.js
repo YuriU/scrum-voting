@@ -21,9 +21,12 @@ class ActiveVotingAnimation extends Component {
             const completedInterval =  now.getTime() - this.props.activeVoting.startTime.getTime();
 
             const progress = completedInterval*100 / totalInterval;
+            let secondsLeft = parseInt((this.props.activeVoting.endTime.getTime() - now.getTime()) / 1000);
+            secondsLeft = secondsLeft < 0 ? 0 : secondsLeft;
 
             this.setState(prevState => ({
-                    progress: progress > 100 ? 100 : progress
+                    progress: progress > 100 ? 100 : progress,
+                    secondsLeft: secondsLeft
                 }))
         }, 10)
     }
@@ -38,11 +41,11 @@ class ActiveVotingAnimation extends Component {
         return (
             <div className="animationScreen row">
                 <div className="animationProgress column">
+                    <div>{this.state.secondsLeft}</div>
                     <div className="progressBar" style={{height: height}}></div>
                 </div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
-                    <h1>Progress is {this.state.progress}</h1>
                     <div className="votingUsersStatusesBox">
                         { 
                             this.props.users.map((user, index) => {
@@ -56,6 +59,7 @@ class ActiveVotingAnimation extends Component {
                     </div>
                 </div>
                 <div className="animationProgress column" id="rightProgress">
+                    <div>{this.state.secondsLeft}</div>
                     <div className="progressBar" style={{height: height}}></div>
                 </div>
             </div>
