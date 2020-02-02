@@ -18,7 +18,7 @@ class SessionScreen extends Component {
 
         this.state = {
             users: [],
-            activeVoting: null,
+            activeVoting: {},
             lastVotingResult: null
         }
 
@@ -43,7 +43,7 @@ class SessionScreen extends Component {
             )
         }
         else if(this.state.activeVoting) {
-            return (<ActiveVotingAnimation />)
+            return (<ActiveVotingAnimation users={this.state.users} />)
         }
         else {
             return (

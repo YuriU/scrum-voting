@@ -8,16 +8,25 @@
     height: 100%;
     width: 10%;
     background-color: green;
-    float: left;
 }
 
 .animationScreenContent {
     text-align: center;
     height: 100%;
+    width: 80%;
+}
+
+.column {
     float: left;
 }
 
-.right {
-    right: 0;
-    position: absolute;
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.votingUsersStatusesBox {
+    align-items: center;
+    width: 100%;
 }
