@@ -41,7 +41,7 @@ provider:
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  votingTimeoutSeconds: 10
+  votingTimeoutSeconds: 5
  
 functions:
   connectHandler:
