@@ -41,8 +41,9 @@ class ActiveVotingAnimation extends Component {
         return (
             <div className="animationScreen row">
                 <div className="animationProgress column">
-                    <div>{this.state.secondsLeft}</div>
-                    <div className="progressBar" style={{height: height}}></div>
+                    <div className="progressBar" style={{height: height}}>
+                        <div className="progressBarLabel">{this.state.secondsLeft}</div>
+                    </div>
                 </div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
@@ -59,8 +60,9 @@ class ActiveVotingAnimation extends Component {
                     </div>
                 </div>
                 <div className="animationProgress column" id="rightProgress">
-                    <div>{this.state.secondsLeft}</div>
-                    <div className="progressBar" style={{height: height}}></div>
+                    <div className="progressBar" style={{height: height}}>
+                        <div className="progressBarLabel">{this.state.secondsLeft}</div>
+                    </div>
                 </div>
             </div>
         )

@@ -34,5 +34,14 @@
 .progressBar {
     width: 100%;
     height: 100%;
-    background-color: coral;
+    display: flex;
+    background-color: coral;    
+    align-items: center;
+    z-index: 1;
+    position: relative;
+}
+
+.progressBarLabel {
+  
+  margin: auto;
 }
