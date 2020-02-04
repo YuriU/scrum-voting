@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../../styles/ActiveVotingAnimation.css'
-import OnlineIndicator from './OnlineIndicator'
+import OnlineUsersControl from './OnlineUsersControl'
 
 class ActiveVotingAnimation extends Component {
     
@@ -12,8 +12,6 @@ class ActiveVotingAnimation extends Component {
     }
 
     componentDidMount() {
-
-        console.log('Props ' + JSON.stringify(this.props.activeVoting))
         this.timer = setInterval(() => {
 
             const now = new Date();
@@ -36,7 +34,6 @@ class ActiveVotingAnimation extends Component {
     }
 
     render() {
-
         const height = this.state.progress + "%";
         return (
             <div className="animationScreen row">
@@ -47,17 +44,7 @@ class ActiveVotingAnimation extends Component {
                 </div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
-                    <div className="votingUsersStatusesBox">
-                        { 
-                            this.props.users.map((user, index) => {
-                                                        return (<OnlineIndicator 
-                                                                    userId={user.userId}
-                                                                    text = { user.name }
-                                                                    key={user.userId}
-                                                                    online={user.online}/>)
-                            })
-                        }
-                    </div>
+                    <OnlineUsersControl users={this.props.users} sessionId="{this.props.sessionId}"/>
                 </div>
                 <div className="animationProgress column" id="rightProgress">
                     <div className="progressBar" style={{height: height}}>

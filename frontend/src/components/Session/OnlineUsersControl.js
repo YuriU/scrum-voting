@@ -11,11 +11,11 @@ class OnlineUsersControl extends Component {
     }
 
     renderRow(items, rowIndex) {
+        console.log(rowIndex)
         return (<div key={rowIndex} className="row">
         {
             items.map((user, index) => {
                 return (<OnlineIndicator
-                            style= {{margin:'auto'}}
                             userId = {user.userId}
                             text = {user.name}
                             key = {user.userId}
@@ -27,7 +27,7 @@ class OnlineUsersControl extends Component {
     }
 
     render() {
-        const rows = OnlineUsersControl.getBoxesByRows(this.props.users);
+        const rows = OnlineUsersControl.getBoxesByRows(this.props.users.slice());
         return (<div className="sessionBoard">
                 { 
                     rows.map((row, index) => {
@@ -44,7 +44,6 @@ class OnlineUsersControl extends Component {
 
     static getBoxesByRows(items) {
         let result = [];
-
         let rowSize = 1;
         
         while(items.length > 0) {
@@ -57,7 +56,7 @@ class OnlineUsersControl extends Component {
             result.push(rowItems)
             rowSize++;
         }
-        
+
         return result;
     }
 }
