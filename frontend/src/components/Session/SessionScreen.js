@@ -91,8 +91,7 @@ class SessionScreen extends Component {
         } else if(message.action == 'userVoted') {
             //this.state.votedUsers.add(message.details.userId);
             this.setState({
-                votedUsers : this.state.votedUsers,
-                users: this.state.users
+                votedUsers : this.state.votedUsers
             })
         } else if(message.action == 'VoteFinished') {
            
@@ -103,8 +102,7 @@ class SessionScreen extends Component {
             });
             this.setState({
                 lastVotingResult : map,
-                activeVoting : null,
-                users: this.state.users
+                activeVoting : null
             })
         }
         else if(message.action == 'VoteStarted') {
@@ -113,13 +111,11 @@ class SessionScreen extends Component {
             console.log(message.timeoutSeconds)
             deadline.setSeconds(deadline.getSeconds() + parseInt(message.timeoutSeconds));
             
-            console.log(JSON.stringify(this.state))
             this.setState({
                 activeVoting : {
                     startTime: now,
                     endTime: deadline
-                },
-                users: this.state.users
+                }
             })
         }
         

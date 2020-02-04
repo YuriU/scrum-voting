@@ -11,7 +11,6 @@ class OnlineUsersControl extends Component {
     }
 
     renderRow(items, rowIndex) {
-        console.log(rowIndex)
         return (<div key={rowIndex} className="row">
         {
             items.map((user, index) => {
