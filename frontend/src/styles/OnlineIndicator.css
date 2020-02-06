@@ -1,9 +1,8 @@
 .onlineStatus {
      width: 200px;
      height: 200px;
-     position: relative;
      margin: 10px;
-     float: left;
+     display: inline-block;
      align-self: center;
   }
 
@@ -17,7 +16,6 @@
     height: 100%;
     padding: 10px;
     cursor: pointer;
-    position: absolute;
     box-sizing: border-box;
     z-index: 2;
     backface-visibility: hidden;  /* W3C */

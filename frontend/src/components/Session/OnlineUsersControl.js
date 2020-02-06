@@ -15,13 +15,13 @@ class OnlineUsersControl extends Component {
             <div className="rowContent">
                 {
                 items.map((user, index) => {
-                    /*return (<OnlineIndicator
+                    return (<OnlineIndicator
                                 userId = {user.userId}
                                 text = {user.name}
                                 key = {user.userId}
                                 online = {user.online}
-                                onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)*/
-                    return (<div className="box"></div>)
+                                onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
+                    //return (<div key = {user.userId} className="box"></div>)
                  })
                 }
             </div>
