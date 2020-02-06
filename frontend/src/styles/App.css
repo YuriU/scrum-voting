@@ -68,3 +68,12 @@ svg {
   stroke-dashoffset: 440;
   transition: all 1s linear;
 }
+
+.box {
+    background-color:red;
+    display:inline-block;
+    width:50px;
+    height:50px;
+    margin:2px 5px;     
+    border:2px solid #ccc;
+}

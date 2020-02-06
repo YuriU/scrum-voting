@@ -12,16 +12,19 @@ class OnlineUsersControl extends Component {
 
     renderRow(items, rowIndex) {
         return (<div key={rowIndex} className="row">
-        {
-            items.map((user, index) => {
-                return (<OnlineIndicator
-                            userId = {user.userId}
-                            text = {user.name}
-                            key = {user.userId}
-                            online = {user.online}
-                            onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
-            })
-        }
+            <div className="rowContent">
+                {
+                items.map((user, index) => {
+                    /*return (<OnlineIndicator
+                                userId = {user.userId}
+                                text = {user.name}
+                                key = {user.userId}
+                                online = {user.online}
+                                onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)*/
+                    return (<div className="box"></div>)
+                 })
+                }
+            </div>
         </div>);
     }
 
@@ -43,7 +46,7 @@ class OnlineUsersControl extends Component {
 
     static getBoxesByRows(items) {
         let result = [];
-        let rowSize = 1;
+        let rowSize = 2;
         
         while(items.length > 0) {
             let i = 0;

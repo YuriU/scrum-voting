@@ -26,6 +26,17 @@
     clear: both;
 }
 
+.row {
+    width: 100%;
+}
+
+.rowContent {
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    
+}
+
 .votingUsersStatusesBox {
     align-items: center;
     width: 100%;
