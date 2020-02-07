@@ -15,17 +15,17 @@ body {
   margin: 0
 }
 
-.box {
+.flexBox {
     display: flex;
     flex-flow: column;
     height: 100%;
 }
 
-.box .row {
+.flexBox .row {
     /*border: 1px dotted grey;*/
 }
 
-.box .row.header {
+.flexBox .row.header {
     flex: 0 1 auto;
     /* The above is shorthand for:
     flex-grow: 0,
@@ -34,14 +34,16 @@ body {
     */
 }
 
-.box .row.content {
+.flexBox .row.content {
     flex: 1 1 auto;
+    height: 60%;
 }
 
-.box .row.footer {
+.flexBox .row.footer {
     flex: 0 1 40px;
 }
 
 .votescreen {
     background-color: darkslategray;
+    height: 100%;
 }
