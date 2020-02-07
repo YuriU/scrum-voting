@@ -1,17 +1,12 @@
 .onlineStatus {
-     width: 200px;
-     height: 200px;
+     width: 150px;
+     height: 150px;
      margin: 10px;
      display: inline-block;
      align-self: center;
   }
 
-  .onlineStatus .card {
-    width: 100%;
-    height: 100%;
-  }
-
-  .onlineStatus .card .indicator {
+  .onlineStatus .indicator {
     width: 100%;
     height: 100%;
     padding: 10px;
@@ -21,24 +16,19 @@
     backface-visibility: hidden;  /* W3C */
     box-shadow: 0 0 10px rgba(0,0,0,0.6);
     overflow: auto;
-  }
 
-  .onlineStatus .card .offline {
     font-family: Georgia;
-    font-size: 2em;
+    font-size: 1.5em;
     text-align: center;
-    line-height: 160px;
-    background-color: #900000;
-    border: 3px solid white;
+    line-height: 120px;
+    border: 3px solid #104010;
     color: white;
   }
 
-  .onlineStatus .card .online {
-    font-family: Georgia;
-    font-size: 2em;
-    text-align: center;
-    line-height: 160px;
+  .onlineStatus .offline {
+    background-color: rgba(red, green, blue, 0);
+  }
+
+  .onlineStatus .online {
     background-color: #009000;
-    border: 3px solid white;
-    color: white;
   }

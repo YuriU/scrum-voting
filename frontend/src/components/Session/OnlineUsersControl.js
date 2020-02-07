@@ -56,7 +56,7 @@ class OnlineUsersControl extends Component {
                 rowItems.push(item)
             }
             result.push(rowItems)
-            rowSize++;
+            rowSize+=2;
         }
 
         return result;
