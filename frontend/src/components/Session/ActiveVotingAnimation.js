@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../../styles/ActiveVotingAnimation.css'
-import OnlineUsersControl from './OnlineUsersControl'
+import VotersStatusesControl from './VotersStatusesControl'
 
 class ActiveVotingAnimation extends Component {
     
@@ -44,7 +44,7 @@ class ActiveVotingAnimation extends Component {
                 </div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
-                    <OnlineUsersControl users={this.props.users} sessionId="{this.props.sessionId}"/>
+                    <VotersStatusesControl users={this.props.users} sessionId="{this.props.sessionId}"/>
                 </div>
                 <div className="animationProgress column" id="rightProgress">
                     <div className="progressBar" style={{height: height}}>

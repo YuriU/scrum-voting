@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import OnlineIndicator from './OnlineIndicator'
+import StatusBox from './StatusBox'
 import { copyToClipboard } from '../../utils/clipboard'
 
-class OnlineUsersControl extends Component {
+class VotersStatusesControl extends Component {
 
     constructor(props) {
         super(props);
@@ -15,13 +15,12 @@ class OnlineUsersControl extends Component {
             <div className="rowContent">
                 {
                 items.map((user, index) => {
-                    return (<OnlineIndicator
+                    return (<StatusBox
                                 userId = {user.userId}
                                 text = {user.name}
                                 key = {user.userId}
                                 online = {user.online}
                                 onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
-                    //return (<div key = {user.userId} className="box"></div>)
                  })
                 }
             </div>
@@ -29,7 +28,7 @@ class OnlineUsersControl extends Component {
     }
 
     render() {
-        const rows = OnlineUsersControl.getBoxesByRows(this.props.users.slice());
+        const rows = VotersStatusesControl.getBoxesByRows(this.props.users.slice());
         return (<div className="sessionBoard">
                 { 
                     rows.map((row, index) => {
@@ -63,4 +62,4 @@ class OnlineUsersControl extends Component {
     }
 }
 
-export default OnlineUsersControl;
+export default VotersStatusesControl;

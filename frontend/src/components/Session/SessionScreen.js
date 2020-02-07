@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import _ from 'lodash';
 import WSClient from '../../api/wsclient'
-import OnlineUsersControl from './OnlineUsersControl'
+import VotersStatusesControl from './VotersStatusesControl'
 import ActiveVotingAnimation from './ActiveVotingAnimation'
 import VotingResult from './VotingResult'
 import '../../styles/Session.css';
@@ -50,7 +50,7 @@ class SessionScreen extends Component {
                 <div>
                     <h1>Hello from session {this.props.sessionId}</h1>
                     <div>
-                        <OnlineUsersControl users={this.state.users} sessionId={this.props.sessionId}/>
+                        <VotersStatusesControl users={this.state.users} sessionId={this.props.sessionId}/>
                         <div>
                             <button onClick={this.onStartVoteClicked}>Start vote</button>
                         </div>
