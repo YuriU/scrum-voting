@@ -3,7 +3,10 @@ h1 {
     text-align: center;
 }
 
-html,
+html {
+    height: 100%;  
+    background-color: white;
+}
 body {
   height: 100%;
   margin: 0;
@@ -46,4 +49,8 @@ body {
 .votescreen {
     background-color: darkslategray;
     height: 100%;
+}
+
+.nomargin {
+    margin: 0px, 0px, 0px, 0px;
 }

@@ -34,7 +34,7 @@ class SessionScreen extends Component {
 
         if(this.state.lastVotingResult) {
             return (
-                <div>
+                <div className="nomargin">
                     <VotingResult />
                     <div>
                         <button onClick={this.onNextVoteClicked}>Next vote</button>
@@ -47,11 +47,11 @@ class SessionScreen extends Component {
         }
         else {
             return (
-                <div>
+                <div className="nomargin">
                     <h1>Hello from session {this.props.sessionId}</h1>
-                    <div>
+                    <div className="nomargin">
                         <VotersStatusesControl users={this.state.users} sessionId={this.props.sessionId}/>
-                        <div>
+                        <div className="nomargin">
                             <button onClick={this.onStartVoteClicked}>Start vote</button>
                         </div>
                     </div>

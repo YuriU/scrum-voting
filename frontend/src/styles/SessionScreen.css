@@ -26,7 +26,8 @@
   }
 
   .statusBox .offline {
-    background-color: rgba(red, green, blue, 0);
+    /*background-color: rgba(red, green, blue, 0);*/
+    background-color: red;
   }
 
   .statusBox .online {
