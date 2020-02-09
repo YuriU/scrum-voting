@@ -28,6 +28,7 @@ class VotingScreen extends Component {
 
         this.onMessage = this.onMessage.bind(this);
         this.socket.onMessage(this.onMessage)
+        this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
     }
 
     render() {
@@ -49,11 +50,20 @@ class VotingScreen extends Component {
 
     componentDidMount() {
         this.socket.connect()
+        document.addEventListener('visibilitychange', this.handleVisibilityChange, false);
     }
 
     componentWillUnmount() {
         this.socket.disconnect()
     }
+
+    handleVisibilityChange() {
+        if (document.visibilityState == "hidden") {
+            this.socket.disconnect()
+        } else {
+            this.socket.connect()
+        }
+      }
 
     optionSelected(option){
         console.log(option)
