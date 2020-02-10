@@ -32,7 +32,7 @@ class SessionScreen extends Component {
 
     render() {
 
-        if(this.state.lastVotingResult) {
+        if (this.state.lastVotingResult) {
             return (
                 <div className="nomargin">
                     <VotingResult />
@@ -42,21 +42,21 @@ class SessionScreen extends Component {
                 </div>
             )
         }
-        else if(this.state.activeVoting) {
+        else if (this.state.activeVoting) {
             return (<ActiveVotingAnimation users={this.state.users} activeVoting={this.state.activeVoting} />)
         }
         else {
             return (
-                <div className="nomargin">
-                    <h1>Hello from session {this.props.sessionId}</h1>
+                <div className="centered">
+                    <h1>Hello from session {this.props.sessionId}</h1>                    
                     <div className="nomargin">
-                        <VotersStatusesControl users={this.state.users} sessionId={this.props.sessionId}/>
+                        <VotersStatusesControl users={this.state.users} sessionId={this.props.sessionId} />
                         <div className="nomargin">
                             <button onClick={this.onStartVoteClicked}>Start vote</button>
                         </div>
                     </div>
                 </div>
-            )    
+            )
         }
     }
 
@@ -81,44 +81,44 @@ class SessionScreen extends Component {
 
     onMessage(evt) {
         const message = JSON.parse(evt.data);
-        if(message.action == 'OnlineStatusUpdate') {
+        if (message.action == 'OnlineStatusUpdate') {
             console.log('Online status updated')
             let users = message.users;
             this.setState({
                 sessionId: this.props.sessionId,
                 users: users
             })
-        } else if(message.action == 'userVoted') {
+        } else if (message.action == 'userVoted') {
             //this.state.votedUsers.add(message.details.userId);
             this.setState({
-                votedUsers : this.state.votedUsers
+                votedUsers: this.state.votedUsers
             })
-        } else if(message.action == 'VoteFinished') {
-           
+        } else if (message.action == 'VoteFinished') {
+
             const userResults = message.userResults;
             let map = new Map();
             userResults.forEach(result => {
                 map.set(result.userId, result.result)
             });
             this.setState({
-                lastVotingResult : map,
-                activeVoting : null
+                lastVotingResult: map,
+                activeVoting: null
             })
         }
-        else if(message.action == 'VoteStarted') {
+        else if (message.action == 'VoteStarted') {
             var now = new Date();
             var deadline = new Date();
             console.log(message.timeoutSeconds)
             deadline.setSeconds(deadline.getSeconds() + parseInt(message.timeoutSeconds));
-            
+
             this.setState({
-                activeVoting : {
+                activeVoting: {
                     startTime: now,
                     endTime: deadline
                 }
             })
         }
-        
+
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         console.log(`${time} : ${JSON.stringify(message)}`);

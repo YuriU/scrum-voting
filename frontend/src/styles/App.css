@@ -1,6 +1,7 @@
 h1 {
     color: #27aedb;
     text-align: center;
+    display: inline-block
 }
 
 html {
@@ -53,4 +54,8 @@ body {
 
 .nomargin {
     margin: 0px, 0px, 0px, 0px;
+}
+
+.centered {
+    text-align: center;
 }
