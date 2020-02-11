@@ -9,6 +9,7 @@
     width: 10%;
     background-color: green;
     display: flex;
+    position: relative;
 }
 
 .animationScreenContent {
@@ -54,8 +55,8 @@
 
 .progressBarLabel {
    position: absolute;
-   top: 40%;
-   width: 10%;
+   top: 45%;
+   width: 100%;
    text-align: center;
    margin: auto;
    display: inline-block;

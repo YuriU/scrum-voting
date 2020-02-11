@@ -100,10 +100,10 @@ class SessionScreen extends Component {
             userResults.forEach(result => {
                 map.set(result.userId, result.result)
             });
-            this.setState({
+            /*this.setState({
                 lastVotingResult: map,
                 activeVoting: null
-            })
+            })*/
         }
         else if (message.action == 'VoteStarted') {
             var now = new Date();
