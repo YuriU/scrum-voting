@@ -35,7 +35,7 @@ class SessionScreen extends Component {
         if (this.state.lastVotingResult) {
             return (
                 <div className="nomargin">
-                    <VotingResult />
+                    <VotingResult results={this.state.lastVotingResult} />
                     <div>
                         <button onClick={this.onNextVoteClicked}>Next vote</button>
                     </div>
@@ -94,7 +94,6 @@ class SessionScreen extends Component {
                 votedUsers: this.state.votedUsers
             })
         } else if (message.action == 'VoteFinished') {
-
             const userResults = message.userResults;
             let map = new Map();
             userResults.forEach(result => {

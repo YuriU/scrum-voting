@@ -26,10 +26,18 @@
   }
 
   .statusBox .offline {
-    /*background-color: rgba(red, green, blue, 0);*/
     background-color: red;
   }
 
   .statusBox .online {
     background-color: #009000;
   }
+
+  .statusBox .empty {
+    background-color: rgba(0,0,0,1);
+  }
+
+  .statusBox .voted {
+    background-color: #8f8f05;
+  }
+
