@@ -11,15 +11,17 @@ class VotingResult extends Component {
     render(){
 
 
-        
+
 
         return (
+            
+
             <div className="animationScreen">
                 <div className="animationScreenContent">
                     <h1>Voting result</h1>
                     {
-                        this.props.results.values.map((res, index) => {
-                            <div key={index}>res</div>
+                        Array.from(this.props.results.entries()).map((res, index) => {
+                                return (<div key={index}><h1>Result</h1></div>)
                         })
                     }
                 </div>
