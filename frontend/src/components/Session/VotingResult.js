@@ -13,8 +13,8 @@ class VotingResult extends Component {
 
     render(){
         return (
-            <div className="animationScreen">
-                <div className="animationScreenContent">
+            <div>
+                <div>
                     <h1>Voting result</h1>
                     {
                         Array.from(this.props.results.entries()).map((res, index) => {
