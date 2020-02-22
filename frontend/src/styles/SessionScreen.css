@@ -37,6 +37,10 @@
     background-color: rgba(0,0,0,1);
   }
 
+  .statusBox .inactive {
+    background-color: grey
+  }
+
   .statusBox .voted {
     background-color: #8f8f05;
   }

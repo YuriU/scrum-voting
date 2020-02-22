@@ -9,6 +9,8 @@ class ActiveVotingAnimation extends Component {
         this.state = {
             progress: 0
         }
+
+        this.getUserOnlineStatus = this.getUserOnlineStatus.bind(this);
     }
 
     componentDidMount() {
@@ -57,7 +59,20 @@ class ActiveVotingAnimation extends Component {
 
     getUserOnlineStatus(user) 
     {
-        return user.online ? "online" : "offline";
+        if(this.props.activeVoting.onlineUsersIds.includes(user.userId))
+        {
+            console.log(JSON.stringify(this.props.votedUsers));
+            if(this.props.activeVoting.votedUserIds.includes(user.userId)){
+                return "online";
+            }
+            else{
+                return "empty";    
+            }
+        }
+        else 
+        {
+            return "inactive";
+        }
     }
 }
 

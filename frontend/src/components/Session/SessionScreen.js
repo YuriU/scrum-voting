@@ -49,7 +49,7 @@ class SessionScreen extends Component {
             )
         }
         else if (this.state.activeVoting) {
-            return (<ActiveVotingAnimation users={this.state.users} activeVoting={this.state.activeVoting} />)
+            return (<ActiveVotingAnimation users={this.state.users} activeVoting={this.state.activeVoting} votedUsers={this.state.votedUsers} />)
         }
         else {
             return (
@@ -118,10 +118,15 @@ class SessionScreen extends Component {
                 users: users
             })
         } else if (message.action == 'userVoted') {
-            //this.state.votedUsers.add(message.details.userId);
-            this.setState({
-                votedUsers: this.state.votedUsers
-            })
+            console.log('User voted')
+            console.log(JSON.stringify(message))
+            if(this.state.activeVoting && this.state.activeVoting.votingId === message.details.votingId)
+            {
+                this.state.activeVoting.votedUserIds.push(message.details.userId);
+                this.setState({
+                    activeVoting: this.state.activeVoting
+                })
+            }
         } else if (message.action == 'VoteFinished') {
             const userResults = message.userResults;
             let map = new Map();
@@ -141,8 +146,11 @@ class SessionScreen extends Component {
 
             this.setState({
                 activeVoting: {
+                    votingId: message.votingId,
                     startTime: now,
-                    endTime: deadline
+                    endTime: deadline,
+                    onlineUsersIds: message.onlineUsersIds,
+                    votedUserIds: []
                 }
             })
         }
