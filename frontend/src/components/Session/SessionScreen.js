@@ -25,6 +25,7 @@ class SessionScreen extends Component {
         this.onMessage = this.onMessage.bind(this);
         this.onStartVoteClicked = this.onStartVoteClicked.bind(this);
         this.onNextVoteClicked = this.onNextVoteClicked.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
 
         this.socket = new WSClient(this.props.sessionId, "chairman")
         this.socket.onMessage(this.onMessage)
@@ -36,9 +37,6 @@ class SessionScreen extends Component {
             return (
                 <div className="sessionScreen">
                     <VotingResult results={this.state.lastVotingResult} />
-                    <div>
-                        <button onClick={this.onNextVoteClicked}>Next vote</button>
-                    </div>
                 </div>
             )
         }
@@ -51,9 +49,6 @@ class SessionScreen extends Component {
                     <h1>Hello from session {this.props.sessionId}</h1>                    
                     <div>
                         <VotersStatusesControl users={this.state.users} sessionId={this.props.sessionId} />
-                        <div>
-                            <button onClick={this.onStartVoteClicked}>Start vote</button>
-                        </div>
                     </div>
                 </div>
             )
@@ -61,12 +56,17 @@ class SessionScreen extends Component {
     }
 
     async componentDidMount() {
+        document.addEventListener('keypress', this.onKeyPress);
         this.socket.connect();
         const users = await this.props.getSessionUsers(this.props.sessionId);
         this.setState({
             sessionId: this.props.sessionId,
             users: users
         });
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keypress', this.onKeyPress)
     }
 
     async onStartVoteClicked() {
@@ -77,6 +77,17 @@ class SessionScreen extends Component {
         this.setState({
             lastVotingResult: null
         })
+    }
+
+    async onKeyPress(event){
+        if(this.state.lastVotingResult) {
+            this.setState({
+                lastVotingResult: null
+            })
+        }
+        else if(this.state.activeVoting == null) {
+            await this.onStartVoteClicked();
+        }
     }
 
     onMessage(evt) {
