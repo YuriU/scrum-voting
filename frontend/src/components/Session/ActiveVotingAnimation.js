@@ -44,7 +44,7 @@ class ActiveVotingAnimation extends Component {
                 </div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
-                    <VotersStatusesControl users={this.props.users} sessionId="{this.props.sessionId}"/>
+                    <VotersStatusesControl users={this.props.users} getStatus={this.getUserOnlineStatus} sessionId={this.props.sessionId}/>
                 </div>
                 <div className="animationProgress column" id="rightProgress">
                     <div className="progressBar" style={{height: height}}>
@@ -53,6 +53,11 @@ class ActiveVotingAnimation extends Component {
                 </div>
             </div>
         )
+    }
+
+    getUserOnlineStatus(user) 
+    {
+        return user.online ? "online" : "offline";
     }
 }
 

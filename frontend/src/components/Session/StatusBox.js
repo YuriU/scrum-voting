@@ -18,7 +18,7 @@ class StatusBox extends Component
 
     render() {
         return (<div className="statusBox"> 
-                    <div className= {this.props.online ? "indicator online" : "indicator offline"} onClick={this.onclick} >{this.props.text}</div> 
+                    <div className= {this.props.status ? "indicator " + this.props.status : "indicator inactive"} onClick={this.onclick} >{this.props.text}</div> 
                 </div>)
     }
 }

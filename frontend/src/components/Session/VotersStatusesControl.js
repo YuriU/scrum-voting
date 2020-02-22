@@ -19,7 +19,7 @@ class VotersStatusesControl extends Component {
                                 userId = {user.userId}
                                 text = {user.name}
                                 key = {user.userId}
-                                online = {user.online}
+                                status = {this.props.getStatus(user)}
                                 onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
                  })
                 }

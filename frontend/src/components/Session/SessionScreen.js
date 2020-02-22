@@ -56,11 +56,16 @@ class SessionScreen extends Component {
                 <div className="sessionScreen">
                     <h1>Hello from session {this.props.sessionId}</h1>                    
                     <div>
-                        <VotersStatusesControl users={this.state.users} sessionId={this.props.sessionId} />
+                        <VotersStatusesControl users={this.state.users} getStatus={this.getUserOnlineStatus} sessionId={this.props.sessionId} />
                     </div>
                 </div>
             )
         }
+    }
+
+    getUserOnlineStatus(user) 
+    {
+        return user.online ? "online" : "offline";
     }
 
     async componentDidMount() {

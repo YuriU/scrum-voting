@@ -55,7 +55,8 @@ module.exports.startVotingRound = async (event, context) => {
         action: 'VoteStarted',
         votingId: votingId,
         possibleOptions: possibleOptions,
-        timeoutSeconds: votingTimeoutSeconds
+        timeoutSeconds: votingTimeoutSeconds,
+        onlineUsersIds: onlineUsersIds
       });
     }
   }
