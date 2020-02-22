@@ -36,7 +36,7 @@ class ActiveVotingAnimation extends Component {
     render() {
         const height = this.state.progress + "%";
         return (
-            <div className="animationScreen row">
+            <div className="sessionScreen row">
                 <div className="animationProgress column">
                     <div className="progressBar" style={{height: height}}>
                     </div>
