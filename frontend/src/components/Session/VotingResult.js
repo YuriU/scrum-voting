@@ -18,23 +18,22 @@ class VotingResult extends Component {
 
         console.log(this.state)
         return (
-            <div>
-                <div>
+            <div style={{width:"100%"}}>
+                <div style={{width:"100%"}}>
                     <h1>Voting result</h1>
                     {
                         Array.from(this.state.groupedByResult).map((res, index) => {
                             return (
-                            <div className="row" key={index}>
-                                <div className="column" style={{width:"10%"}}></div>
-                                <div className="column" style={{width:"20%"}}><h1>{res[0]}</h1></div>
-                                <div className="column" style={{width:"50%"}}>
+                            <div className="row" style={{width:"100%"}} key={index}>
+                                <div className="column" style={{width:"40%"}}><h1>{res[0]}</h1></div>
+                                <div className="column" style={{width:"40%"}}>
                                     {
+
                                         res[1].map((userId, i2) => {
-                                            return (<span key={i2}><h1>{userId}</h1></span>)
+                                        return (<span key={i2}><h1 className="resultUsers">{i2 > 0 ? "," : ""}{userId}</h1></span>)
                                         })
                                     }
                                 </div>
-                                <div className="column" style={{width:"10%"}}></div>
                             </div>)
                         })
                     }

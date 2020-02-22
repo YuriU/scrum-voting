@@ -41,7 +41,6 @@
     background-color: #8f8f05;
   }
 
-
   .sessionScreen {
     background-color: #111111;
     width: 100%;
@@ -49,4 +48,8 @@
     margin: 0px, 0px, 0px, 0px;
     padding-top: 2%;
     box-sizing: border-box;
+  }
+
+  .resultUsers {
+    display: inline-block
   }
