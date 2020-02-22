@@ -17,6 +17,7 @@ class SessionScreen extends Component {
         console.log(props)
 
         this.state = {
+            connected: false,
             users: [],
             activeVoting: null,
             lastVotingResult: null
@@ -29,6 +30,13 @@ class SessionScreen extends Component {
 
         this.socket = new WSClient(this.props.sessionId, "chairman")
         this.socket.onMessage(this.onMessage)
+        this.socket.onConnect(() => {
+            this.setState({ connected: true })
+        })
+
+        this.socket.onDisconnect(() => {
+            this.setState({ connected: false })
+        })
     }
 
     render() {
@@ -70,7 +78,12 @@ class SessionScreen extends Component {
     }
 
     async onStartVoteClicked() {
-        const result = await this.props.httpClient.startVoting(this.props.sessionId, true);
+        if(!this.state.connected){
+            alert('Please reconnect');
+        }
+        else {
+            const result = await this.props.httpClient.startVoting(this.props.sessionId, true);
+        }
     }
 
     async onNextVoteClicked() {
