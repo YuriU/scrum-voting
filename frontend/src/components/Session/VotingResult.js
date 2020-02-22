@@ -25,14 +25,16 @@ class VotingResult extends Component {
                         Array.from(this.state.groupedByResult).map((res, index) => {
                             return (
                             <div className="row" key={index}>
-                                <div><h1>{res[0]}</h1></div>
-                                <div>
+                                <div className="column" style={{width:"10%"}}></div>
+                                <div className="column" style={{width:"20%"}}><h1>{res[0]}</h1></div>
+                                <div className="column" style={{width:"50%"}}>
                                     {
                                         res[1].map((userId, i2) => {
-                                            return (<h1 key={i2}>{userId}</h1>)
+                                            return (<span key={i2}><h1>{userId}</h1></span>)
                                         })
                                     }
                                 </div>
+                                <div className="column" style={{width:"10%"}}></div>
                             </div>)
                         })
                     }
