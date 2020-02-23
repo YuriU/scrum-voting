@@ -4,17 +4,13 @@ class VotingResult extends Component {
     
     constructor(props) {
         super(props);
-
-        console.log(JSON.stringify(props.results))
         let grouped = VotingResult.groupByResult(props.results);
         this.state ={
             groupedByResult : grouped
         };
     }
 
-    render(){
-
-        console.log(this.state)
+    render() {
         return (
             <div style={{width:"100%"}}>
                 <div style={{width:"100%"}}>
@@ -26,7 +22,6 @@ class VotingResult extends Component {
                                 <div className="column" style={{width:"40%"}}><h1>{res[0]}</h1></div>
                                 <div className="column" style={{width:"40%"}}>
                                     {
-
                                         res[1].map((userId, i2) => {
                                         return (<span key={i2}><h1 className="resultUsers">{i2 > 0 ? "," : ""}{userId}</h1></span>)
                                         })
@@ -58,12 +53,14 @@ class VotingResult extends Component {
 
         const array = Array.from(groupedByResult);
         array.sort((first, second) => {
-
-            if(second[0] == 'N/A'){
+            if(first[0] === '<NA>') {
                 return 1;
             }
+            else if(second[0] === '<NA>'){
+                return -1;
+            }
             else {
-                return first[1].length - second[1].length
+                return second[1].length - first[1].length;
             }
         })
 
