@@ -42,7 +42,7 @@ class ActiveVotingAnimation extends Component {
                 <div className="animationProgress column">
                     <div className="progressBar" style={{height: height}}>
                     </div>
-                    <div className="progressBarLabel"><span className="black"><h1>{this.state.secondsLeft}</h1></span></div>
+                    <div className="progressBarLabel"><span className="black"><h1>{this.pad(this.state.secondsLeft, 2)}</h1></span></div>
                 </div>
                 <div className="animationScreenContent column">
                     <h1>Active voting</h1>
@@ -51,7 +51,7 @@ class ActiveVotingAnimation extends Component {
                 <div className="animationProgress column" id="rightProgress">
                     <div className="progressBar" style={{height: height}}>
                     </div>
-                    <div className="progressBarLabel"><span className="black"><h1>{this.state.secondsLeft}</h1></span></div>
+                    <div className="progressBarLabel"><span className="black"><h1>{this.pad(this.state.secondsLeft, 2)}</h1></span></div>
                 </div>
             </div>
         )
@@ -73,6 +73,12 @@ class ActiveVotingAnimation extends Component {
         {
             return "inactive";
         }
+    }
+
+    pad(num, size) {
+        var s = num+"";
+        while (s.length < size) s = "0" + s;
+        return s;
     }
 }
 
