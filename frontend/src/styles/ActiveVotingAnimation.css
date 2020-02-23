@@ -57,3 +57,16 @@
    display: inline-block;
    z-index: 2;
 }
+
+span.black {
+    background: #111111;
+     border-radius: 2.4em;
+    -moz-border-radius: 2.4em;
+    -webkit-border-radius: 2.4em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 30px;
+    text-align: center;
+    width: 4.8em; 
+  }
