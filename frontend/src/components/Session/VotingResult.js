@@ -10,8 +10,6 @@ class VotingResult extends Component {
         this.state ={
             groupedByResult : grouped
         };
-
-        console.log(JSON.stringify(grouped))
     }
 
     render(){
@@ -22,7 +20,7 @@ class VotingResult extends Component {
                 <div style={{width:"100%"}}>
                     <h1>Voting result</h1>
                     {
-                        Array.from(this.state.groupedByResult).map((res, index) => {
+                        this.state.groupedByResult.map((res, index) => {
                             return (
                             <div className="row" style={{width:"100%"}} key={index}>
                                 <div className="column" style={{width:"40%"}}><h1>{res[0]}</h1></div>
@@ -54,12 +52,22 @@ class VotingResult extends Component {
                 groupedByResult.set(result, []);
             }
 
-            console.log(result);
             var resultValues = groupedByResult.get(result);
             resultValues.push(userName);
         }
 
-        return groupedByResult;
+        const array = Array.from(groupedByResult);
+        array.sort((first, second) => {
+
+            if(second[0] == 'N/A'){
+                return 1;
+            }
+            else {
+                return first[1].length - second[1].length
+            }
+        })
+
+        return array;
     }
 }
 
