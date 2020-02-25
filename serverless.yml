@@ -149,6 +149,16 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         DelaySeconds: ${self:custom.votingTimeoutSeconds}
+    UserPool:
+      Type: "AWS::Cognito::UserPool"
+    UserPoolDomain:
+      Type: AWS::Cognito::UserPoolDomain
+      Properties:
+        Domain: "yuriiulianetstest"
+        UserPoolId: !Ref UserPool
+
+
+    
 
 package:
   exclude:
