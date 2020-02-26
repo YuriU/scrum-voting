@@ -8,8 +8,13 @@ class MainScreen extends Component {
       super(props);
 
       this.state = {
-        authenticated: false
+        authenticated: false,
+        userName: null,
+        password: null
       };
+
+      this.handleChangeName = this.handleChangeName.bind(this);
+      this.handleChangePassword = this.handleChangePassword.bind(this);
     }
 
 
@@ -26,6 +31,23 @@ class MainScreen extends Component {
       catch(err){
         console.log(err)
       }
+    }
+
+    async login(){
+      console.log(this.state.userName);
+      console.log(this.state.password);
+    }
+
+    handleChangeName(event){
+      this.setState({
+        userName: event.target.value
+      });
+    }
+
+    handleChangePassword(event){
+      this.setState({
+        password: event.target.value
+      });
     }
 
     render() {
@@ -47,7 +69,15 @@ class MainScreen extends Component {
         </div>)
       }
       else {
-        return (<div>Login please</div>)
+        return (<div>
+            <div>
+              <label>UserName: <input type="text" onChange={this.handleChangeName}></input></label>
+            </div>
+            <div>
+              <label>Password: <input type="password" onChange={this.handleChangePassword}></input></label>
+            </div>
+            <button onClick={(evt) => this.login()}>Login</button>
+          </div>)
       }
     }
 }
