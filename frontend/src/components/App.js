@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CreateSession from './EditSession/CreateSession'
 import SessionScreen from './Session/SessionScreen'
 import VotingScreen from './Voting/VotingScreen'
+import MainScreen from './Main/MainScreen'
 import '../styles/App.css';
 import { getAllUrlParams } from '../utils/urlutils'
 import { createBrowserHistory } from "history";
@@ -12,8 +13,8 @@ import {
     Route,
     Link
   } 
-  from "react-router-dom";
 
+from "react-router-dom";
 import Amplify, { Auth } from 'aws-amplify';
 import Config from '../config'
 
@@ -39,11 +40,11 @@ class App extends Component {
     }
 
     async componentWillMount() {
-      const result = await Auth.signIn("<UserName>", "<UserPassword>");
+      /*const result = await Auth.signIn("<UserName>", "<UserPassword>");
       console.log(JSON.stringify(result))
 
       const session = await Auth.currentSession();
-      console.log(JSON.stringify(session))
+      console.log(JSON.stringify(session))*/
     }
 
     async onCreateSession(items) {
@@ -82,21 +83,7 @@ class App extends Component {
                 }>  
                 </Route>
                 <Route path="/">
-                  <div>
-                  <nav>
-                    <ul>
-                      <li>
-                        <Link to="/">Home</Link>
-                      </li>
-                      <li>
-                        <Link to="/startSession">Start Session</Link>
-                      </li>
-                      <li>
-                        <Link to="/session">Session</Link>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
+                  <MainScreen />
                 </Route>
               </Switch>
             </Router>
