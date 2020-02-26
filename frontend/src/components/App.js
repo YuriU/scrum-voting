@@ -14,6 +14,9 @@ import {
   } 
   from "react-router-dom";
 
+import Amplify, { Auth } from 'aws-amplify';
+import Config from '../config'
+
 
 class App extends Component {
 
@@ -25,6 +28,22 @@ class App extends Component {
         this.onCreateSession = this.onCreateSession.bind(this);
         this.getSessionUsers = this.getSessionUsers.bind(this);
         this.history = createBrowserHistory();
+
+        Amplify.configure({
+          Auth: {
+            region : Config.Region,
+            userPoolId: Config.UserPoolId,
+            userPoolWebClientId: Config.UserPoolClientId
+          }
+        });
+    }
+
+    async componentWillMount() {
+      const result = await Auth.signIn("<UserName>", "<UserPassword>");
+      console.log(JSON.stringify(result))
+
+      const session = await Auth.currentSession();
+      console.log(JSON.stringify(session))
     }
 
     async onCreateSession(items) {
@@ -36,6 +55,10 @@ class App extends Component {
     async getSessionUsers(sessionId) {
       const result = await this.httpClient.getSession(sessionId);
       return result;
+    }
+
+    componentDidMount() {
+
     }
 
     render() {
