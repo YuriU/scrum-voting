@@ -110,6 +110,8 @@ resources:
       Value: { "Fn::Join" :["", ["wss://", { Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]}
     Region:
       Value: "${self:provider.region}"
+    UserPoolId:
+      Value: !Ref UserPool
   Resources:
     WebSite:
         Type: "AWS::S3::Bucket"

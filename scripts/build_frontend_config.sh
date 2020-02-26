@@ -23,14 +23,22 @@ WS_ENDPOINT=$(aws \
     --query "Stacks[0].Outputs[?OutputKey=='WebSocketEndpoint'] | [0].OutputValue" \
     --output text)
 
+USER_POOL_ID=$(aws \
+    cloudformation describe-stacks \
+    --stack-name "scrum-vote-${STAGE}" \
+    --query "Stacks[0].Outputs[?OutputKey=='UserPoolId'] | [0].OutputValue" \
+    --output text)
+
 echo ${HTTP_ENDPOINT}
 echo ${WS_ENDPOINT}
 echo ${REGION}
+echo ${USER_POOL_ID}
 
 echo "const Config = {
     Region: \"${REGION}\",
     BackendHttpEndpoint: \"${HTTP_ENDPOINT}\",
-    BackendWebSocketEndpoint: \"${WS_ENDPOINT}\"
+    BackendWebSocketEndpoint: \"${WS_ENDPOINT}\",
+    UserPoolId: \"${USER_POOL_ID}\"
 }
 
 export default Config;" > ${DESTINATION}
