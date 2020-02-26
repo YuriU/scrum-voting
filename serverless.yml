@@ -101,13 +101,15 @@ functions:
 resources:
   Outputs:
     WebSiteUrl:
-      Value: {"Fn::GetAtt": [WebSite, WebsiteURL]}
+      Value: { "Fn::GetAtt": [WebSite, WebsiteURL] }
     WebSiteBucket:
-      Value: {Ref: WebSite}
+      Value: { Ref: WebSite }
     HttpEndpoint:
       Value: { "Fn::Join" :["", ["https://", { Ref: ApiGatewayRestApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]} 
     WebSocketEndpoint:
-      Value: { "Fn::Join" :["", ["wss://", { Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]} 
+      Value: { "Fn::Join" :["", ["wss://", { Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]}
+    Region:
+      Value: "${self:provider.region}"
   Resources:
     WebSite:
         Type: "AWS::S3::Bucket"
@@ -157,8 +159,6 @@ resources:
         Domain: "yuriiulianetstest"
         UserPoolId: !Ref UserPool
 
-
-    
 
 package:
   exclude:
