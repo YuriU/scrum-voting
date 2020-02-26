@@ -112,6 +112,8 @@ resources:
       Value: "${self:provider.region}"
     UserPoolId:
       Value: !Ref UserPool
+    UserPoolAppClientId:
+      Value: !Ref UserPoolClient
   Resources:
     WebSite:
         Type: "AWS::S3::Bucket"
@@ -156,9 +158,13 @@ resources:
     UserPool:
       Type: "AWS::Cognito::UserPool"
     UserPoolDomain:
-      Type: AWS::Cognito::UserPoolDomain
+      Type: "AWS::Cognito::UserPoolDomain"
       Properties:
         Domain: "yuriiulianetstest"
+        UserPoolId: !Ref UserPool
+    UserPoolClient:
+      Type: "AWS::Cognito::UserPoolClient"
+      Properties:
         UserPoolId: !Ref UserPool
 
 
