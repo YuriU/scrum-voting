@@ -38,6 +38,15 @@ class MainScreen extends Component {
       console.log(this.state.password);
 
       const loginResult = await Auth.signIn(this.state.userName, this.state.password);
+      
+      const currentSession = await Auth.currentSession();
+        console.log(currentSession);
+        if(currentSession) {
+          this.setState({
+            authenticated: true
+          })
+        }
+
       console.log(loginResult)
     }
 
