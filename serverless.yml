@@ -166,7 +166,19 @@ resources:
       Type: "AWS::Cognito::UserPoolClient"
       Properties:
         UserPoolId: !Ref UserPool
-
+        AllowedOAuthFlowsUserPoolClient: true
+        SupportedIdentityProviders:
+          - "COGNITO"
+        AllowedOAuthFlows:
+          - implicit
+        CallbackURLs:
+          - "http://localhost:8080/"
+        LogoutURLs:
+          - "http://localhost:8080/"
+        AllowedOAuthScopes:
+          - "email"
+          - "openid"
+          - "profile"
 
 package:
   exclude:
