@@ -36,6 +36,9 @@ class MainScreen extends Component {
     async login(){
       console.log(this.state.userName);
       console.log(this.state.password);
+
+      const loginResult = await Auth.signIn(this.state.userName, this.state.password);
+      console.log(loginResult)
     }
 
     handleChangeName(event){
