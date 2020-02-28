@@ -15,6 +15,7 @@ provider:
     WS_ENDPOINT_URL: { "Fn::Join" :["", [{ Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]}
     FINALIZER_QUEUE_URL: !Ref FinalizeVoteResultQueue
     VOTING_TIMEOUT_SECONDS: "${self:custom.votingTimeoutSeconds}"
+    USER_POOL_ID: !Join ['', ['arn:aws:cognito-idp:',!Ref AWS::Region,':',!Ref AWS::AccountId,':userpool/',!Ref CognitoUserPool]]
 
 
   iamRoleStatements:
@@ -71,6 +72,12 @@ functions:
           cors: true
           path: /startSession
           method: post
+          authorizer:
+            name: authorizer
+            arn: !Join ['', ['arn:aws:cognito-idp:',!Ref AWS::Region,':',!Ref AWS::AccountId,':userpool/',!Ref CognitoUserPool]]
+    DependsOn:
+      - CognitoUserPoolsls
+
   getSession:
     handler: backend/sessionHandler.getSession
     events:
@@ -91,6 +98,7 @@ functions:
           cors: true
           path: /startVoting
           method: post
+            
   handleVoteFinalization:
     handler: backend/votingHandler.handleVoteFinalization
     events:
@@ -111,9 +119,11 @@ resources:
     Region:
       Value: "${self:provider.region}"
     UserPoolId:
-      Value: !Ref UserPool
+      Value: !Ref CognitoUserPool
     UserPoolAppClientId:
       Value: !Ref UserPoolClient
+    UserPoolArn:
+      Value: !GetAtt 'CognitoUserPool.Arn'
   Resources:
     WebSite:
         Type: "AWS::S3::Bucket"
@@ -155,17 +165,17 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         DelaySeconds: ${self:custom.votingTimeoutSeconds}
-    UserPool:
+    CognitoUserPool:
       Type: "AWS::Cognito::UserPool"
     UserPoolDomain:
       Type: "AWS::Cognito::UserPoolDomain"
       Properties:
         Domain: "yuriiulianetstest"
-        UserPoolId: !Ref UserPool
+        UserPoolId: !Ref CognitoUserPool
     UserPoolClient:
       Type: "AWS::Cognito::UserPoolClient"
       Properties:
-        UserPoolId: !Ref UserPool
+        UserPoolId: !Ref CognitoUserPool
         AllowedOAuthFlowsUserPoolClient: true
         SupportedIdentityProviders:
           - "COGNITO"
