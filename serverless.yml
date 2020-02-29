@@ -76,7 +76,7 @@ functions:
             name: authorizer
             arn: !Join ['', ['arn:aws:cognito-idp:',!Ref AWS::Region,':',!Ref AWS::AccountId,':userpool/',!Ref CognitoUserPool]]
     DependsOn:
-      - CognitoUserPoolsls
+      - CognitoUserPool
 
   getSession:
     handler: backend/sessionHandler.getSession

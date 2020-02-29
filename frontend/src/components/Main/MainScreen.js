@@ -8,7 +8,7 @@ class MainScreen extends Component {
       super(props);
 
       this.state = {
-        authenticated: false,
+        authenticated: true,
         userName: null,
         password: null
       };
