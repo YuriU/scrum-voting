@@ -15,8 +15,6 @@ provider:
     WS_ENDPOINT_URL: { "Fn::Join" :["", [{ Ref: WebsocketsApi }, ".execute-api.${self:provider.region}.amazonaws.com/${self:custom.stage}"]]}
     FINALIZER_QUEUE_URL: !Ref FinalizeVoteResultQueue
     VOTING_TIMEOUT_SECONDS: "${self:custom.votingTimeoutSeconds}"
-    USER_POOL_ID: !Join ['', ['arn:aws:cognito-idp:',!Ref AWS::Region,':',!Ref AWS::AccountId,':userpool/',!Ref CognitoUserPool]]
-
 
   iamRoleStatements:
     - Effect: Allow
@@ -118,11 +116,11 @@ resources:
     Region:
       Value: "${self:provider.region}"
     UserPoolId:
-      Value: !Ref CognitoUserPool
+      Value: !Ref UserPool
     UserPoolAppClientId:
       Value: !Ref UserPoolClient
     UserPoolArn:
-      Value: !GetAtt 'CognitoUserPool.Arn'
+      Value: !GetAtt 'UserPool.Arn'
   Resources:
     WebSite:
         Type: "AWS::S3::Bucket"
@@ -164,17 +162,17 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         DelaySeconds: ${self:custom.votingTimeoutSeconds}
-    CognitoUserPool:
+    UserPool:
       Type: "AWS::Cognito::UserPool"
     UserPoolDomain:
       Type: "AWS::Cognito::UserPoolDomain"
       Properties:
         Domain: "yuriiulianetstest"
-        UserPoolId: !Ref CognitoUserPool
+        UserPoolId: !Ref UserPool
     UserPoolClient:
       Type: "AWS::Cognito::UserPoolClient"
       Properties:
-        UserPoolId: !Ref CognitoUserPool
+        UserPoolId: !Ref UserPool
         AllowedOAuthFlowsUserPoolClient: true
         SupportedIdentityProviders:
           - "COGNITO"
@@ -197,7 +195,7 @@ resources:
         RestApiId: { Ref: ApiGatewayRestApi }
         Type: COGNITO_USER_POOLS
         ProviderARNs: 
-          - {"Fn::Join": ["", ["arn:aws:cognito-idp:", {Ref: "AWS::Region"}, ":", {Ref: "AWS::AccountId"}, ":userpool/", Ref: CognitoUserPool]]}
+          - !GetAtt 'UserPool.Arn'
 
 package:
   exclude:
