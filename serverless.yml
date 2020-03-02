@@ -41,6 +41,7 @@ provider:
 custom:
   stage: ${opt:stage, self:provider.stage}
   votingTimeoutSeconds: 5
+  extra: ${file(vars/${self:custom.stage}.yml)}
  
 functions:
   connectHandler:
@@ -167,7 +168,7 @@ resources:
     UserPoolDomain:
       Type: "AWS::Cognito::UserPoolDomain"
       Properties:
-        Domain: "yuriiulianetstest"
+        Domain: ${self:custom.extra.Authentication.DomainName}
         UserPoolId: !Ref UserPool
     UserPoolClient:
       Type: "AWS::Cognito::UserPoolClient"
