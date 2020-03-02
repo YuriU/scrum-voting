@@ -8,7 +8,7 @@ class MainScreen extends Component {
       super(props);
 
       this.state = {
-        authenticated: true,
+        authenticated: false,
         userName: null,
         password: null
       };
@@ -21,7 +21,7 @@ class MainScreen extends Component {
     async componentDidMount() {
       try{
         const currentSession = await Auth.currentSession();
-        console.log(currentSession);
+        console.log('Current session' + JSON.stringify(currentSession));
         if(currentSession) {
           this.setState({
             authenticated: true
@@ -29,7 +29,7 @@ class MainScreen extends Component {
         }
       }
       catch(err){
-        console.log(err)
+        console.log('Error' + err)
       }
     }
 
