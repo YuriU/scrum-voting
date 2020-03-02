@@ -50,6 +50,23 @@ class MainScreen extends Component {
       console.log(loginResult)
     }
 
+    async logout() {
+        await Auth.signOut();
+
+        const currentSession = await Auth.currentSession();
+        console.log(currentSession);
+        if(currentSession) {
+          this.setState({
+            authenticated: true
+          })
+        }
+        else {
+          this.setState({
+            authenticated: false
+          })
+        }
+    }
+
     handleChangeName(event){
       this.setState({
         userName: event.target.value
@@ -78,6 +95,7 @@ class MainScreen extends Component {
               </li>
             </ul>
           </nav>
+          <button onClick={(evt) => this.logout()}>Logout</button>
         </div>)
       }
       else {
