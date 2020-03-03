@@ -15,46 +15,27 @@ class MainScreen extends Component {
 
       this.handleChangeName = this.handleChangeName.bind(this);
       this.handleChangePassword = this.handleChangePassword.bind(this);
+      this.updateLoginState = this.updateLoginState.bind(this);
     }
 
 
     async componentDidMount() {
-      try{
-        const currentSession = await Auth.currentSession();
-        console.log('Current session' + JSON.stringify(currentSession));
-        if(currentSession) {
-          this.setState({
-            authenticated: true
-          })
-        }
-      }
-      catch(err){
-        console.log('Error' + err)
-      }
+      await this.updateLoginState();
     }
 
     async login(){
-      console.log(this.state.userName);
-      console.log(this.state.password);
-
       const loginResult = await Auth.signIn(this.state.userName, this.state.password);
-      
-      const currentSession = await Auth.currentSession();
-        console.log(currentSession);
-        if(currentSession) {
-          this.setState({
-            authenticated: true
-          })
-        }
-
-      console.log(loginResult)
+      await this.updateLoginState();
     }
 
     async logout() {
         await Auth.signOut();
+        await this.updateLoginState();
+    }
 
+    async updateLoginState() {
+      try {
         const currentSession = await Auth.currentSession();
-        console.log(currentSession);
         if(currentSession) {
           this.setState({
             authenticated: true
@@ -65,7 +46,14 @@ class MainScreen extends Component {
             authenticated: false
           })
         }
+      }
+      catch(error) {
+        this.setState({
+          authenticated: false
+        })
+      }
     }
+    
 
     handleChangeName(event){
       this.setState({
