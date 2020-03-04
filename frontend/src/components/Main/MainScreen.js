@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
+import Login from './Login';
 
 class MainScreen extends Component {
 
@@ -13,18 +14,10 @@ class MainScreen extends Component {
         password: null
       };
 
-      this.handleChangeName = this.handleChangeName.bind(this);
-      this.handleChangePassword = this.handleChangePassword.bind(this);
       this.updateLoginState = this.updateLoginState.bind(this);
     }
 
-
     async componentDidMount() {
-      await this.updateLoginState();
-    }
-
-    async login(){
-      const loginResult = await Auth.signIn(this.state.userName, this.state.password);
       await this.updateLoginState();
     }
 
@@ -53,19 +46,6 @@ class MainScreen extends Component {
         })
       }
     }
-    
-
-    handleChangeName(event){
-      this.setState({
-        userName: event.target.value
-      });
-    }
-
-    handleChangePassword(event){
-      this.setState({
-        password: event.target.value
-      });
-    }
 
     render() {
       if(this.state.authenticated) {
@@ -87,15 +67,7 @@ class MainScreen extends Component {
         </div>)
       }
       else {
-        return (<div>
-            <div>
-              <label>UserName: <input type="text" onChange={this.handleChangeName}></input></label>
-            </div>
-            <div>
-              <label>Password: <input type="password" onChange={this.handleChangePassword}></input></label>
-            </div>
-            <button onClick={(evt) => this.login()}>Login</button>
-          </div>)
+        return (<Login />)
       }
     }
 }
