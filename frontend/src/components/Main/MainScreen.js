@@ -50,7 +50,7 @@ class MainScreen extends Component {
 
     renderContent() {
       if(this.state.authenticated) {
-        return (<button onClick={(evt) => this.logout()}>Logout</button>)
+        return (<div>Enjoy</div>)
       }
       else {
         return (<Login updateLoginState={this.updateLoginState} />)
@@ -64,11 +64,13 @@ class MainScreen extends Component {
               <li>
                 <Link to="/">Home</Link>
               </li>  
+              {
+                this.state.authenticated && (<li>
+                  <Link to="/startSession">Start Session</Link>
+                </li>)
+              }
               <li>
-                <Link to="/startSession">Start Session</Link>
-              </li>
-              <li>
-                <Link className="rightItem" onClick={(evt) => this.logout()}>Logout</Link>
+                <Link className="rightItem" to="/" onClick={(evt) => this.logout()}>Logout</Link>
               </li>
             </ul>
           </nav>
