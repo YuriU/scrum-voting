@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import Login from './Login';
+import '../../styles/Main.css'
 
 class MainScreen extends Component {
 
@@ -47,28 +48,34 @@ class MainScreen extends Component {
       }
     }
 
-    render() {
+    renderContent() {
       if(this.state.authenticated) {
-        return (<div>
+        return (<button onClick={(evt) => this.logout()}>Logout</button>)
+      }
+      else {
+        return (<Login updateLoginState={this.updateLoginState} />)
+      }
+    }
+
+    render() {
+        return (<div className="navbar">
           <nav>
             <ul>
               <li>
                 <Link to="/">Home</Link>
-              </li>
+              </li>  
               <li>
                 <Link to="/startSession">Start Session</Link>
               </li>
               <li>
-                <Link to="/session">Session</Link>
+                <Link className="rightItem" onClick={(evt) => this.logout()}>Logout</Link>
               </li>
             </ul>
           </nav>
-          <button onClick={(evt) => this.logout()}>Logout</button>
+          {
+            this.renderContent()
+          }
         </div>)
-      }
-      else {
-        return (<Login />)
-      }
     }
 }
 
