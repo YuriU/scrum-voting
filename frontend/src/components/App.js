@@ -39,14 +39,6 @@ class App extends Component {
         });
     }
 
-    async componentWillMount() {
-      /*const result = await Auth.signIn("<UserName>", "<UserPassword>");
-      console.log(JSON.stringify(result))
-
-      const session = await Auth.currentSession();
-      console.log(JSON.stringify(session))*/
-    }
-
     async onCreateSession(items) {
         const result = await this.httpClient.startSession(items);
         console.log(result.SessionId);
@@ -56,10 +48,6 @@ class App extends Component {
     async getSessionUsers(sessionId) {
       const result = await this.httpClient.getSession(sessionId);
       return result;
-    }
-
-    componentDidMount() {
-
     }
 
     render() {
