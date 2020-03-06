@@ -12,10 +12,6 @@ class SessionScreen extends Component {
     constructor(props) {
         super(props);
 
-        console.log('SessionScreen Ctor ..')
-        console.log('SessionScreen props ..')
-        console.log(props)
-
         this.state = {
             connected: false,
             users: [],
@@ -54,7 +50,7 @@ class SessionScreen extends Component {
         else {
             return (
                 <div className="sessionScreen">
-                    <h1>Hello from session {this.props.sessionId}</h1>                    
+                    <h1>Users Online</h1>                    
                     <div>
                         <VotersStatusesControl users={this.state.users} getStatus={this.getUserOnlineStatus} sessionId={this.props.sessionId} />
                     </div>
