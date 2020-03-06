@@ -159,6 +159,10 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
+        TimeToLiveSpecification:
+          AttributeName: TTL
+          Enabled: true
+
     FinalizeVoteResultQueue:
       Type: "AWS::SQS::Queue"
       Properties:

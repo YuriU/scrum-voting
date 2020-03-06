@@ -10,11 +10,14 @@ module.exports.startSession = async (event, context) => {
 
   const sessionId = randomUtil.generateId();
   const usesToAdd = JSON.parse(event.body);
+  const secondsSinceEpoch = Math.round(Date.now() / 1000);
+  const ttl = secondsSinceEpoch + 60 * 60 * 24;
   usesToAdd.forEach(user => { 
       user.sessionId = sessionId; 
-      user.userId = randomUtil.generateId(); 
+      user.userId = randomUtil.generateId();
+      user.TTL = ttl;
     });
-  usesToAdd.push({sessionId: sessionId, userId: 'chairman'})
+  usesToAdd.push({sessionId: sessionId, userId: 'chairman', TTL: ttl})
         
   await sessionDao.batchWriteUsers(usesToAdd);
   
