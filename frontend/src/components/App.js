@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import CreateSession from './EditSession/CreateSession'
 import SessionScreen from './Session/SessionScreen'
 import VotingScreen from './Voting/VotingScreen'
 import MainScreen from './Main/MainScreen'

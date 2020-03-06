@@ -3,9 +3,6 @@ import React, { Component } from "react";
 class UserInput extends Component {
     constructor(props) {
         super(props)
-
-        console.log(props)
-
         this.state = {
             item: props.item,
             deleteUser: props.deleteUser

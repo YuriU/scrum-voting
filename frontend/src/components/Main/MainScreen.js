@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Auth } from 'aws-amplify';
 import Login from './Login';
 import '../../styles/Main.css'
-import CreateSession from '../EditSession/CreateSession'
+import CreateSession from './CreateSession'
 import {
   Router as Router,
   Switch,
