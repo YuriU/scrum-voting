@@ -7,7 +7,8 @@ import {
   Router as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } 
 from "react-router-dom";
 
@@ -57,18 +58,16 @@ class MainScreen extends Component {
     }
 
     renderContent() {
-      if(this.state.authenticated) {
         return (<Router history={this.props.history}>
           <Switch>
             <Route path="/startSession">
-              <CreateSession onCreateSession={this.onCreateSession}/>
+              {this.state.authenticated ? <CreateSession onCreateSession={this.onCreateSession}/> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/login">
+              <Login updateLoginState={this.updateLoginState} />
             </Route>
           </Switch>
         </Router>)
-      }
-      else {
-        return (<Login updateLoginState={this.updateLoginState} />)
-      }
     }
 
     async onCreateSession(items) {
@@ -88,9 +87,16 @@ class MainScreen extends Component {
                   <Link to="/startSession">Start Session</Link>
                 </li>)
               }
-              <li>
-                <Link className="rightItem" to="/" onClick={(evt) => this.logout()}>Logout</Link>
-              </li>
+              {
+                this.state.authenticated && <li>
+                  <Link className="rightItem" to="/" onClick={(evt) => this.logout()}>Logout</Link>
+                </li>
+              }
+              {
+                !this.state.authenticated && <li>
+                  <Link className="rightItem" to="/login">Login</Link>
+                </li>
+              }
             </ul>
           </nav>
           {

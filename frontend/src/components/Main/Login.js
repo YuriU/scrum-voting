@@ -34,7 +34,7 @@ class Login extends Component {
       }
 
     render() {
-        return (<div>
+        return (<div className="loginBox">
             <div>
               <label>UserName: <input type="text" onChange={this.handleChangeName}></input></label>
             </div>
