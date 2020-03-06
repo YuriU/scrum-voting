@@ -18,7 +18,8 @@ class HttpClient {
     }
 
     async startVoting(sessionId, completeWhenAllVoted) {
-        return await this.post('/startVoting', { sessionId: sessionId, completeWhenAllVoted : completeWhenAllVoted })
+        let accessToken = await (await Auth.currentSession()).getIdToken().getJwtToken();
+        return await this.post('/startVoting', { sessionId: sessionId, completeWhenAllVoted : completeWhenAllVoted }, accessToken)
     }
 
     async post(method, data, accessToken) {
