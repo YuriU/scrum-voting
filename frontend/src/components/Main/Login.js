@@ -34,15 +34,18 @@ class Login extends Component {
       }
 
     render() {
-        return (<div className="loginBox">
-            <div>
-              <label>UserName: <input type="text" onChange={this.handleChangeName}></input></label>
+        return (<div className="loginScreen" >
+            <div className="loginBox">
+                <div>
+                    <label><b>UserName:</b><input type="text" onChange={this.handleChangeName}></input></label>
+                </div>
+                <div>
+                <label><b>Password:</b><input type="password" onChange={this.handleChangePassword}></input></label>
+                </div>
+                    <button onClick={(evt) => this.login()}>Login</button>
+                </div>
             </div>
-            <div>
-              <label>Password: <input type="password" onChange={this.handleChangePassword}></input></label>
-            </div>
-            <button onClick={(evt) => this.login()}>Login</button>
-          </div>)
+            )
     }
 }
 

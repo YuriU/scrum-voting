@@ -76,7 +76,7 @@ class MainScreen extends Component {
   }
 
     render() {
-        return (<div>
+        return (<div className="mainscreen">
           <nav className="navbar">
             <ul>
               <li>
