@@ -17,8 +17,12 @@ class Login extends Component {
     }
 
     async login() {
-        const loginResult = await Auth.signIn(this.state.userName, this.state.password);
+        const user = await Auth.signIn(this.state.userName, this.state.password);
+        console.log(user)
         await this.props.updateLoginState();
+        if(user.username) {
+            this.props.history.push('/');
+        }
     }
 
     handleChangeName(event){

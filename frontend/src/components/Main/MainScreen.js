@@ -64,7 +64,7 @@ class MainScreen extends Component {
               {this.state.authenticated ? <CreateSession onCreateSession={this.onCreateSession}/> : <Redirect to="/login" />}
             </Route>
             <Route path="/login">
-              <Login updateLoginState={this.updateLoginState} />
+              <Login updateLoginState={this.updateLoginState} history={this.props.history} />
             </Route>
           </Switch>
         </Router>)
