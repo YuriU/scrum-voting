@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import Login from './Login';
 import '../../styles/Main.css'
+import CreateSession from '../EditSession/CreateSession'
+import {
+  Router as Router,
+  Switch,
+  Route,
+  Link
+} 
+from "react-router-dom";
 
 class MainScreen extends Component {
 
@@ -16,6 +23,7 @@ class MainScreen extends Component {
       };
 
       this.updateLoginState = this.updateLoginState.bind(this);
+      this.onCreateSession = this.onCreateSession.bind(this);
     }
 
     async componentDidMount() {
@@ -50,16 +58,27 @@ class MainScreen extends Component {
 
     renderContent() {
       if(this.state.authenticated) {
-        return (<div>Enjoy</div>)
+        return (<Router history={this.props.history}>
+          <Switch>
+            <Route path="/startSession">
+              <CreateSession onCreateSession={this.onCreateSession}/>
+            </Route>
+          </Switch>
+        </Router>)
       }
       else {
         return (<Login updateLoginState={this.updateLoginState} />)
       }
     }
 
+    async onCreateSession(items) {
+      const result = await this.props.httpClient.startSession(items);
+      this.props.history.push('/session/' + result.SessionId)        
+  }
+
     render() {
-        return (<div className="navbar">
-          <nav>
+        return (<div>
+          <nav className="navbar">
             <ul>
               <li>
                 <Link to="/">Home</Link>
