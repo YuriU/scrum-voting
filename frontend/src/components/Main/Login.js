@@ -71,9 +71,7 @@ class Login extends Component {
       }
     }
 
-    async changePassword() {
-      console.log(JSON.stringify(this.state.newPasswordRequest))
-      
+    async changePassword() {      
       try{
         const user = await Auth.completeNewPassword(
           this.state.newPasswordRequest.user,
