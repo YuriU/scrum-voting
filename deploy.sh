@@ -1,10 +1,16 @@
 #!/bin/bash
 set -eu
 
-echo $@
+STAGE="dev";
+
+while getopts ":s:" opt; do
+  case $opt in
+    s) STAGE="$OPTARG";;
+  esac
+done
 
 sls deploy $@
 
-./scripts/build_frontend_config.sh ./frontend/src/config.js
+./scripts/build_frontend_config.sh ./frontend/src/config.js $STAGE
 
-./scripts/deploy_static_files.sh
+./scripts/deploy_static_files.sh $STAGE

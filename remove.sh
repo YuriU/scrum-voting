@@ -1,6 +1,14 @@
 #!/bin/bash
 set -eu
 
-./scripts/delete_static_files.sh
+STAGE="dev";
 
-sls remove
+while getopts ":s:" opt; do
+  case $opt in
+    s) STAGE="$OPTARG";;
+  esac
+done
+
+./scripts/delete_static_files.sh $STAGE
+
+sls remove $@

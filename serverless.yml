@@ -173,6 +173,9 @@ resources:
         DelaySeconds: ${self:custom.votingTimeoutSeconds}
     UserPool:
       Type: "AWS::Cognito::UserPool"
+      Properties:
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: true
     UserPoolDomain:
       Type: "AWS::Cognito::UserPoolDomain"
       Properties:
