@@ -16,16 +16,25 @@ class Login extends Component {
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.clearMessage = this.clearMessage.bind(this);
+        this.changePassword = this.changePassword.bind(this);
+        this.handleNewPasswordChange = this.handleNewPasswordChange.bind(this);
+        this.handleNewPassword2Change = this.handleNewPassword2Change.bind(this);
     }
 
     async login() {
       try 
       {
         const user = await Auth.signIn(this.state.userName, this.state.password);
-        console.log(user)
+        if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+          this.setState({
+            message: 'New password required',
+            newPasswordRequest: { user: user }
+          })
+        }
+
         await this.props.updateLoginState();
-        if(user.username) {
-            this.props.history.push('/');
+        if(!user.challengeName && user.username){
+          this.props.history.push('/');
         }
       }
       catch (err) 
@@ -62,6 +71,27 @@ class Login extends Component {
       }
     }
 
+    async changePassword() {
+      console.log(JSON.stringify(this.state.newPasswordRequest))
+      
+      try{
+        const user = await Auth.completeNewPassword(
+          this.state.newPasswordRequest.user,
+          this.state.newPasswordRequest.newPassword,
+        );
+
+        await this.props.updateLoginState();
+        if(!user.challengeName && user.username){
+          this.props.history.push('/');
+        }
+      }
+      catch(error) {
+        this.setState({
+          message: err
+        })
+      }
+    }
+
     handleChangeName(event){
         this.setState({
           userName: event.target.value
@@ -71,6 +101,22 @@ class Login extends Component {
     handleChangePassword(event){
       this.setState({
         password: event.target.value
+      });
+    }
+
+    handleNewPasswordChange(event){
+      const state = this.state;
+      state.newPasswordRequest.newPassword = event.target.value;
+      this.setState({
+        state
+      });
+    }
+
+    handleNewPassword2Change(event){
+      const state = this.state;
+      state.newPasswordRequest.newPassword2 = event.target.value;
+      this.setState({
+        state
       });
     }
 
@@ -87,15 +133,24 @@ class Login extends Component {
                 {this.state.message}
                 <button onClick={this.clearMessage}>&times;</button>
               </div>}
-              <div className="loginBox">
+              {this.state.newPasswordRequest == null && <div className="loginBox">
                 <div>
                     <label><b>UserName:</b><input type="text" onChange={this.handleChangeName}></input></label>
                 </div>
                 <div>
-                <label><b>Password:</b><input type="password" onChange={this.handleChangePassword}></input></label>
+                  <label><b>Password:</b><input type="password" onChange={this.handleChangePassword}></input></label>
                 </div>
-                    <button onClick={(evt) => this.login()}>Login</button>
+                <button onClick={(evt) => this.login()}>Login</button>
+              </div>}
+              {this.state.newPasswordRequest != null && <div className="loginBox">
+                <div>
+                    <label><b>New password:</b><input type="password" onChange={this.handleNewPasswordChange}></input></label>
                 </div>
+                <div>
+                  <label><b>Retype password:</b><input type="password" onChange={this.handleNewPassword2Change}></input></label>
+                </div>
+                <button onClick={(evt) => this.changePassword()}>Change password</button>
+              </div>}
             </div>
           </div>)
     }
