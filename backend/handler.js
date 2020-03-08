@@ -97,6 +97,7 @@ module.exports.handleStreamEvent = async (event, context) => {
               ({
                   userId : u.userId,
                   name : u.name,
+                  alias: u.alias,
                   online : u.connectionId ? true : false
               })
           )

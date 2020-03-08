@@ -17,7 +17,7 @@ class VotersStatusesControl extends Component {
                 items.map((user, index) => {
                     return (<StatusBox
                                 userId = {user.userId}
-                                text = {user.name}
+                                text = {user.alias}
                                 key = {user.userId}
                                 status = {this.props.getStatus(user)}
                                 onClick={(evt) => this.onUserClick(this.props.sessionId, user.userId)}/>)
