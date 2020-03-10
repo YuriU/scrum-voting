@@ -88,3 +88,14 @@
 .loginBox button:hover {
     opacity: 0.8;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 30px;
+  line-height: 50px; /* Vertically center the text there */
+  background-color: #d8d8d8;
+  text-align: center;
+}

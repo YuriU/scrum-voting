@@ -102,6 +102,9 @@ class MainScreen extends Component {
           {
             this.renderContent()
           }
+          <footer className="footer">
+
+          </footer>
         </div>)
     }
 }
