@@ -103,7 +103,7 @@ class MainScreen extends Component {
             this.renderContent()
           }
           <footer className="footer">
-
+              <span class="text-muted">Yurii Ulianets 2020. Powered by <a href="https://aws.amazon.com/">AWS</a>,<a href="https://serverless.com/">Serverless</a>,<a href="https://reactjs.org/">React</a> and <a href="https://aws-amplify.github.io/docs/js/authentication">AmplifyJS</a></span>
           </footer>
         </div>)
     }
