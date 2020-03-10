@@ -89,12 +89,12 @@ class MainScreen extends Component {
               }
               {
                 this.state.authenticated && <li>
-                  <Link className="rightItem" to="/" onClick={(evt) => this.logout()}>Logout</Link>
+                  <Link to="/" onClick={(evt) => this.logout()}>Logout</Link>
                 </li>
               }
               {
                 !this.state.authenticated && <li>
-                  <Link className="rightItem" to="/login">Login</Link>
+                  <Link to="/login">Login</Link>
                 </li>
               }
             </ul>

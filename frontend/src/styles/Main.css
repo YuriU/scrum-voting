@@ -12,6 +12,7 @@
   
 .navbar li:last-child {
     border-right: none;
+    float:right;
   }
   
 .navbar li a {
