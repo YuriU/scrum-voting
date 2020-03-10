@@ -66,6 +66,9 @@ class MainScreen extends Component {
             <Route path="/login">
               <Login updateLoginState={this.updateLoginState} history={this.props.history} />
             </Route>
+            <Route path="/">
+                <h1>Welcome to scrum voting system</h1>
+            </Route>
           </Switch>
         </Router>)
     }
