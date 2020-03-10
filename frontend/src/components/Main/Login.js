@@ -72,7 +72,16 @@ class Login extends Component {
     }
 
     async changePassword() {      
-      try{
+
+      if(this.state.newPasswordRequest.newPassword != this.state.newPasswordRequest.newPassword2) {
+        this.setState({
+          message: 'Passwords dont match'
+        })
+
+        return;
+      }
+
+      try {
         const user = await Auth.completeNewPassword(
           this.state.newPasswordRequest.user,
           this.state.newPasswordRequest.newPassword,
@@ -83,9 +92,11 @@ class Login extends Component {
           this.props.history.push('/');
         }
       }
-      catch(error) {
+      catch(err) {
+        console.log(err)
+        const message = err.message ? err.message : err;
         this.setState({
-          message: err
+          message: message
         })
       }
     }
