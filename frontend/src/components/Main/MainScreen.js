@@ -3,6 +3,8 @@ import { Auth } from 'aws-amplify';
 import Login from './Login';
 import '../../styles/Main.css'
 import CreateSession from './CreateSession'
+import About from './About'
+
 import {
   Router as Router,
   Switch,
@@ -67,7 +69,7 @@ class MainScreen extends Component {
               <Login updateLoginState={this.updateLoginState} history={this.props.history} />
             </Route>
             <Route path="/">
-                <h1>Welcome to scrum voting system</h1>
+               <About />
             </Route>
           </Switch>
         </Router>)
