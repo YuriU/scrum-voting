@@ -176,11 +176,6 @@ resources:
       Properties:
         AdminCreateUserConfig:
           AllowAdminCreateUserOnly: true
-    UserPoolDomain:
-      Type: "AWS::Cognito::UserPoolDomain"
-      Properties:
-        Domain: ${self:custom.extra.Authentication.DomainName}
-        UserPoolId: !Ref UserPool
     UserPoolClient:
       Type: "AWS::Cognito::UserPoolClient"
       Properties:
