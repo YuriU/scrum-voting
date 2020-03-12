@@ -19,7 +19,7 @@ class VotingResult extends Component {
                         this.state.groupedByResult.map((res, index) => {
                             return (
                             <div className="row" style={{width:"100%"}} key={index}>
-                                <div className="column" style={{width:"40%"}}><h1>{res[0]}</h1></div>
+                                <div className="column" style={{width:"40%"}}><h1>{res[0] == '<NA>' ? 'Did not vote' : res[0]}</h1></div>
                                 <div className="column" style={{width:"40%"}}>
                                     {
                                         res[1].map((userId, i2) => {

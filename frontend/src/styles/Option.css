@@ -1,11 +1,9 @@
 .option {
     float: left;
-    height: 65px;
-    width: 20%;
-    margin: 3%;
+    width: 30%;
+    height: 70px;
     border-style: solid;
     border-color: black;
-    position: relative;
     line-height: 180%;
     border-radius: 20%;
     background-color: cornflowerblue;
