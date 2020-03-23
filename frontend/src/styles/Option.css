@@ -4,12 +4,31 @@
     height: 70px;
     border-style: solid;
     border-color: black;
-    line-height: 180%;
     border-radius: 20%;
     background-color: cornflowerblue;
+    flex: 1 0 auto;
+    position: relative;
+}
+
+.option .inner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .option:hover {
     background-color: #4CAF50; /* Green */
     color: white;
   }
+
+  .box:after {
+    content: "";
+    float:left;
+    display: block;
+    padding-top: 100%;
+}

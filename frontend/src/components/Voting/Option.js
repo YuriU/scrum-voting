@@ -10,7 +10,7 @@ class Option extends Component {
     render() {
         return (
             <div className="option" onClick={this.props.onClick}> 
-                {this.props.text}
+                <div className="inner">{this.props.text}</div>
             </div> 
         );
     }
