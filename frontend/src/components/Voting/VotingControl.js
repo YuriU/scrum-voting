@@ -12,19 +12,24 @@ class VoteControl extends Component {
     }
 
     render() {
-        const rows = VoteControl.getBoxesByRows(this.props.voting.options.slice());
-        console.log(JSON.stringify(rows))
-        return (<div> 
-            {
-            rows 
-            ? rows.map(o => (
-                <div key={o} className="optionRow">
-                    { o.map(i => {
-                        return (<Option key={i} text={i} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
-                    })}
-                </div>))
-            : <div>Nothing ...</div>
-            }</div>)
+        if(this.props.voting && this.props.voting.options) {
+            const rows = VoteControl.getBoxesByRows(this.props.voting.options.slice().reverse());
+            console.log(JSON.stringify(rows))
+            return (
+                <div> 
+                { 
+                 rows.map(o => (
+                    <div key={o} className="optionRow">
+                        { o.map(i => {
+                            return (<Option key={i} text={i} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
+                        })}
+                    </div>)) 
+                }
+                </div>);
+        }
+        else {
+            return (<div>Nothing ...</div>)
+        }
     }
 
     onOptionClick(option){
