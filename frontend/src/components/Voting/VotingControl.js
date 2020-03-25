@@ -13,7 +13,7 @@ class VoteControl extends Component {
 
     render() {
         if(this.props.voting && this.props.voting.options) {
-            const rows = VoteControl.getBoxesByRows(this.props.voting.options.slice().reverse());
+            const rows = VoteControl.getBoxesByRows(this.props.voting.options.slice());
             console.log(JSON.stringify(rows))
             return (
                 <div> 
@@ -50,7 +50,7 @@ class VoteControl extends Component {
             let i = 0;
             const rowItems = [];
             while(i++ < rowSize && items.length > 0){
-                let item = items.pop();
+                let item = items.shift();
                 rowItems.push(item)
             }
             result.push(rowItems)
