@@ -23,11 +23,6 @@ class FullScreenSwitch extends Component {
 
     exitFullscreenHandler()
     {
-        console.log('Event handler')
-        console.log('Fullscreen mode changed webkitIsFullScreen: ', document.webkitIsFullScreen);
-        console.log('Fullscreen mode changed mozFullScreen: ', document.mozFullScreen);
-        console.log('Fullscreen mode changed msFullscreenElement: ', document.msFullscreenElement);
-
         if (document.webkitIsFullScreen != undefined)
         {
             this.setState({fullScreen: document.webkitIsFullScreen})
@@ -51,7 +46,6 @@ class FullScreenSwitch extends Component {
    
     switchFullscreen(evt) 
     {
-        console.log('Fullscreen switch clicked')
         console.log(document.documentElement);
         
         if(this.state.fullScreen == true) {

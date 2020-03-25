@@ -1,13 +1,20 @@
+.optionRow {
+    display: flex;
+}
 .option {
-    float: left;
-    width: 30%;
-    height: 70px;
-    border-style: solid;
     border-color: black;
     border-radius: 20%;
     background-color: cornflowerblue;
     flex: 1 0 auto;
     position: relative;
+    margin: 5px;
+}
+
+.option::after {
+    content: "";
+    float:left;
+    display: block;
+    padding-top: 100%;
 }
 
 .option .inner {

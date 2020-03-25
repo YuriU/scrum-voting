@@ -11,15 +11,20 @@ class VoteControl extends Component {
         this.onOptionClick = this.onOptionClick.bind(this);
     }
 
-    render(){
-    return (<div>{
-            this.props.voting 
-            ?
-                this.props.voting.options.map(o => {
-                    return (<Option key={o} text={o} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
-                })
+    render() {
+        const rows = VoteControl.getBoxesByRows(this.props.voting.options.slice());
+        console.log(JSON.stringify(rows))
+        return (<div> 
+            {
+            rows 
+            ? rows.map(o => (
+                <div key={o} className="optionRow">
+                    { o.map(i => {
+                        return (<Option key={i} text={i} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
+                    })}
+                </div>))
             : <div>Nothing ...</div>
-        }</div>)
+            }</div>)
     }
 
     onOptionClick(option){
@@ -30,6 +35,23 @@ class VoteControl extends Component {
         if(this.props.onOptionSelected){
             this.props.onOptionSelected(option);
         }
+    }
+
+    static getBoxesByRows(items) {
+        let result = [];
+        let rowSize = 3;
+        
+        while(items.length > 0) {
+            let i = 0;
+            const rowItems = [];
+            while(i++ < rowSize && items.length > 0){
+                let item = items.pop();
+                rowItems.push(item)
+            }
+            result.push(rowItems)
+        }
+
+        return result;
     }
 }
 
