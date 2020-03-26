@@ -2,10 +2,11 @@
     display: flex;
 }
 .option {
-    border-color: black;
+    border-color: dimgray;
     border-radius: 20%;
     background-color: cornflowerblue;
     flex: 1 0 auto;
+    border-style: solid;
     position: relative;
     margin: 5px;
 }

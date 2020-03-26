@@ -5,7 +5,7 @@ class VotingResult extends Component {
     constructor(props) {
         super(props);
         let grouped = VotingResult.groupByResult(props.results);
-        this.state ={
+        this.state = {
             groupedByResult : grouped
         };
     }
