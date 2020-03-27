@@ -18,10 +18,10 @@ class VoteControl extends Component {
             return (
                 <div> 
                 { 
-                 rows.map(o => (
-                    <div key={o} className="optionRow">
-                        { o.map(i => {
-                            return (<Option key={i} text={i} online={o==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
+                 rows.map(row => (
+                    <div key={row} className="optionRow">
+                        { row.map(option => {
+                            return (<Option key={option} text={option} online={option==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
                         })}
                     </div>)) 
                 }
