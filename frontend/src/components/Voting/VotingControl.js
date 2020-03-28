@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Option from './Option'
 
 class VoteControl extends Component {
+    
+
     constructor(props) {
         super(props);
         console.log(JSON.stringify(props));
@@ -52,6 +54,12 @@ class VoteControl extends Component {
             while(i++ < rowSize && items.length > 0){
                 let item = items.shift();
                 rowItems.push(item)
+            }
+
+            if(rowItems.length < 3){
+                let itemsToAdd = 3 - rowItems.length;
+                while(itemsToAdd-- > 0)
+                    rowItems.push('-');
             }
             result.push(rowItems)
         }
