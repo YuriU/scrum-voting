@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import Option from './Option'
 
 class VoteControl extends Component {
-    
+
+    static getRowSize() {
+        return 3;
+    };
 
     constructor(props) {
         super(props);
@@ -46,7 +49,7 @@ class VoteControl extends Component {
 
     static getBoxesByRows(items) {
         let result = [];
-        let rowSize = 3;
+        let rowSize = VoteControl.getRowSize();
         
         while(items.length > 0) {
             let i = 0;
@@ -56,8 +59,8 @@ class VoteControl extends Component {
                 rowItems.push(item)
             }
 
-            if(rowItems.length < 3){
-                let itemsToAdd = 3 - rowItems.length;
+            if(rowItems.length < rowSize){
+                let itemsToAdd = rowSize - rowItems.length;
                 while(itemsToAdd-- > 0)
                     rowItems.push('-');
             }
