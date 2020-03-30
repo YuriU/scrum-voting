@@ -33,7 +33,7 @@ class VotingControl extends Component {
                         {
                             // Added rest of items as inactive
                             row.length < VotingControl.getRowSize() && VotingControl.makeArray(VotingControl.getRowSize() - row.length).map(i => {
-                                return (<Option key={i} text="" />)
+                                return (<Option disabled={true} key={i} text="" />)
                             })
                         }
                     </div>)) 

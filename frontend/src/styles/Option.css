@@ -4,7 +4,6 @@
 .option {
     border-color: dimgray;
     border-radius: 20%;
-    background-color: cornflowerblue;
     flex: 1 0 auto;
     border-style: solid;
     position: relative;
@@ -32,6 +31,14 @@
 .option:hover {
     background-color: #4CAF50; /* Green */
     color: white;
+  }
+
+  .enabledOption {
+    background-color: cornflowerblue;
+  }
+
+  .disabledOption {
+    background-color: darkgray; /* Green */
   }
 
   .box:after {
