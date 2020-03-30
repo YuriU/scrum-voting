@@ -9,9 +9,9 @@ class Option extends Component {
 
     render() {
         return (
-            <div  className= {this.props.disabled ? "option disabledOption" : "option enabledOption"}  onClick={this.props.onClick}> 
+            <button className= {this.props.disabled ? "option disabledOption" : "option enabledOption"}  onClick={this.props.onClick}> 
                 <div className="inner">{this.props.text}</div>
-            </div> 
+            </button> 
         );
     }
 }
