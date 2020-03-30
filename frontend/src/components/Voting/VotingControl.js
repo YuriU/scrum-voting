@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Option from './Option'
 
-class VoteControl extends Component {
+class VotingControl extends Component {
 
     static getRowSize() {
         return 3;
@@ -18,16 +18,24 @@ class VoteControl extends Component {
 
     render() {
         if(this.props.voting && this.props.voting.options) {
-            const rows = VoteControl.getBoxesByRows(this.props.voting.options.slice());
+            const rows = VotingControl.getBoxesByRows(this.props.voting.options.slice());
             console.log(JSON.stringify(rows))
             return (
                 <div> 
                 { 
                  rows.map(row => (
                     <div key={row} className="optionRow">
-                        { row.map(option => {
-                            return (<Option key={option} text={option} online={option==this.state.selected} onClick={(evt) => this.onOptionClick(o)} />)
-                        })}
+                        {
+                            row.map(option => {
+                                return (<Option key={option} text={option} online={option==this.state.selected} onClick={(evt) => this.onOptionClick(option)} />)
+                            })
+                        }
+                        {
+                            // Added rest of items as inactive
+                            row.length < VotingControl.getRowSize() && VotingControl.makeArray(VotingControl.getRowSize() - row.length).map(i => {
+                                return (<Option key={i} text="" />)
+                            })
+                        }
                     </div>)) 
                 }
                 </div>);
@@ -47,23 +55,26 @@ class VoteControl extends Component {
         }
     }
 
+    static makeArray(length){
+        let array = [];
+        for (let index = 0; index < length; index++) {
+            array.push(`na-${index}`);
+        }
+        return array;
+    }
+
     static getBoxesByRows(items) {
         let result = [];
-        let rowSize = VoteControl.getRowSize();
+        let rowSize = VotingControl.getRowSize();
         
         while(items.length > 0) {
             let i = 0;
             const rowItems = [];
-            while(i++ < rowSize && items.length > 0){
+            while(i++ < rowSize && items.length > 0) {
                 let item = items.shift();
                 rowItems.push(item)
             }
 
-            if(rowItems.length < rowSize){
-                let itemsToAdd = rowSize - rowItems.length;
-                while(itemsToAdd-- > 0)
-                    rowItems.push('-');
-            }
             result.push(rowItems)
         }
 
@@ -71,4 +82,4 @@ class VoteControl extends Component {
     }
 }
 
-export default VoteControl;
+export default VotingControl;
