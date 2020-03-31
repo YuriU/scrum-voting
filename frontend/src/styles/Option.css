@@ -28,7 +28,7 @@
     justify-content: center;
 }
 
-.option:hover {
+.enabledOption:hover {
     background-color: #4CAF50; /* Green */
     color: white;
   }
