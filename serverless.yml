@@ -3,6 +3,8 @@ service: scrum-vote
 
 frameworkVersion: ">=1.9.0 <2.0.0"
 
+plugins:
+  - serverless-s3-remover
 provider:
   name: aws
   region: eu-central-1

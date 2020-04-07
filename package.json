@@ -1,0 +1,10 @@
+{
+  "name": "scrum-vote",
+  "version": "1.0.0",
+  "description": "Small voting application for grooming in scrum teams",
+  "author": "Yurii Ulianets",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-s3-remover": "^0.6.0"
+  }
+}
