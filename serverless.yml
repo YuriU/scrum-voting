@@ -44,6 +44,9 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   votingTimeoutSeconds: 5
   extra: ${file(vars/${self:custom.stage}.yml)}
+  remover:
+     buckets:
+      - Ref: WebSite
  
 functions:
   connectHandler:
