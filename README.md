@@ -1,5 +1,5 @@
 # scrum-voting
 
-My pet project alowing people to make voting for scrum storypoints in a blind way
+My pet project alowing people to make voting for scrum story points in a blind way
 
 
